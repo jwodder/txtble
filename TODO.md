@@ -39,7 +39,6 @@ Features to Add
   that a horizontal rule should be added.  Its constructor should take
   optional keyword arguments for setting the box-drawing characters to use
   ('dash', 'joint', '`left_joint`', '`right_joint`', 'midjoint'?)
-- parameter for setting how to display `None`s
 - parameter for setting how to show bools?
 - Producing Markdown- or reStructuredText-compatible tables
 - Producing HTML tables

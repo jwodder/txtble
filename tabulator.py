@@ -11,12 +11,14 @@ from wcwidth   import wcswidth
 
 class Tabulator(object):
     def __init__(self, data=(),
-                       headers=None,
-                       include_extra_columns=True,
-                       extra_header='',
-                       fill_empty_columns='',
-                       border=True,
-                       trim_spaces=True):
+        headers=None,
+        include_extra_columns=True,
+        extra_header='',
+        fill_empty_columns='',
+        border=True,
+        trim_spaces=True,
+        none_str='',
+    ):
         self.data = list(map(list, data))
         self.headers = list(headers) if headers is not None else None
         self.include_extra_columns = include_extra_columns
@@ -24,6 +26,7 @@ class Tabulator(object):
         self.fill_empty_columns = fill_empty_columns
         self.border = border
         self.trim_spaces = trim_spaces
+        self.none_str = none_str
 
     def append(self, row):
         self.data.append(list(row))
@@ -40,14 +43,14 @@ class Tabulator(object):
     def show(self):
         data = []
         if self.headers is not None:
-            headers = list(map(show, self.headers))
+            headers = list(map(self._show_cell, self.headers))
             columns = len(headers)
             widths = [max(map(wcswidth, h.splitlines())) for h in headers]
         else:
             columns = 0
             widths = []
         for row in self.data:
-            row = list(map(show, row))
+            row = list(map(self._show_cell, row))
             if len(row) > columns:
                 if headers is not None and not self.include_extra_columns:
                     row = row[:columns]
@@ -85,8 +88,10 @@ class Tabulator(object):
             output += '\n' + hrule
         return output
 
-def show(s):
-    if isinstance(s, text_type):
-        return s
-    else:
-        return str(s)
+    def _show_cell(self, s):
+        if isinstance(s, text_type):
+            return s
+        elif s is None:
+            return self.none_str
+        else:
+            return str(s)
