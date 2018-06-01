@@ -62,7 +62,7 @@ class Tabulator(object):
         def showrow(row):
             s = ''
             for r in zip_longest(*map(methodcaller('splitlines'), row), fillvalue=''):
-                s1 = '|'.join('%-*s' % (w, cell)
+                s1 = '|'.join(cell + ' ' * (w - wcswidth(cell))
                               for (w, cell) in zip(widths, r))
                 if self.border:
                     s1 = '|' + s1 + '|'

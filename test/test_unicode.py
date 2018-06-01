@@ -39,3 +39,18 @@ def test_unicode_nfd():
         u'|Pok\u00E9mon|Poke\u0301mon|\n'
         u'+-------+-------+'
     )
+
+def test_fullwidth():
+    tbl = Tabulator(
+        headers=['Halfwidth', 'Fullwidth'],
+        data=[
+            ['Test text', u'Ｔｅｓｔ\u3000ｔｅｘｔ'],
+        ],
+    )
+    assert text_type(tbl) == (
+        u'+---------+------------------+\n'
+        u'|Halfwidth|Fullwidth         |\n'
+        u'+---------+------------------+\n'
+        u'|Test text|Ｔｅｓｔ\u3000ｔｅｘｔ|\n'
+        u'+---------+------------------+'
+    )
