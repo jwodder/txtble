@@ -24,3 +24,18 @@ def test_unicode():
         u'|to fortify|mūnīre|\n'
         u'+----------+------+'
     )
+
+def test_unicode_nfd():
+    tbl = Tabulator(
+        headers=['NFC', 'NFD'],
+        data=[
+            [u'Pok\u00E9mon', u'Poke\u0301mon'],
+        ],
+    )
+    assert text_type(tbl) == (
+        u'+-------+-------+\n'
+        u'|NFC    |NFD    |\n'
+        u'+-------+-------+\n'
+        u'|Pok\u00E9mon|Poke\u0301mon|\n'
+        u'+-------+-------+'
+    )
