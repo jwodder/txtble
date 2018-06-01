@@ -1,8 +1,9 @@
 - "`tabulator`" is taken.  Come up with a new name.
 - Fill in keywords, classifiers, & package description
-- Support Python 3
+- Write a README
 - Stringifying a Tabulator object should return the typeset table (no trailing
   newline)
+- Use `wcwidth` for calculating column widths
 
 Features to Add
 ---------------
@@ -49,3 +50,5 @@ Features to Add
 - handling of Unicode characters with non-unit width (cf. the `wcwidth`
   package)
 - forcing all columns to have the same width?
+- specifying a custom function for calculating text width?
+- specifying a custom function for line wrapping?

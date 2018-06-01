@@ -4,6 +4,8 @@ __author_email__ = 'tabulator@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/tabulator'
 
+from operator  import methodcaller
+from six       import text_type
 from six.moves import zip_longest
 
 class Tabulator(object):
@@ -29,16 +31,22 @@ class Tabulator(object):
         self.data.extend(map(list, data))
 
     def __str__(self):
+        return str(self.show())
+
+    def __unicode__(self):
+        return text_type(self.show())
+
+    def show(self):
         data = []
         if self.headers is not None:
-            headers = list(map(str, self.headers))
+            headers = list(map(show, self.headers))
             columns = len(headers)
             widths = [max(map(len, h.splitlines())) for h in headers]
         else:
             columns = 0
             widths = []
         for row in self.data:
-            row = list(map(str, row))
+            row = list(map(show, row))
             if len(row) > columns:
                 if headers is not None and not self.include_extra_columns:
                     row = row[:columns]
@@ -52,7 +60,7 @@ class Tabulator(object):
 
         def showrow(row):
             s = ''
-            for r in zip_longest(*map(str.splitlines, row), fillvalue=''):
+            for r in zip_longest(*map(methodcaller('splitlines'), row), fillvalue=''):
                 s1 = '|'.join('%-*s' % (w, cell)
                               for (w, cell) in zip(widths, r))
                 if self.border:
@@ -75,3 +83,9 @@ class Tabulator(object):
         if self.border:
             output += '\n' + hrule
         return output
+
+def show(s):
+    if isinstance(s, text_type):
+        return s
+    else:
+        return str(s)
