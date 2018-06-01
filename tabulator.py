@@ -7,6 +7,7 @@ __url__          = 'https://github.com/jwodder/tabulator'
 from operator  import methodcaller
 from six       import text_type
 from six.moves import zip_longest
+from wcwidth   import wcswidth
 
 class Tabulator(object):
     def __init__(self, data=(),
@@ -41,7 +42,7 @@ class Tabulator(object):
         if self.headers is not None:
             headers = list(map(show, self.headers))
             columns = len(headers)
-            widths = [max(map(len, h.splitlines())) for h in headers]
+            widths = [max(map(wcswidth, h.splitlines())) for h in headers]
         else:
             columns = 0
             widths = []
@@ -54,7 +55,7 @@ class Tabulator(object):
                     columns = max(len(row), columns)
             elif len(row) < columns:
                 row = (row + [self.fill_empty_columns] * columns)[:columns]
-            widths = map(max, zip_longest(widths, map(len, row), fillvalue=0))
+            widths = map(max, zip_longest(widths, map(wcswidth, row), fillvalue=0))
             data.append(row)
         widths = list(widths)
 
