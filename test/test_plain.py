@@ -49,3 +49,45 @@ def test_extend_all():
     tbl = Tabulator(headers=HEADERS)
     tbl.extend(DATA)
     assert str(tbl) == TABLE
+
+def test_no_border():
+    tbl = Tabulator(DATA, headers=HEADERS, border=False)
+    assert str(tbl) == (
+        'Month    |Birthstone|Birth Flower\n'
+        '---------+----------+------------------\n'
+        'January  |Garnet    |Carnation\n'
+        'February |Amethyst  |Violet\n'
+        'March    |Aquamarine|Jonquil\n'
+        'April    |Diamond   |Sweetpea\n'
+        'May      |Emerald   |Lily Of The Valley\n'
+        'June     |Pearl     |Rose\n'
+        'July     |Ruby      |Larkspur\n'
+        'August   |Peridot   |Gladiolus\n'
+        'September|Sapphire  |Aster\n'
+        'October  |Opal      |Calendula\n'
+        'November |Topaz     |Chrysanthemum\n'
+        'December |Turquoise |Narcissus'
+    )
+
+def test_no_border_no_rstrip():
+    tbl = Tabulator(DATA, headers=HEADERS, border=False, rstrip=False)
+    assert str(tbl) == (
+        'Month    |Birthstone|Birth Flower      \n'
+        '---------+----------+------------------\n'
+        'January  |Garnet    |Carnation         \n'
+        'February |Amethyst  |Violet            \n'
+        'March    |Aquamarine|Jonquil           \n'
+        'April    |Diamond   |Sweetpea          \n'
+        'May      |Emerald   |Lily Of The Valley\n'
+        'June     |Pearl     |Rose              \n'
+        'July     |Ruby      |Larkspur          \n'
+        'August   |Peridot   |Gladiolus         \n'
+        'September|Sapphire  |Aster             \n'
+        'October  |Opal      |Calendula         \n'
+        'November |Topaz     |Chrysanthemum     \n'
+        'December |Turquoise |Narcissus         '
+    )
+
+def test_no_rstrip():
+    tbl = Tabulator(DATA, headers=HEADERS, rstrip=False)
+    assert str(tbl) == TABLE

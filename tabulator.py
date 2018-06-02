@@ -16,7 +16,7 @@ class Tabulator(object):
         extra_header='',
         fill_empty_columns='',
         border=True,
-        trim_spaces=True,
+        rstrip=True,
         none_str='',
     ):
         self.data = list(map(list, data))
@@ -25,7 +25,7 @@ class Tabulator(object):
         self.extra_header = extra_header
         self.fill_empty_columns = fill_empty_columns
         self.border = border
-        self.trim_spaces = trim_spaces
+        self.rstrip = rstrip
         self.none_str = none_str
 
     def append(self, row):
@@ -69,7 +69,7 @@ class Tabulator(object):
                               for (w, cell) in zip(widths, r))
                 if self.border:
                     s1 = '|' + s1 + '|'
-                elif self.trim_spaces:
+                elif self.rstrip:
                     s1 = s1.rstrip()
                 s += s1
             return s

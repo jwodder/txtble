@@ -44,7 +44,7 @@ Features to Add
 - Producing HTML tables
 - Producing PDF tables with reportlab?
 - parsing a text table back into a Tabulator object?
-- transposition
 - forcing all columns to have the same width?
 - specifying a custom function for calculating text width?
 - specifying a custom function for line wrapping?
+- omitting all internal borders
