@@ -91,3 +91,37 @@ def test_no_border_no_rstrip():
 def test_no_rstrip():
     tbl = Tabulator(DATA, headers=HEADERS, rstrip=False)
     assert str(tbl) == TABLE
+
+def test_no_headers():
+    tbl = Tabulator(DATA)
+    assert str(tbl) == '''\
++---------+----------+------------------+
+|January  |Garnet    |Carnation         |
+|February |Amethyst  |Violet            |
+|March    |Aquamarine|Jonquil           |
+|April    |Diamond   |Sweetpea          |
+|May      |Emerald   |Lily Of The Valley|
+|June     |Pearl     |Rose              |
+|July     |Ruby      |Larkspur          |
+|August   |Peridot   |Gladiolus         |
+|September|Sapphire  |Aster             |
+|October  |Opal      |Calendula         |
+|November |Topaz     |Chrysanthemum     |
+|December |Turquoise |Narcissus         |
++---------+----------+------------------+'''
+
+def test_no_headers_no_border():
+    tbl = Tabulator(DATA, border=False)
+    assert str(tbl) == '''\
+January  |Garnet    |Carnation
+February |Amethyst  |Violet
+March    |Aquamarine|Jonquil
+April    |Diamond   |Sweetpea
+May      |Emerald   |Lily Of The Valley
+June     |Pearl     |Rose
+July     |Ruby      |Larkspur
+August   |Peridot   |Gladiolus
+September|Sapphire  |Aster
+October  |Opal      |Calendula
+November |Topaz     |Chrysanthemum
+December |Turquoise |Narcissus'''

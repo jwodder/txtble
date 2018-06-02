@@ -47,6 +47,7 @@ class Tabulator(object):
             columns = len(headers)
             widths = [max(map(wcswidth, h.splitlines())) for h in headers]
         else:
+            headers = None
             columns = 0
             widths = []
         for row in self.data:
