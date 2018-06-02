@@ -17,23 +17,24 @@ DATA = [
     ['December',  'Turquoise',  'Narcissus'],
 ]
 
-TABLE = '''\
-+---------+----------+------------------+
-|Month    |Birthstone|Birth Flower      |
-+---------+----------+------------------+
-|January  |Garnet    |Carnation         |
-|February |Amethyst  |Violet            |
-|March    |Aquamarine|Jonquil           |
-|April    |Diamond   |Sweetpea          |
-|May      |Emerald   |Lily Of The Valley|
-|June     |Pearl     |Rose              |
-|July     |Ruby      |Larkspur          |
-|August   |Peridot   |Gladiolus         |
-|September|Sapphire  |Aster             |
-|October  |Opal      |Calendula         |
-|November |Topaz     |Chrysanthemum     |
-|December |Turquoise |Narcissus         |
-+---------+----------+------------------+'''
+TABLE = (
+    '+---------+----------+------------------+\n'
+    '|Month    |Birthstone|Birth Flower      |\n'
+    '+---------+----------+------------------+\n'
+    '|January  |Garnet    |Carnation         |\n'
+    '|February |Amethyst  |Violet            |\n'
+    '|March    |Aquamarine|Jonquil           |\n'
+    '|April    |Diamond   |Sweetpea          |\n'
+    '|May      |Emerald   |Lily Of The Valley|\n'
+    '|June     |Pearl     |Rose              |\n'
+    '|July     |Ruby      |Larkspur          |\n'
+    '|August   |Peridot   |Gladiolus         |\n'
+    '|September|Sapphire  |Aster             |\n'
+    '|October  |Opal      |Calendula         |\n'
+    '|November |Topaz     |Chrysanthemum     |\n'
+    '|December |Turquoise |Narcissus         |\n'
+    '+---------+----------+------------------+'
+)
 
 def test_one_expression():
     tbl = Tabulator(DATA, headers=HEADERS)
@@ -94,34 +95,36 @@ def test_no_rstrip():
 
 def test_no_headers():
     tbl = Tabulator(DATA)
-    assert str(tbl) == '''\
-+---------+----------+------------------+
-|January  |Garnet    |Carnation         |
-|February |Amethyst  |Violet            |
-|March    |Aquamarine|Jonquil           |
-|April    |Diamond   |Sweetpea          |
-|May      |Emerald   |Lily Of The Valley|
-|June     |Pearl     |Rose              |
-|July     |Ruby      |Larkspur          |
-|August   |Peridot   |Gladiolus         |
-|September|Sapphire  |Aster             |
-|October  |Opal      |Calendula         |
-|November |Topaz     |Chrysanthemum     |
-|December |Turquoise |Narcissus         |
-+---------+----------+------------------+'''
+    assert str(tbl) == (
+        '+---------+----------+------------------+\n'
+        '|January  |Garnet    |Carnation         |\n'
+        '|February |Amethyst  |Violet            |\n'
+        '|March    |Aquamarine|Jonquil           |\n'
+        '|April    |Diamond   |Sweetpea          |\n'
+        '|May      |Emerald   |Lily Of The Valley|\n'
+        '|June     |Pearl     |Rose              |\n'
+        '|July     |Ruby      |Larkspur          |\n'
+        '|August   |Peridot   |Gladiolus         |\n'
+        '|September|Sapphire  |Aster             |\n'
+        '|October  |Opal      |Calendula         |\n'
+        '|November |Topaz     |Chrysanthemum     |\n'
+        '|December |Turquoise |Narcissus         |\n'
+        '+---------+----------+------------------+'
+    )
 
 def test_no_headers_no_border():
     tbl = Tabulator(DATA, border=False)
-    assert str(tbl) == '''\
-January  |Garnet    |Carnation
-February |Amethyst  |Violet
-March    |Aquamarine|Jonquil
-April    |Diamond   |Sweetpea
-May      |Emerald   |Lily Of The Valley
-June     |Pearl     |Rose
-July     |Ruby      |Larkspur
-August   |Peridot   |Gladiolus
-September|Sapphire  |Aster
-October  |Opal      |Calendula
-November |Topaz     |Chrysanthemum
-December |Turquoise |Narcissus'''
+    assert str(tbl) == (
+        'January  |Garnet    |Carnation\n'
+        'February |Amethyst  |Violet\n'
+        'March    |Aquamarine|Jonquil\n'
+        'April    |Diamond   |Sweetpea\n'
+        'May      |Emerald   |Lily Of The Valley\n'
+        'June     |Pearl     |Rose\n'
+        'July     |Ruby      |Larkspur\n'
+        'August   |Peridot   |Gladiolus\n'
+        'September|Sapphire  |Aster\n'
+        'October  |Opal      |Calendula\n'
+        'November |Topaz     |Chrysanthemum\n'
+        'December |Turquoise |Narcissus'
+    )
