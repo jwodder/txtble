@@ -154,3 +154,23 @@ def test_embedded_newlines():
         '|       |The frumious Bandersnatch!"              |\n'
         '+-------+-----------------------------------------+'
     )
+
+def test_empty():
+    tbl = Tabulator()
+    assert str(tbl) == '++\n++'
+
+def test_empty_no_border():
+    tbl = Tabulator(border=False)
+    assert str(tbl) == ''
+
+def test_headers_no_rows():
+    tbl = Tabulator(headers=('This', 'That'))
+    assert str(tbl) == (
+        '+----+----+\n'
+        '|This|That|\n'
+        '+----+----+'
+    )
+
+def test_headers_no_rows_no_border():
+    tbl = Tabulator(headers=('This', 'That'), border=False)
+    assert str(tbl) == 'This|That'

@@ -75,33 +75,32 @@ class Tabulator(object):
         widths = list(widths)
 
         def showrow(row):
-            s = ''
             row = _to_len(row, columns, self.row_fill)
             for r in zip_longest(*map(methodcaller('splitlines'), row),
                                  fillvalue=''):
-                s1 = '|'.join(cell + ' ' * (w - wcswidth(cell))
-                              for (w, cell) in zip(widths, r))
+                s = '|'.join(cell + ' ' * (w - wcswidth(cell))
+                             for (w, cell) in zip(widths, r))
                 if self.border:
-                    s1 = '|' + s1 + '|'
+                    s = '|' + s + '|'
                 elif self.rstrip:
-                    s1 = s1.rstrip()
-                if s:
-                    s += '\n'
-                s += s1
-            return s
+                    s = s.rstrip()
+                yield s
 
         hrule = '+'.join('-' * w for w in widths)
         if self.border:
             hrule = '+' + hrule + '+'
-        output = ''
+        output = []
         if self.border:
-            output += hrule + '\n'
+            output.append(hrule)
         if self.headers is not None:
-            output += showrow(headers) + '\n' + hrule + '\n'
-        output += '\n'.join(map(showrow, data))
+            output.extend(showrow(headers))
+            if data:
+                output.append(hrule)
+        for row in data:
+            output.extend(showrow(row))
         if self.border:
-            output += '\n' + hrule
-        return output
+            output.append(hrule)
+        return '\n'.join(output)
 
     def _show_cell(self, s):
         if isinstance(s, text_type):
