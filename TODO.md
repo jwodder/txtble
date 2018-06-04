@@ -38,6 +38,8 @@ Features to Add
       overflow, truncate them, or line-wrap them
     - handling of lines that are still too long (e.g., due to containing a very
       long word) after wrapping
+    - Parameters for setting minimum, maximum, and exact column widths
+    - forcing all columns to have the same width?
 
 - API:
     - Add a method that simply returns the padded & folded cells as an array of
@@ -48,9 +50,11 @@ Features to Add
     - specifying a custom function for line wrapping
         - The default wrapping function should use the specified width function
 
-- Parameters for setting minimum, maximum, and exact column widths
-- forcing all columns to have the same width?
 - Parameters for setting exact (and/or min/max?) number of columns
+    - adding filler cells to short rows until they reach a certain number of
+      columns
+    - removing extra cells from long rows until they reach a certain number of
+      columns
 - cells that span multiple columns and/or rows
 - Producing Markdown- or reStructuredText-compatible tables
 - Producing HTML tables

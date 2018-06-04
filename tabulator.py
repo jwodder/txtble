@@ -12,23 +12,24 @@ from wcwidth   import wcswidth
 class Tabulator(object):
     def __init__(
         self,
-        data=(),
-        headers=None,
-        include_extra_columns=True,
-        extra_header='',
-        fill_empty_columns='',
-        border=True,
-        rstrip=True,
-        none_str='',
+        data        = (),
+        border      = True,
+        header_fill = None,
+        headers     = None,
+        none_str    = '',
+        row_fill    = '',
+        rstrip      = True,
     ):
         self.data = list(map(list, data))
-        self.headers = list(headers) if headers is not None else None
-        self.include_extra_columns = include_extra_columns
-        self.extra_header = extra_header
-        self.fill_empty_columns = fill_empty_columns
         self.border = border
-        self.rstrip = rstrip
+        self.header_fill = header_fill
+        self.headers = list(headers) if headers is not None else None
         self.none_str = none_str
+        if row_fill is None:
+            # Reserved to mean something in a later version
+            raise ValueError('row_fill cannot be None')
+        self.row_fill = row_fill
+        self.rstrip = rstrip
 
     def append(self, row):
         self.data.append(list(row))
@@ -43,31 +44,41 @@ class Tabulator(object):
         return text_type(self.show())
 
     def show(self):
+        if self.row_fill is None:
+            raise ValueError('row_fill cannot be None')
         data = []
+        widths = []
         if self.headers is not None:
             headers = list(map(self._show_cell, self.headers))
             columns = len(headers)
-            widths = _row_widths(headers)
         else:
             headers = None
             columns = 0
-            widths = []
         for row in self.data:
             row = list(map(self._show_cell, row))
-            if len(row) > columns:
-                if headers is not None and not self.include_extra_columns:
-                    row = row[:columns]
-                else:
-                    columns = max(len(row), columns)
-            elif len(row) < columns:
-                row = (row + [self.fill_empty_columns] * columns)[:columns]
+            if len(row) > columns and \
+                    (headers is None or self.header_fill is not None):
+                if widths:
+                    widths = list(widths) + _row_widths([self.row_fill]) \
+                                          * (len(row) - columns)
+                columns = len(row)
+            row = _to_len(row, columns, self.row_fill)
             widths = map(max, zip_longest(widths, _row_widths(row), fillvalue=0))
             data.append(row)
+        if headers is not None:
+            if self.header_fill is None:
+                assert len(headers) == columns or columns == 0
+            else:
+                assert len(headers) <= columns
+            headers = _to_len(headers, columns, self.header_fill)
+            widths = map(max, zip_longest(widths, _row_widths(headers), fillvalue=0))
         widths = list(widths)
 
         def showrow(row):
             s = ''
-            for r in zip_longest(*map(methodcaller('splitlines'), row), fillvalue=''):
+            row = _to_len(row, columns, self.row_fill)
+            for r in zip_longest(*map(methodcaller('splitlines'), row),
+                                 fillvalue=''):
                 s1 = '|'.join(cell + ' ' * (w - wcswidth(cell))
                               for (w, cell) in zip(widths, r))
                 if self.border:
@@ -86,8 +97,7 @@ class Tabulator(object):
         if self.border:
             output += hrule + '\n'
         if self.headers is not None:
-            output += showrow(headers + [self.extra_header] * (columns - len(headers))) + '\n'
-            output += hrule + '\n'
+            output += showrow(headers) + '\n' + hrule + '\n'
         output += '\n'.join(map(showrow, data))
         if self.border:
             output += '\n' + hrule
@@ -103,3 +113,6 @@ class Tabulator(object):
 
 def _row_widths(row):
     return [max(map(wcswidth, c.splitlines())) if c else 0 for c in row]
+
+def _to_len(xs, length, fill):
+    return (xs + [fill] * length)[:length]
