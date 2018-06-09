@@ -10,38 +10,30 @@ __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
-from operator  import methodcaller
-from six       import text_type
-from six.moves import zip_longest
-from wcwidth   import wcswidth
+from   operator  import methodcaller
+import attr
+from   six       import text_type
+from   six.moves import zip_longest
+from   wcwidth   import wcswidth
 
+@attr.s
 class Txtble(object):
-    def __init__(
-        self,
-        data        = (),
-        border      = True,
-        header_fill = None,
-        headers     = None,
-        none_str    = '',
-        row_fill    = '',
-        rstrip      = True,
-        header_border = None,
-        column_border = True,
-        row_border = False,
-    ):
-        self.data = list(map(list, data))
-        self.border = border
-        self.header_fill = header_fill
-        self.headers = list(headers) if headers is not None else None
-        self.none_str = none_str
-        if row_fill is None:
+    data          = attr.ib(default=(), converter=lambda d: list(map(list, d)))
+    border        = attr.ib(default=True)
+    column_border = attr.ib(default=True)
+    header_border = attr.ib(default=None)
+    header_fill   = attr.ib(default=None)
+    headers       = attr.ib(default=None, converter=attr.converters.optional(list))
+    none_str      = attr.ib(default='')
+    row_border    = attr.ib(default=False)
+    row_fill      = attr.ib(default='')
+    rstrip        = attr.ib(default=True)
+
+    @row_fill.validator
+    def _row_fill_validator(self, attrib, value):
+        if value is None:
             # Reserved to mean something in a later version
             raise ValueError('row_fill cannot be None')
-        self.row_fill = row_fill
-        self.rstrip = rstrip
-        self.header_border = header_border
-        self.column_border = column_border
-        self.row_border = row_border
 
     def append(self, row):
         self.data.append(list(row))
