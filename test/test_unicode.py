@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from six       import text_type
-from tabulator import Tabulator
+from six    import text_type
+from txtble import Txtble
 
 def test_unicode():
-    tbl = Tabulator(
+    tbl = Txtble(
         headers=('English', 'Latin'),
         data=[
             ['to love',    u'amāre'],
@@ -26,7 +26,7 @@ def test_unicode():
     )
 
 def test_unicode_nfd():
-    tbl = Tabulator(
+    tbl = Txtble(
         headers=['NFC', 'NFD'],
         data=[
             [u'Pok\u00E9mon', u'Poke\u0301mon'],
@@ -41,7 +41,7 @@ def test_unicode_nfd():
     )
 
 def test_fullwidth():
-    tbl = Tabulator(
+    tbl = Txtble(
         headers=['Halfwidth', 'Fullwidth'],
         data=[
             ['Test text', u'Ｔｅｓｔ\u3000ｔｅｘｔ'],

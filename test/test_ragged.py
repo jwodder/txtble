@@ -1,5 +1,5 @@
 import pytest
-from   tabulator import Tabulator
+from   txtble import Txtble
 
 DATA = [
     ['1', '1'],
@@ -11,7 +11,7 @@ DATA = [
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])
 def test_ragged_rows_no_headers(header_fill):
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = header_fill,
     )
@@ -27,7 +27,7 @@ def test_ragged_rows_no_headers(header_fill):
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])
 def test_ragged_rows_no_headers_row_fill(header_fill):
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = header_fill,
         row_fill    = '#',
@@ -44,7 +44,7 @@ def test_ragged_rows_no_headers_row_fill(header_fill):
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])
 def test_ragged_rows_no_headers_long_row_fill(header_fill):
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = header_fill,
         row_fill    = 'Empty!',
@@ -61,7 +61,7 @@ def test_ragged_rows_no_headers_long_row_fill(header_fill):
 
 @pytest.mark.parametrize('row_fill', ['', 'foo'])
 def test_long_rows_headers(row_fill):
-    tbl = Tabulator(
+    tbl = Txtble(
         data     = DATA,
         headers  = ('Group', 'Elements'),
         row_fill = row_fill,
@@ -79,7 +79,7 @@ def test_long_rows_headers(row_fill):
     )
 
 def test_long_rows_headers_header_fill():
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = '?',
         headers     = ('Group', 'Elements'),
@@ -97,7 +97,7 @@ def test_long_rows_headers_header_fill():
     )
 
 def test_long_rows_headers_empty_header_fill():
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = '',
         headers     = ('Group', 'Elements'),
@@ -115,7 +115,7 @@ def test_long_rows_headers_empty_header_fill():
     )
 
 def test_long_rows_headers_long_header_fill():
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = 'Extra!',
         headers     = ('Group', 'Elements'),
@@ -133,7 +133,7 @@ def test_long_rows_headers_long_header_fill():
     )
 
 def test_long_rows_headers_header_fill_row_fill():
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = '?',
         headers     = ('Group', 'Elements'),
@@ -153,7 +153,7 @@ def test_long_rows_headers_header_fill_row_fill():
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])
 def test_short_rows_headers(header_fill):
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = header_fill,
         headers     = ('Group', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6'),
@@ -172,7 +172,7 @@ def test_short_rows_headers(header_fill):
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])
 def test_short_rows_headers_row_fill(header_fill):
-    tbl = Tabulator(
+    tbl = Txtble(
         data        = DATA,
         header_fill = header_fill,
         headers     = ('Group', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6'),

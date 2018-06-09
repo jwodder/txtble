@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from six       import text_type
-from tabulator import Tabulator
+from six    import text_type
+from txtble import Txtble
 
 class Custom(object):
     def __str__(self):
@@ -14,7 +14,7 @@ class Custom(object):
 
 
 def test_none():
-    tbl = Tabulator(
+    tbl = Txtble(
         headers=('repr', 'value'),
         data=[
             ("''", ''),
@@ -33,7 +33,7 @@ def test_none():
     )
 
 def test_none_str_empty():
-    tbl = Tabulator(
+    tbl = Txtble(
         headers=('repr', 'value'),
         data=[
             ("''", ''),
@@ -53,7 +53,7 @@ def test_none_str_empty():
     )
 
 def test_custom():
-    tbl = Tabulator(data=[['A', 'B'], ['C', Custom()]])
+    tbl = Txtble(data=[['A', 'B'], ['C', Custom()]])
     assert str(tbl) == (
         '+-+---+\n'
         '|A|B  |\n'
@@ -68,7 +68,7 @@ def test_custom():
     )
 
 def test_custom_plus_unicode():
-    tbl = Tabulator(data=[[u'Å', u'B'], [u'Č', Custom()]])
+    tbl = Txtble(data=[[u'Å', u'B'], [u'Č', Custom()]])
     assert text_type(tbl) == (
         u'+-+---+\n'
         u'|Å|B  |\n'

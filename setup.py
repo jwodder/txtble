@@ -2,7 +2,7 @@ from   os.path    import dirname, join
 import re
 from   setuptools import setup
 
-with open(join(dirname(__file__), 'tabulator.py')) as fp:
+with open(join(dirname(__file__), 'txtble.py')) as fp:
     for line in fp:
         m = re.search(r'^\s*__version__\s*=\s*([\'"])([^\'"]+)\1\s*$', line)
         if m:

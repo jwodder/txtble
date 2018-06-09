@@ -1,5 +1,4 @@
-- "`tabulator`" is taken.  Come up with a new name.
-- Fill in keywords, classifiers, & package description
+- Fill in keywords and classifiers
 - Write a README
 - Add docstrings
 
@@ -59,4 +58,4 @@ Features to Add
 - Producing Markdown- or reStructuredText-compatible tables
 - Producing HTML tables
 - Producing PDF tables with reportlab?
-- parsing a text table back into a Tabulator object?
+- parsing a text table back into a Txtble object?

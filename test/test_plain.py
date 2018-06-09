@@ -1,4 +1,4 @@
-from tabulator import Tabulator
+from txtble import Txtble
 
 # Taken from /usr/share/misc/birthtoken.gz in Ubuntu Xenial's miscfiles package:
 HEADERS = ['Month', 'Birthstone', 'Birth Flower']
@@ -37,22 +37,22 @@ TABLE = (
 )
 
 def test_one_expression():
-    tbl = Tabulator(DATA, headers=HEADERS)
+    tbl = Txtble(DATA, headers=HEADERS)
     assert str(tbl) == TABLE
 
 def test_append_each():
-    tbl = Tabulator(headers=HEADERS)
+    tbl = Txtble(headers=HEADERS)
     for row in DATA:
         tbl.append(row)
     assert str(tbl) == TABLE
 
 def test_extend_all():
-    tbl = Tabulator(headers=HEADERS)
+    tbl = Txtble(headers=HEADERS)
     tbl.extend(DATA)
     assert str(tbl) == TABLE
 
 def test_no_border():
-    tbl = Tabulator(DATA, headers=HEADERS, border=False)
+    tbl = Txtble(DATA, headers=HEADERS, border=False)
     assert str(tbl) == (
         'Month    |Birthstone|Birth Flower\n'
         '---------+----------+------------------\n'
@@ -71,7 +71,7 @@ def test_no_border():
     )
 
 def test_no_border_no_rstrip():
-    tbl = Tabulator(DATA, headers=HEADERS, border=False, rstrip=False)
+    tbl = Txtble(DATA, headers=HEADERS, border=False, rstrip=False)
     assert str(tbl) == (
         'Month    |Birthstone|Birth Flower      \n'
         '---------+----------+------------------\n'
@@ -90,11 +90,11 @@ def test_no_border_no_rstrip():
     )
 
 def test_no_rstrip():
-    tbl = Tabulator(DATA, headers=HEADERS, rstrip=False)
+    tbl = Txtble(DATA, headers=HEADERS, rstrip=False)
     assert str(tbl) == TABLE
 
 def test_no_headers():
-    tbl = Tabulator(DATA)
+    tbl = Txtble(DATA)
     assert str(tbl) == (
         '+---------+----------+------------------+\n'
         '|January  |Garnet    |Carnation         |\n'
@@ -113,7 +113,7 @@ def test_no_headers():
     )
 
 def test_no_headers_no_border():
-    tbl = Tabulator(DATA, border=False)
+    tbl = Txtble(DATA, border=False)
     assert str(tbl) == (
         'January  |Garnet    |Carnation\n'
         'February |Amethyst  |Violet\n'
@@ -130,7 +130,7 @@ def test_no_headers_no_border():
     )
 
 def test_embedded_newlines():
-    tbl = Tabulator(
+    tbl = Txtble(
         [
             ['Verse 1', 'Twas brillig, and the slithy toves\n'
                         'Did gyre and gimble in the wabe;\n'
@@ -156,15 +156,15 @@ def test_embedded_newlines():
     )
 
 def test_empty():
-    tbl = Tabulator()
+    tbl = Txtble()
     assert str(tbl) == '++\n++'
 
 def test_empty_no_border():
-    tbl = Tabulator(border=False)
+    tbl = Txtble(border=False)
     assert str(tbl) == ''
 
 def test_headers_no_rows():
-    tbl = Tabulator(headers=('This', 'That'))
+    tbl = Txtble(headers=('This', 'That'))
     assert str(tbl) == (
         '+----+----+\n'
         '|This|That|\n'
@@ -172,5 +172,5 @@ def test_headers_no_rows():
     )
 
 def test_headers_no_rows_no_border():
-    tbl = Tabulator(headers=('This', 'That'), border=False)
+    tbl = Txtble(headers=('This', 'That'), border=False)
     assert str(tbl) == 'This|That'

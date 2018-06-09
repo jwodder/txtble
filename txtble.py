@@ -1,15 +1,15 @@
 __version__      = '0.1.0.dev1'
 __author__       = 'John Thorvald Wodder II'
-__author_email__ = 'tabulator@varonathe.org'
+__author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
-__url__          = 'https://github.com/jwodder/tabulator'
+__url__          = 'https://github.com/jwodder/txtble'
 
 from operator  import methodcaller
 from six       import text_type
 from six.moves import zip_longest
 from wcwidth   import wcswidth
 
-class Tabulator(object):
+class Txtble(object):
     def __init__(
         self,
         data        = (),
