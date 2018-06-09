@@ -1,0 +1,14 @@
+language: python
+cache: pip
+python:
+    - 2.7
+    - 3.4
+    - 3.5
+    - 3.6
+    - pypy
+install:
+    - pip install codecov tox
+script:
+    - tox -e py
+after_success:
+    - codecov
