@@ -19,6 +19,9 @@ class Txtble(object):
         none_str    = '',
         row_fill    = '',
         rstrip      = True,
+        header_border = None,
+        column_border = True,
+        row_border = False,
     ):
         self.data = list(map(list, data))
         self.border = border
@@ -30,6 +33,9 @@ class Txtble(object):
             raise ValueError('row_fill cannot be None')
         self.row_fill = row_fill
         self.rstrip = rstrip
+        self.header_border = header_border
+        self.column_border = column_border
+        self.row_border = row_border
 
     def append(self, row):
         self.data.append(list(row))
@@ -79,15 +85,16 @@ class Txtble(object):
             row = _to_len(row, columns, self.row_fill)
             for r in zip_longest(*map(methodcaller('splitlines'), row),
                                  fillvalue=''):
-                s = '|'.join(cell + ' ' * (w - wcswidth(cell))
-                             for (w, cell) in zip(widths, r))
+                s = ('|' if self.column_border else '')\
+                    .join(cell + ' ' * (w - wcswidth(cell))
+                          for (w, cell) in zip(widths, r))
                 if self.border:
                     s = '|' + s + '|'
                 elif self.rstrip:
                     s = s.rstrip()
                 yield s
 
-        hrule = '+'.join('-' * w for w in widths)
+        hrule = ('+' if self.column_border else '').join('-'*w for w in widths)
         if self.border:
             hrule = '+' + hrule + '+'
         output = []
@@ -95,9 +102,13 @@ class Txtble(object):
             output.append(hrule)
         if self.headers is not None:
             output.extend(showrow(headers))
-            if data:
+            if data and (self.header_border or self.header_border is None):
                 output.append(hrule)
-        for row in data:
+        elif self.header_border and not self.border:
+            output.append(hrule)
+        for i,row in enumerate(data):
+            if i>0 and self.row_border:
+                output.append(hrule)
             output.extend(showrow(row))
         if self.border:
             output.append(hrule)
