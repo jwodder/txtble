@@ -63,7 +63,7 @@ class Txtble(object):
                                           * (len(row) - columns)
                 columns = len(row)
             row = _to_len(row, columns, self.row_fill)
-            widths = map(max, zip_longest(widths, _row_widths(row), fillvalue=0))
+            widths = map(max, zip_longest(widths,_row_widths(row),fillvalue=0))
             data.append(row)
         if headers is not None:
             if self.header_fill is None:
@@ -71,7 +71,8 @@ class Txtble(object):
             else:
                 assert len(headers) <= columns
             headers = _to_len(headers, columns, self.header_fill)
-            widths = map(max, zip_longest(widths, _row_widths(headers), fillvalue=0))
+            widths = map(max, zip_longest(widths, _row_widths(headers),
+                         fillvalue=0))
         widths = list(widths)
 
         def showrow(row):
