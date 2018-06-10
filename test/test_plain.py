@@ -198,6 +198,26 @@ def test_headers_no_rows():
         '+----+----+'
     )
 
+def test_headers_empty_row():
+    tbl = Txtble(headers=('This', 'That'), data=[[]])
+    assert str(tbl) == (
+        '+----+----+\n'
+        '|This|That|\n'
+        '+----+----+\n'
+        '|    |    |\n'
+        '+----+----+'
+    )
+
+def test_headers_blank_row():
+    tbl = Txtble(headers=('This', 'That'), data=[['', '']])
+    assert str(tbl) == (
+        '+----+----+\n'
+        '|This|That|\n'
+        '+----+----+\n'
+        '|    |    |\n'
+        '+----+----+'
+    )
+
 def test_headers_no_rows_no_border():
     tbl = Txtble(headers=('This', 'That'), border=False)
     assert str(tbl) == 'This|That'
