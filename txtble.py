@@ -10,7 +10,6 @@ __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
-from   operator  import methodcaller
 import attr
 from   six       import text_type
 from   six.moves import zip_longest
@@ -81,8 +80,7 @@ class Txtble(object):
 
         def showrow(row):
             row = _to_len(row, columns, self.row_fill)
-            for r in zip_longest(*map(methodcaller('splitlines'), row),
-                                 fillvalue=''):
+            for r in zip_longest(*map(_splitlines, row), fillvalue=''):
                 s = ('|' if self.column_border else '')\
                     .join(cell + ' ' * (w - wcswidth(cell))
                           for (w, cell) in zip(widths, r))
@@ -121,7 +119,36 @@ class Txtble(object):
             return str(s)
 
 def _row_widths(row):
-    return [max(map(wcswidth, c.splitlines())) if c else 0 for c in row]
+    return [max(map(wcswidth, _splitlines(c))) for c in row]
 
 def _to_len(xs, length, fill):
     return (xs + [fill] * length)[:length]
+
+def _splitlines(s):
+    """
+    Like `str.splitlines()`, except that an empty string results in a
+    one-element list and a trailing newline results in a trailing empty string
+    (and all without re-implementing Python's changing line-splitting
+    algorithm).
+
+    >>> _splitlines('')
+    ['']
+    >>> _splitlines('\\n')
+    ['', '']
+    >>> _splitlines('foo')
+    ['foo']
+    >>> _splitlines('foo\\n')
+    ['foo', '']
+    >>> _splitlines('foo\\nbar')
+    ['foo', 'bar']
+    """
+    lines = s.splitlines(True)
+    if not lines:
+        return ['']
+    if lines[-1].splitlines() != [lines[-1]]:
+        lines.append('')
+    for i,l in enumerate(lines):
+        l2 = l.splitlines()
+        assert len(l2) in (0,1)
+        lines[i] = l2[0] if l2 else ''
+    return lines
