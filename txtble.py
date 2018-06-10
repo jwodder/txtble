@@ -1,3 +1,9 @@
+"""
+Yet another plain-text table typesetter
+
+Visit <https://github.com/jwodder/txtble> for more information.
+"""
+
 __version__      = '0.1.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'

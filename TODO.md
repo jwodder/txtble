@@ -1,5 +1,5 @@
 - Fill in keywords and classifiers
-- Write a README
+- Expand long description in README & docstring
 - Add docstrings
 
 Features to Add
@@ -39,6 +39,8 @@ Features to Add
       long word) after wrapping
     - Parameters for setting minimum, maximum, and exact column widths
     - forcing all columns to have the same width?
+    - setting a function to use for stringification of all non-string cell
+      values
 
 - API:
     - Add a method that simply returns the padded & folded cells as an array of
@@ -48,6 +50,10 @@ Features to Add
     - specifying a custom function for calculating text width
     - specifying a custom function for line wrapping
         - The default wrapping function should use the specified width function
+    - manipulating (editing, deleting, etc.) rows & cells that have already
+      been added to the Txtble
+    - Allow `header_fill` and `row_fill` to be callables that are called
+      whenever a value from them is required?
 
 - Parameters for setting exact (and/or min/max?) number of columns
     - adding filler cells to short rows until they reach a certain number of
