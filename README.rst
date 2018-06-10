@@ -135,7 +135,7 @@ API
    the ``append()`` and ``extend()`` methods.
 
    ``**kwargs`` are used to configure the ``Txtble`` instance; see
-   "`Configuration Options <config_options_>`_" below.
+   "`Configuration Options <configuration_options_>`_" below.
 
 ``tbl.append(row)``
    Add an iterable of values as a new data row at the bottom of the table
@@ -160,7 +160,7 @@ API
    `unicode`.
 
 
-.. _config_options:
+.. _configuration_options:
 
 Configuration Options
 ---------------------
