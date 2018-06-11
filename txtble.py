@@ -11,7 +11,7 @@ __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
 import attr
-from   six       import text_type
+from   six       import string_types, text_type
 from   six.moves import zip_longest
 from   wcwidth   import wcswidth
 
@@ -47,10 +47,15 @@ class Txtble(object):
         return text_type(self.show())
 
     def show(self):
-        if self.row_fill is None:
-            raise ValueError('row_fill cannot be None')
         data = []
         widths = []
+        if self.row_fill is None:
+            raise ValueError('row_fill cannot be None')
+        row_fill = self._show_cell(self.row_fill)
+        if self.header_fill is not None:
+            header_fill = self._show_cell(self.header_fill)
+        else:
+            header_fill = None
         if self.headers is not None:
             headers = list(map(self._show_cell, self.headers))
             columns = len(headers)
@@ -60,26 +65,26 @@ class Txtble(object):
         for row in self.data:
             row = list(map(self._show_cell, row))
             if len(row) > columns and \
-                    (headers is None or self.header_fill is not None):
+                    (headers is None or header_fill is not None):
                 if widths:
-                    widths = list(widths) + _row_widths([self.row_fill]) \
+                    widths = list(widths) + _row_widths([row_fill]) \
                                           * (len(row) - columns)
                 columns = len(row)
-            row = _to_len(row, columns, self.row_fill)
+            row = _to_len(row, columns, row_fill)
             widths = map(max, zip_longest(widths,_row_widths(row),fillvalue=0))
             data.append(row)
         if headers is not None:
-            if self.header_fill is None:
+            if header_fill is None:
                 assert len(headers) == columns or columns == 0
             else:
                 assert len(headers) <= columns
-            headers = _to_len(headers, columns, self.header_fill)
+            headers = _to_len(headers, columns, header_fill)
             widths = map(max, zip_longest(widths, _row_widths(headers),
                          fillvalue=0))
         widths = list(widths)
 
         def showrow(row):
-            row = _to_len(row, columns, self.row_fill)
+            row = _to_len(row, columns, row_fill)
             for r in zip_longest(*map(_splitlines, row), fillvalue=''):
                 s = ('|' if self.column_border else '')\
                     .join(cell + ' ' * (w - wcswidth(cell))
@@ -111,12 +116,11 @@ class Txtble(object):
         return '\n'.join(output)
 
     def _show_cell(self, s):
-        if isinstance(s, text_type):
-            return s
-        elif s is None:
-            return self.none_str
-        else:
-            return str(s)
+        if s is None:
+            s = self.none_str
+        elif not isinstance(s, string_types):
+            s = str(s)
+        return s.expandtabs()
 
 def _row_widths(row):
     return [max(map(wcswidth, _splitlines(c))) for c in row]

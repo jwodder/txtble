@@ -148,7 +148,8 @@ API
    Convert the ``Txtble`` instance to a string showing a plain text table.
    Table cells that are not already strings are shown by calling `str()` on
    them; the exceptions are `None` values, which are displayed according to the
-   ``none_str`` option (see below).
+   ``none_str`` option (see below).  All tab characters are expanded to spaces
+   before building the table.
 
    Note that the resulting string will likely contain one or more embedded
    newlines, but (outside of some very odd cases) it will not end with a

@@ -59,6 +59,23 @@ def test_ragged_rows_no_headers_long_row_fill(header_fill):
         '+---+-+------+------+------+------+------+'
     )
 
+@pytest.mark.parametrize('header_fill', [None, '', 'foo'])
+def test_ragged_rows_no_headers_tab_row_fill(header_fill):
+    tbl = Txtble(
+        data        = DATA,
+        header_fill = header_fill,
+        row_fill    = 'Fill\ter',
+    )
+    assert str(tbl) == (
+        '+---+-+----------+----------+----------+----------+----------+\n'
+        '|1  |1|Fill    er|Fill    er|Fill    er|Fill    er|Fill    er|\n'
+        '|Z_6|1|x         |x^2       |x^3       |x^4       |x^5       |\n'
+        '|S_3|1|a         |b         |aba       |ba        |ab        |\n'
+        '|Z_4|1|x         |x^2       |x^3       |Fill    er|Fill    er|\n'
+        '|V_4|1|a         |b         |ab        |Fill    er|Fill    er|\n'
+        '+---+-+----------+----------+----------+----------+----------+'
+    )
+
 @pytest.mark.parametrize('row_fill', ['', 'foo'])
 def test_long_rows_headers(row_fill):
     tbl = Txtble(
@@ -132,6 +149,24 @@ def test_long_rows_headers_long_header_fill():
         '+-----+--------+------+------+------+------+------+'
     )
 
+def test_long_rows_headers_tab_header_fill():
+    tbl = Txtble(
+        data        = DATA,
+        header_fill = 'Fill\ter',
+        headers     = ('Group', 'Elements'),
+    )
+    assert str(tbl) == (
+        '+-----+--------+----------+----------+----------+----------+----------+\n'
+        '|Group|Elements|Fill    er|Fill    er|Fill    er|Fill    er|Fill    er|\n'
+        '+-----+--------+----------+----------+----------+----------+----------+\n'
+        '|1    |1       |          |          |          |          |          |\n'
+        '|Z_6  |1       |x         |x^2       |x^3       |x^4       |x^5       |\n'
+        '|S_3  |1       |a         |b         |aba       |ba        |ab        |\n'
+        '|Z_4  |1       |x         |x^2       |x^3       |          |          |\n'
+        '|V_4  |1       |a         |b         |ab        |          |          |\n'
+        '+-----+--------+----------+----------+----------+----------+----------+'
+    )
+
 def test_long_rows_headers_header_fill_row_fill():
     tbl = Txtble(
         data        = DATA,
@@ -189,3 +224,5 @@ def test_short_rows_headers_row_fill(header_fill):
         '|V_4  |1 |a |b  |ab |#  |#  |\n'
         '+-----+--+--+---+---+---+---+'
     )
+
+# vim:set nowrap:

@@ -32,7 +32,7 @@ def test_none():
         '+------+-----+'
     )
 
-def test_none_str_empty():
+def test_none_str():
     tbl = Txtble(
         headers=('repr', 'value'),
         data=[
@@ -50,6 +50,26 @@ def test_none_str_empty():
         "|None  |None |\n"
         "|'None'|None |\n"
         '+------+-----+'
+    )
+
+def test_tab_none_str():
+    tbl = Txtble(
+        headers=('repr', 'value'),
+        data=[
+            ("''", ''),
+            ('None', None),
+            ("'None'", 'None'),
+        ],
+        none_str='<\t>',
+    )
+    assert str(tbl) == (
+        '+------+---------+\n'
+        '|repr  |value    |\n'
+        '+------+---------+\n'
+        "|''    |         |\n"
+        "|None  |<       >|\n"
+        "|'None'|None     |\n"
+        '+------+---------+'
     )
 
 def test_custom():

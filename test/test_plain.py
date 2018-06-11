@@ -52,6 +52,11 @@ def test_extend_all():
     tbl.extend(DATA)
     assert str(tbl) == TABLE
 
+def test_headers_attr():
+    tbl = Txtble(DATA)
+    tbl.headers = HEADERS
+    assert str(tbl) == TABLE
+
 @pytest.mark.parametrize('header_border', [None, True])
 def test_no_border(header_border):
     tbl = Txtble(
@@ -180,6 +185,61 @@ def test_embedded_newlines():
         '|       |Beware the Jubjub bird, and shun         |\n'
         '|       |The frumious Bandersnatch!"              |\n'
         '+-------+-----------------------------------------+'
+    )
+
+def test_embedded_trailing_newlines():
+    tbl = Txtble(
+        [
+            ['Verse 1', 'Twas brillig, and the slithy toves\n'
+                        'Did gyre and gimble in the wabe;\n'
+                        'All mimsy were the borogoves,\n'
+                        'And the mome raths outgrabe.\n'],
+            ['Verse 2', '"Beware the Jabberwock, my son!\n'
+                        'The jaws that bite, the claws that catch!\n'
+                        'Beware the Jubjub bird, and shun\n'
+                        'The frumious Bandersnatch!"\n'],
+        ]
+    )
+    assert str(tbl) == (
+        '+-------+-----------------------------------------+\n'
+        '|Verse 1|Twas brillig, and the slithy toves       |\n'
+        '|       |Did gyre and gimble in the wabe;         |\n'
+        '|       |All mimsy were the borogoves,            |\n'
+        '|       |And the mome raths outgrabe.             |\n'
+        '|       |                                         |\n'
+        '|Verse 2|"Beware the Jabberwock, my son!          |\n'
+        '|       |The jaws that bite, the claws that catch!|\n'
+        '|       |Beware the Jubjub bird, and shun         |\n'
+        '|       |The frumious Bandersnatch!"              |\n'
+        '|       |                                         |\n'
+        '+-------+-----------------------------------------+'
+    )
+
+def test_embedded_trailing_newlines_no_border():
+    tbl = Txtble(
+        [
+            ['Verse 1', 'Twas brillig, and the slithy toves\n'
+                        'Did gyre and gimble in the wabe;\n'
+                        'All mimsy were the borogoves,\n'
+                        'And the mome raths outgrabe.\n'],
+            ['Verse 2', '"Beware the Jabberwock, my son!\n'
+                        'The jaws that bite, the claws that catch!\n'
+                        'Beware the Jubjub bird, and shun\n'
+                        'The frumious Bandersnatch!"\n'],
+        ],
+        border=False,
+    )
+    assert str(tbl) == (
+        'Verse 1|Twas brillig, and the slithy toves\n'
+        '       |Did gyre and gimble in the wabe;\n'
+        '       |All mimsy were the borogoves,\n'
+        '       |And the mome raths outgrabe.\n'
+        '       |\n'
+        'Verse 2|"Beware the Jabberwock, my son!\n'
+        '       |The jaws that bite, the claws that catch!\n'
+        '       |Beware the Jubjub bird, and shun\n'
+        '       |The frumious Bandersnatch!"\n'
+        '       |'
     )
 
 def test_empty():
@@ -331,57 +391,21 @@ def test_row_border_no_header_border():
         '+---------+----------+------------------+'
     )
 
-def test_embedded_trailing_newlines():
+def test_tabs():
     tbl = Txtble(
-        [
-            ['Verse 1', 'Twas brillig, and the slithy toves\n'
-                        'Did gyre and gimble in the wabe;\n'
-                        'All mimsy were the borogoves,\n'
-                        'And the mome raths outgrabe.\n'],
-            ['Verse 2', '"Beware the Jabberwock, my son!\n'
-                        'The jaws that bite, the claws that catch!\n'
-                        'Beware the Jubjub bird, and shun\n'
-                        'The frumious Bandersnatch!"\n'],
-        ]
-    )
-    assert str(tbl) == (
-        '+-------+-----------------------------------------+\n'
-        '|Verse 1|Twas brillig, and the slithy toves       |\n'
-        '|       |Did gyre and gimble in the wabe;         |\n'
-        '|       |All mimsy were the borogoves,            |\n'
-        '|       |And the mome raths outgrabe.             |\n'
-        '|       |                                         |\n'
-        '|Verse 2|"Beware the Jabberwock, my son!          |\n'
-        '|       |The jaws that bite, the claws that catch!|\n'
-        '|       |Beware the Jubjub bird, and shun         |\n'
-        '|       |The frumious Bandersnatch!"              |\n'
-        '|       |                                         |\n'
-        '+-------+-----------------------------------------+'
-    )
-
-def test_embedded_trailing_newlines_no_border():
-    tbl = Txtble(
-        [
-            ['Verse 1', 'Twas brillig, and the slithy toves\n'
-                        'Did gyre and gimble in the wabe;\n'
-                        'All mimsy were the borogoves,\n'
-                        'And the mome raths outgrabe.\n'],
-            ['Verse 2', '"Beware the Jabberwock, my son!\n'
-                        'The jaws that bite, the claws that catch!\n'
-                        'Beware the Jubjub bird, and shun\n'
-                        'The frumious Bandersnatch!"\n'],
+        headers=['Head\ter'],
+        data=[
+            ['\t*'],
+            ['*\t*'],
+            ['*\t\t*'],
         ],
-        border=False,
     )
     assert str(tbl) == (
-        'Verse 1|Twas brillig, and the slithy toves\n'
-        '       |Did gyre and gimble in the wabe;\n'
-        '       |All mimsy were the borogoves,\n'
-        '       |And the mome raths outgrabe.\n'
-        '       |\n'
-        'Verse 2|"Beware the Jabberwock, my son!\n'
-        '       |The jaws that bite, the claws that catch!\n'
-        '       |Beware the Jubjub bird, and shun\n'
-        '       |The frumious Bandersnatch!"\n'
-        '       |'
+        '+-----------------+\n'
+        '|Head    er       |\n'
+        '+-----------------+\n'
+        '|        *        |\n'
+        '|*       *        |\n'
+        '|*               *|\n'
+        '+-----------------+'
     )
