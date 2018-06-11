@@ -11,9 +11,10 @@ __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
 import attr
-from   six       import string_types, text_type
-from   six.moves import zip_longest
-from   wcwidth   import wcswidth
+from   six     import string_types, text_type
+from   wcwidth import wcswidth
+
+__all__ = ['Txtble']
 
 @attr.s
 class Txtble(object):
@@ -47,53 +48,35 @@ class Txtble(object):
         return text_type(self.show())
 
     def show(self):
-        data = []
-        widths = []
         if self.row_fill is None:
             raise ValueError('row_fill cannot be None')
-        row_fill = self._show_cell(self.row_fill)
-        if self.header_fill is not None:
-            header_fill = self._show_cell(self.header_fill)
-        else:
-            header_fill = None
+        data = [[Cell(self, c) for c in row] for row in self.data]
         if self.headers is not None:
-            headers = list(map(self._show_cell, self.headers))
+            headers = [Cell(self, h) for h in self.headers]
             columns = len(headers)
+            if self.header_fill is not None:
+                columns = max(columns, max(map(len, data)) if data else 0)
+                headers = to_len(headers, columns, Cell(self, self.header_fill))
         else:
             headers = None
-            columns = 0
-        for row in self.data:
-            row = list(map(self._show_cell, row))
-            if len(row) > columns and \
-                    (headers is None or header_fill is not None):
-                if widths:
-                    widths = list(widths) + _row_widths([row_fill]) \
-                                          * (len(row) - columns)
-                columns = len(row)
-            row = _to_len(row, columns, row_fill)
-            widths = map(max, zip_longest(widths,_row_widths(row),fillvalue=0))
-            data.append(row)
+            columns = max(map(len, data)) if data else 0
+        data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
+        widths = [max(c.width for c in col) for col in zip(*data)]
         if headers is not None:
-            if header_fill is None:
-                assert len(headers) == columns or columns == 0
+            if widths:
+                widths = [max(w, h.width) for (w,h) in zip(widths, headers)]
             else:
-                assert len(headers) <= columns
-            headers = _to_len(headers, columns, header_fill)
-            widths = map(max, zip_longest(widths, _row_widths(headers),
-                         fillvalue=0))
-        widths = list(widths)
+                # This happens when there are no data rows
+                widths = [h.width for h in headers]
 
         def showrow(row):
-            row = _to_len(row, columns, row_fill)
-            for r in zip_longest(*map(_splitlines, row), fillvalue=''):
-                s = ('|' if self.column_border else '')\
-                    .join(cell + ' ' * (w - wcswidth(cell))
-                          for (w, cell) in zip(widths, r))
-                if self.border:
-                    s = '|' + s + '|'
-                elif self.rstrip:
-                    s = s.rstrip()
-                yield s
+            return join_cells(
+                row,
+                widths,
+                col_sep = '|' if self.column_border else '',
+                border  = '|' if self.border        else '',
+                rstrip  = self.rstrip,
+            )
 
         hrule = ('+' if self.column_border else '').join('-'*w for w in widths)
         if self.border:
@@ -115,35 +98,54 @@ class Txtble(object):
             output.append(hrule)
         return '\n'.join(output)
 
-    def _show_cell(self, s):
-        if s is None:
-            s = self.none_str
-        elif not isinstance(s, string_types):
-            s = str(s)
-        return s.expandtabs()
 
-def _row_widths(row):
-    return [max(map(wcswidth, _splitlines(c))) for c in row]
+class Cell(object):
+    def __init__(self, tbl, value):
+        if value is None:
+            value = tbl.none_str
+        if not isinstance(value, string_types):
+            value = str(value)
+        self.lines = to_lines(value.expandtabs())
+        self.width = max(map(wcswidth, self.lines))
 
-def _to_len(xs, length, fill):
+    def box(self, width, height):
+        if width == 0:
+            lines = list(self.lines)
+        else:
+            lines = [line + ' ' * (width-wcswidth(line)) for line in self.lines]
+        return to_len(lines, height, ' ' * width)
+
+
+def join_cells(cells, widths, col_sep='|', border='|', rstrip=True):
+    assert 0 < len(cells) == len(widths)
+    height = max(len(c.lines) for c in cells)
+    boxes = [c.box(w, height) for (c,w) in zip(cells, widths)]
+    if not border and rstrip:
+        boxes[-1] = cells[-1].box(0, height)
+    return [
+        border + col_sep.join(line_bits) + border
+        for line_bits in zip(*boxes)
+    ]
+
+def to_len(xs, length, fill):
     return (xs + [fill] * length)[:length]
 
-def _splitlines(s):
+def to_lines(s):
     """
     Like `str.splitlines()`, except that an empty string results in a
     one-element list and a trailing newline results in a trailing empty string
     (and all without re-implementing Python's changing line-splitting
     algorithm).
 
-    >>> _splitlines('')
+    >>> to_lines('')
     ['']
-    >>> _splitlines('\\n')
+    >>> to_lines('\\n')
     ['', '']
-    >>> _splitlines('foo')
+    >>> to_lines('foo')
     ['foo']
-    >>> _splitlines('foo\\n')
+    >>> to_lines('foo\\n')
     ['foo', '']
-    >>> _splitlines('foo\\nbar')
+    >>> to_lines('foo\\nbar')
     ['foo', 'bar']
     """
     lines = s.splitlines(True)
