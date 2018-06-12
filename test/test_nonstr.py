@@ -12,6 +12,9 @@ class Custom(object):
     def __bytes__(self):
         return b'bytes'
 
+    def __repr__(self):
+        return 'repr'
+
 
 def test_none():
     tbl = Txtble(
@@ -72,6 +75,46 @@ def test_tab_none_str():
         '+------+---------+'
     )
 
+def test_recursive_none_str():
+    tbl = Txtble(
+        headers=('repr', 'value'),
+        data=[
+            ("''", ''),
+            ('None', None),
+            ("'None'", 'None'),
+        ],
+        none_str=None,
+    )
+    assert str(tbl) == (
+        '+------+-----+\n'
+        '|repr  |value|\n'
+        '+------+-----+\n'
+        "|''    |     |\n"
+        "|None  |None |\n"
+        "|'None'|None |\n"
+        '+------+-----+'
+    )
+
+def test_custom_none_str():
+    tbl = Txtble(
+        headers=('repr', 'value'),
+        data=[
+            ("''", ''),
+            ('None', None),
+            ("'None'", 'None'),
+        ],
+        none_str=Custom(),
+    )
+    assert str(tbl) == (
+        '+------+-----+\n'
+        '|repr  |value|\n'
+        '+------+-----+\n'
+        "|''    |     |\n"
+        "|None  |str  |\n"
+        "|'None'|None |\n"
+        '+------+-----+'
+    )
+
 def test_custom():
     tbl = Txtble(data=[['A', 'B'], ['C', Custom()]])
     assert str(tbl) == (
@@ -94,4 +137,48 @@ def test_custom_plus_unicode():
         u'|Å|B  |\n'
         u'|Č|str|\n'
         u'+-+---+'
+    )
+
+def test_custom_header():
+    tbl = Txtble(
+        headers=[Custom(), 'String'],
+        data=[['A', 'B'], ['C', 'D']],
+    )
+    assert str(tbl) == (
+        '+---+------+\n'
+        '|str|String|\n'
+        '+---+------+\n'
+        '|A  |B     |\n'
+        '|C  |D     |\n'
+        '+---+------+'
+    )
+
+def test_custom_header_fill():
+    tbl = Txtble(
+        headers=['Header'],
+        header_fill=Custom(),
+        data=[['A'], ['B', 'C']],
+    )
+    assert str(tbl) == (
+        '+------+---+\n'
+        '|Header|str|\n'
+        '+------+---+\n'
+        '|A     |   |\n'
+        '|B     |C  |\n'
+        '+------+---+'
+    )
+
+def test_custom_row_fill():
+    tbl = Txtble(
+        headers=['Header', 'Header'],
+        row_fill=Custom(),
+        data=[['A'], ['B', 'C']],
+    )
+    assert str(tbl) == (
+        '+------+------+\n'
+        '|Header|Header|\n'
+        '+------+------+\n'
+        '|A     |str   |\n'
+        '|B     |C     |\n'
+        '+------+------+'
     )

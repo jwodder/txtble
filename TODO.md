@@ -1,6 +1,10 @@
 - Fill in keywords and classifiers
 - Expand long description in README & docstring
 - Add docstrings
+- Handle strings for which `wcswidth()` returns a negative number (e.g.,
+  anything with an ANSI escape sequence)
+- Handle strings that are just combining characters with nothing to combine
+  with (Prepend a space?)
 
 Features to Add
 ---------------
@@ -15,8 +19,7 @@ Features to Add
             Double        ═ ║ ╔ ╗ ╚ ╝ ╠ ╣ ╦ ╩ ╬
             Dots          ⋯ ⋮ · · · · · · · · ·
 
-    - Parameter for adding an hrule between every pair of rows
-        - Parameter for a special hrule after the headers?
+    - Parameter for a special hrule after the headers?
     - Parameter for putting an hrule at the top in the absence of headers or
       borders
     - Parameter for adding vertical but not horizontal borders

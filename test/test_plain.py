@@ -409,3 +409,25 @@ def test_tabs():
         '|*               *|\n'
         '+-----------------+'
     )
+
+def test_extra_whitespace():
+    tbl = Txtble([
+        ['  .leading.', '.trailing.  '],
+        ['              ', 'inn   er'],
+    ])
+    assert str(tbl) == (
+        '+--------------+------------+\n'
+        '|  .leading.   |.trailing.  |\n'
+        '|              |inn   er    |\n'
+        '+--------------+------------+'
+    )
+
+def test_extra_whitespace_no_border():
+    tbl = Txtble([
+        ['  .leading.', '.trailing.  '],
+        ['              ', 'inn   er'],
+    ], border=False)
+    assert str(tbl) == (
+        '  .leading.   |.trailing.  \n'
+        '              |inn   er'
+    )

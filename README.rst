@@ -146,10 +146,10 @@ API
 
 ``tbl.show()`` or ``str(tbl)``
    Convert the ``Txtble`` instance to a string showing a plain text table.
-   Table cells that are not already strings are shown by calling `str()` on
-   them; the exceptions are `None` values, which are displayed according to the
-   ``none_str`` option (see below).  All tab characters are expanded to spaces
-   before building the table.
+   Table cells and filler values that are not already strings are converted by
+   calling `str()` on them; the exceptions are `None` values, which are
+   displayed according to the ``none_str`` option (see below).  All tab
+   characters are expanded to spaces before building the table.
 
    Note that the resulting string will likely contain one or more embedded
    newlines, but (outside of some very odd cases) it will not end with a
@@ -197,7 +197,8 @@ constructor or as attributes on a ``Txtble`` instance::
    row; see ``header_fill`` for allowing extra columns.
 
 ``none_str=''``
-   The string to display in place of `None` values
+   The string to display in place of `None` values (Setting ``none_str=None``
+   is the same as setting it to ``'None'``)
 
 ``row_border=False``
    Whether to draw a horizontal rule between data rows
@@ -209,9 +210,11 @@ constructor or as attributes on a ``Txtble`` instance::
 
 ``rstrip=True``
    When ``border=False``, setting ``rstrip=False`` will cause the last cell of
-   each row to still be padded with whitespace to reach the full column width.
-   This option is useful if you wish to append text to one or more lines of the
-   table and have it appear strictly outside the table.
+   each row to still be padded with trailing whitespace in order to reach the
+   full column width.  (Normally, this whitespace is omitted when
+   ``border=False`` as there is no end-of-line border to align.)  This option
+   is useful if you wish to append text to one or more lines of the output and
+   have it appear strictly outside the table.
 
 
 Unicode in Python 2
