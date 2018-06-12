@@ -1,4 +1,3 @@
-- Fill in keywords and classifiers
 - Expand long description in README & docstring
 - Add docstrings
 - Handle strings for which `wcswidth()` returns a negative number (e.g.,
