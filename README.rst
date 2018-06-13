@@ -196,6 +196,10 @@ constructor or as attributes on a ``Txtble`` instance::
    Setting this option also implicitly sets a maximum number of columns per
    row; see ``header_fill`` for allowing extra columns.
 
+   If ``headers`` is set to an empty list, ``header_fill`` must be set to a
+   non-`None` value or else a `ValueError` will be raised upon trying to show
+   the ``Txtble``.
+
 ``none_str=''``
    The string to display in place of `None` values (Setting ``none_str=None``
    is the same as setting it to ``'None'``)

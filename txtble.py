@@ -57,6 +57,8 @@ class Txtble(object):
             if self.header_fill is not None:
                 columns = max(columns, max(map(len, data)) if data else 0)
                 headers = to_len(headers, columns, Cell(self, self.header_fill))
+            elif not headers:
+                raise ValueError('headers is empty but header_fill is None')
         else:
             headers = None
             columns = max(map(len, data)) if data else 0

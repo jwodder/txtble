@@ -517,3 +517,29 @@ def test_extra_whitespace_no_border():
         '  .leading.   |.trailing.  \n'
         '              |inn   er'
     )
+
+def test_empty_headers_no_header_fill():
+    tbl = Txtble(DATA, headers=[])
+    with pytest.raises(ValueError):
+        str(tbl)
+
+def test_empty_headers_header_fill():
+    tbl = Txtble(DATA, headers=[], header_fill='Filler')
+    assert str(tbl) == (
+        '+---------+----------+------------------+\n'
+        '|Filler   |Filler    |Filler            |\n'
+        '+---------+----------+------------------+\n'
+        '|January  |Garnet    |Carnation         |\n'
+        '|February |Amethyst  |Violet            |\n'
+        '|March    |Aquamarine|Jonquil           |\n'
+        '|April    |Diamond   |Sweetpea          |\n'
+        '|May      |Emerald   |Lily Of The Valley|\n'
+        '|June     |Pearl     |Rose              |\n'
+        '|July     |Ruby      |Larkspur          |\n'
+        '|August   |Peridot   |Gladiolus         |\n'
+        '|September|Sapphire  |Aster             |\n'
+        '|October  |Opal      |Calendula         |\n'
+        '|November |Topaz     |Chrysanthemum     |\n'
+        '|December |Turquoise |Narcissus         |\n'
+        '+---------+----------+------------------+'
+    )
