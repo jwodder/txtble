@@ -543,3 +543,13 @@ def test_empty_headers_header_fill():
         '|December |Turquoise |Narcissus         |\n'
         '+---------+----------+------------------+'
     )
+
+def test_headers_matching_columns():
+    tbl = Txtble(DATA, headers=HEADERS, columns=len(HEADERS))
+    assert str(tbl) == TABLE
+
+@pytest.mark.parametrize('columns', [len(HEADERS)-1, len(HEADERS)+1])
+def test_headers_not_matching_columns(columns):
+    tbl = Txtble(DATA, headers=HEADERS, columns=columns)
+    with pytest.raises(ValueError):
+        str(tbl)

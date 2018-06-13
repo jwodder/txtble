@@ -21,6 +21,7 @@ class Txtble(object):
     data          = attr.ib(default=(), converter=lambda d: list(map(list, d)))
     border        = attr.ib(default=True)
     column_border = attr.ib(default=True)
+    columns       = attr.ib(default=None)
     header_border = attr.ib(default=None)
     header_fill   = attr.ib(default=None)
     headers       = attr.ib(default=None, converter=attr.converters.optional(list))
@@ -34,6 +35,11 @@ class Txtble(object):
         if value is None:
             # Reserved to mean something in a later version
             raise ValueError('row_fill cannot be None')
+
+    @columns.validator
+    def _columns_validator(self, attrib, value):
+        if value is not None and value < 1:
+            raise ValueError('columns must be at least 1')
 
     def append(self, row):
         self.data.append(list(row))
@@ -50,18 +56,26 @@ class Txtble(object):
     def show(self):
         if self.row_fill is None:
             raise ValueError('row_fill cannot be None')
+        if self.columns is not None and self.columns < 1:
+            raise ValueError('columns must be at least 1')
         data = [[Cell(self, c) for c in row] for row in self.data]
         if self.headers is not None:
             headers = [Cell(self, h) for h in self.headers]
             columns = len(headers)
-            if self.header_fill is not None:
+            if self.columns is not None:
+                if self.columns != columns:
+                    raise ValueError('len(headers) and columns do not match')
+            elif self.header_fill is not None:
                 columns = max(columns, max(map(len, data)) if data else 0)
                 headers = to_len(headers, columns, Cell(self, self.header_fill))
             elif not headers:
                 raise ValueError('headers is empty but header_fill is None')
         else:
             headers = None
-            columns = max(map(len, data)) if data else 0
+            if self.columns is not None:
+                columns = self.columns
+            else:
+                columns = max(map(len, data)) if data else 0
         data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
         widths = [max(c.width for c in col) for col in zip(*data)]
         if headers is not None:

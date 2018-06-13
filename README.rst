@@ -179,25 +179,33 @@ constructor or as attributes on a ``Txtble`` instance::
 ``column_border=True``
    Whether to draw a vertical rule between individual columns
 
+``columns=None``
+   An optional positive integer.  When set, show exactly the given number of
+   columns per row, adding cells with ``row_fill`` and discarding extra cells
+   as needed.  If ``headers`` is also set, its length must equal ``columns`` or
+   else a `ValueError` is raised.  Setting both ``columns`` and ``headers``
+   causes ``header_fill`` to be ignored.
+
 ``header_border=None``
    Whether to draw a horizontal rule above the data rows, below the header row
    (if any).  The default value of `None` means that the border will be drawn
    if & only if ``headers`` is non-`None`.
 
 ``header_fill=None``
-   When ``headers`` is non-`None`, this option determines how rows with more
-   columns than there are headers are handled.  When ``header_fill=None``, any
-   extra columns are discarded from long rows.  For all other values, the
-   header row will be extended to the length of the longest data row, and the
-   new header cells will contain the ``header_fill`` value.
+   When ``headers`` is non-`None` and ``columns`` is `None`, this option
+   determines how rows with more columns than there are headers are handled.
+   When ``header_fill=None``, any extra columns are discarded from long rows.
+   For all other values, the header row will be extended to the length of the
+   longest data row, and the new header cells will contain the ``header_fill``
+   value.
 
 ``headers=None``
    An optional list of cell values to display in a row at the top of the table.
-   Setting this option also implicitly sets a maximum number of columns per
+   Setting this option also implicitly sets a minimum number of columns per
    row; see ``header_fill`` for allowing extra columns.
 
    If ``headers`` is set to an empty list, ``header_fill`` must be set to a
-   non-`None` value or else a `ValueError` will be raised upon trying to show
+   non-`None` value or else a `ValueError` will be raised upon trying to render
    the ``Txtble``.
 
 ``none_str=''``
