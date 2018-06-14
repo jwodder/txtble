@@ -17,7 +17,26 @@
 | `Issues <https://github.com/jwodder/txtble/issues>`_
 
 ``txtble`` is yet another Python library for creating plain-text tables.  (All
-the good names were taken, OK?)
+the good names were taken, OK?)  Pass in a list of lists of strings (or other
+stringable things) and get out something nice like::
+
+    +---------+----------+------------------+
+    |Month    |Birthstone|Birth Flower      |
+    +---------+----------+------------------+
+    |January  |Garnet    |Carnation         |
+    |February |Amethyst  |Violet            |
+    |March    |Aquamarine|Jonquil           |
+    |April    |Diamond   |Sweetpea          |
+    |May      |Emerald   |Lily Of The Valley|
+    |June     |Pearl     |Rose              |
+    |July     |Ruby      |Larkspur          |
+    |August   |Peridot   |Gladiolus         |
+    |September|Sapphire  |Aster             |
+    |October  |Opal      |Calendula         |
+    |November |Topaz     |Chrysanthemum     |
+    |December |Turquoise |Narcissus         |
+    +---------+----------+------------------+
+
 
 Examples
 ========
