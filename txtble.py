@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Yet another plain-text table typesetter
 
@@ -25,22 +26,63 @@ stringable things) and get out something nice like::
 Visit <https://github.com/jwodder/txtble> for more information.
 """
 
-__version__      = '0.1.0'
+__version__      = '0.2.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
+from   collections import namedtuple
 import attr
-from   six     import string_types, text_type
-from   wcwidth import wcswidth
+from   six         import string_types, text_type
+from   wcwidth     import wcswidth
 
-__all__ = ['Txtble']
+__all__ = [
+    'ASCII_BORDERS',
+    'ASCII_EQ_BORDERS',
+    'BorderStyle',
+    'DOT_BORDERS',
+    'DOUBLE_BORDERS',
+    'HEAVY_BORDERS',
+    'LIGHT_BORDERS',
+    'Txtble',
+]
+
+class BorderStyle(namedtuple('BorderStyle', '''
+    hline    vline
+    ulcorner urcorner llcorner lrcorner
+    vrtee    vltee    dhtee    uhtee
+    plus
+''')):
+    def top_rule(self, widths, capped, sep_cols):
+        rule = (self.dhtee if sep_cols else '')\
+                .join(self.hline * w for w in widths)
+        return self.ulcorner + rule + self.urcorner if capped else rule
+
+    def mid_rule(self, widths, capped, sep_cols):
+        rule = (self.plus if sep_cols else '')\
+                .join(self.hline * w for w in widths)
+        return self.vrtee + rule + self.vltee if capped else rule
+
+    def bot_rule(self, widths, capped, sep_cols):
+        rule = (self.uhtee if sep_cols else '')\
+                .join(self.hline * w for w in widths)
+        return self.llcorner + rule + self.lrcorner if capped else rule
+
+
+ASCII_BORDERS    = BorderStyle(*'-|+++++++++')
+ASCII_EQ_BORDERS = BorderStyle(*'=|+++++++++')
+LIGHT_BORDERS    = BorderStyle(*u'─│┌┐└┘├┤┬┴┼')
+HEAVY_BORDERS    = BorderStyle(*u'━┃┏┓┗┛┣┫┳┻╋')
+DOUBLE_BORDERS   = BorderStyle(*u'═║╔╗╚╝╠╣╦╩╬')
+DOT_BORDERS      = BorderStyle(*u'⋯⋮·········')
+
 
 @attr.s
 class Txtble(object):
     data          = attr.ib(default=(), converter=lambda d: list(map(list, d)))
     border        = attr.ib(default=True)
+    border_style  = attr.ib(default=ASCII_BORDERS)
     column_border = attr.ib(default=True)
     columns       = attr.ib(default=None)
     header_border = attr.ib(default=None)
@@ -106,33 +148,61 @@ class Txtble(object):
                 # This happens when there are no data rows
                 widths = [h.width for h in headers]
 
+        if not self.border:
+            border = None
+        elif isinstance(self.border, BorderStyle):
+            border = self.border
+        else:
+            border = self.border_style
+
+        if self.header_border or \
+                (self.header_border is None and headers is not None):
+            if isinstance(self.header_border, BorderStyle):
+                header_border = self.header_border
+            else:
+                header_border = self.border_style
+        else:
+            header_border = None
+
+        if not self.column_border:
+            column_border = None
+        elif isinstance(self.column_border, BorderStyle):
+            column_border = self.column_border
+        else:
+            column_border = self.border_style
+
+        if not self.row_border:
+            row_border = None
+        elif isinstance(self.row_border, BorderStyle):
+            row_border = self.row_border
+        else:
+            row_border = self.border_style
+
         def showrow(row):
             return join_cells(
                 row,
                 widths,
-                col_sep = '|' if self.column_border else '',
-                border  = '|' if self.border        else '',
+                col_sep = column_border.vline if column_border else '',
+                border  = border.vline        if border        else '',
                 rstrip  = self.rstrip,
             )
 
-        hrule = ('+' if self.column_border else '').join('-'*w for w in widths)
-        if self.border:
-            hrule = '+' + hrule + '+'
         output = []
-        if self.border:
-            output.append(hrule)
-        if self.headers is not None:
+        rule_args = (widths, bool(border), bool(column_border))
+        if border:
+            output.append(border.top_rule(*rule_args))
+        if headers is not None:
             output.extend(showrow(headers))
-            if data and (self.header_border or self.header_border is None):
-                output.append(hrule)
-        elif self.header_border and not self.border:
-            output.append(hrule)
+            if data and header_border:
+                output.append(header_border.mid_rule(*rule_args))
+        elif header_border and not border:
+            output.append(header_border.top_rule(*rule_args))
         for i,row in enumerate(data):
-            if i>0 and self.row_border:
-                output.append(hrule)
+            if i>0 and row_border:
+                output.append(row_border.mid_rule(*rule_args))
             output.extend(showrow(row))
-        if self.border:
-            output.append(hrule)
+        if border:
+            output.append(border.bot_rule(*rule_args))
         return '\n'.join(output)
 
 

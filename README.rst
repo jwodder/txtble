@@ -20,6 +20,9 @@
 | `PyPI <https://pypi.org/project/txtble/>`_
 | `Issues <https://github.com/jwodder/txtble/issues>`_
 
+.. contents::
+    :backlinks: top
+
 ``txtble`` is yet another Python library for creating plain-text tables.  (All
 the good names were taken, OK?)  Pass in a list of lists of strings (or other
 stringable things) and get out something nice like::
@@ -159,6 +162,9 @@ for extra columns::
 API
 ===
 
+``Txtble``
+----------
+
 ``Txtble(data=(), **kwargs)``
    Create a new ``Txtble`` object.  The table's data may be passed to the
    constructor as an iterable of iterables (rows) of values; otherwise, the
@@ -205,10 +211,20 @@ constructor or as attributes on a ``Txtble`` instance::
     tbl.border = False
 
 ``border=True``
-   Whether to draw a border around the edge of the table
+   Whether to draw a border around the edge of the table.  ``border`` may
+   optionally be set to a ``BorderStyle`` instance to set the characters used
+   for drawing the border around the edge of the table.
+
+``border_style=ASCII_BORDERS``
+   Sets the default characters used for drawing all of the table's borders &
+   rules.  The border style can be overridden for individual borders by setting
+   their respective options (``border``, ``column_border``, etc.).  See
+   "`BorderStyle <borderstyle_>`_" below for more information.
 
 ``column_border=True``
-   Whether to draw a vertical rule between individual columns
+   Whether to draw a vertical rule between individual columns.
+   ``column_border`` may optionally be set to a ``BorderStyle`` instance to set
+   the characters used for drawing the vertical rules between columns.
 
 ``columns=None``
    An optional positive integer.  When set, show exactly the given number of
@@ -220,7 +236,9 @@ constructor or as attributes on a ``Txtble`` instance::
 ``header_border=None``
    Whether to draw a horizontal rule above the data rows, below the header row
    (if any).  The default value of `None` means that the border will be drawn
-   if & only if ``headers`` is non-`None`.
+   if & only if ``headers`` is non-`None`.  ``header_border`` may optionally be
+   set to a ``BorderStyle`` instance to set the characters used for drawing the
+   horizontal rule above the data rows.
 
 ``header_fill=None``
    When ``headers`` is non-`None` and ``columns`` is `None`, this option
@@ -244,7 +262,9 @@ constructor or as attributes on a ``Txtble`` instance::
    is the same as setting it to ``'None'``)
 
 ``row_border=False``
-   Whether to draw a horizontal rule between data rows
+   Whether to draw horizontal rules between data rows.  ``row_border`` may
+   optionally be set to a ``BorderStyle`` instance to set the characters used
+   for drawing the horizontal rules between data rows.
 
 ``row_fill=''``
    If the rows of a table differ in number of columns, cells are added to the
@@ -260,15 +280,105 @@ constructor or as attributes on a ``Txtble`` instance::
    have it appear strictly outside the table.
 
 
+.. _borderstyle:
+
+``BorderStyle``
+---------------
+The ``BorderStyle`` class is a `namedtuple` listing the strings to use for
+drawing a table's borders & rules.  Its attributes are:
+
+.. csv-table::
+    :header: Attribute,Description,Example
+
+    ``hline``,horizontal line,─
+    ``vline``,vertical line,│
+    ``ulcorner``,upper-left box corner,┌
+    ``urcorner``,upper-right box corner,┐
+    ``llcorner``,lower-left box corner,└
+    ``lrcorner``,lower-right box corner,┘
+    ``vrtee``,tee pointing right,├
+    ``vltee``,tee pointing left,┤
+    ``dhtee``,tee pointing down,┬
+    ``uhtee``,tee pointing up,┴
+    ``plus``,cross/four-way joint,┼
+
+``txtble`` provides the following predefined ``BorderStyle`` instances:
+
+``ASCII_BORDERS``
+   The default border style.  Draws borders using only the ASCII characters
+   ``-``, ``|``, and ``+``::
+
+       +-+-+
+       |A|B|
+       +-+-+
+       |C|D|
+       +-+-+
+
+``ASCII_EQ_BORDERS``
+   Like ``ASCII_BORDERS``, but uses ``=`` in place of ``-``::
+
+       +=+=+
+       |A|B|
+       +=+=+
+       |C|D|
+       +=+=+
+
+``LIGHT_BORDERS``
+   Uses the light box drawing characters::
+
+       ┌─┬─┐
+       |A|B|
+       ├─┼─┤
+       |C|D|
+       └─┴─┘
+
+``HEAVY_BORDERS``
+   Uses the heavy box drawing characters::
+
+       ┏━┳━┓
+       ┃A┃B┃
+       ┣━╋━┫
+       ┃C┃D┃
+       ┗━┻━┛
+
+
+``DOUBLE_BORDERS``
+   Uses the double box drawing characters::
+
+       ╔═╦═╗
+       ║A║B║
+       ╠═╬═╣
+       ║C║D║
+       ╚═╩═╝
+
+
+``DOT_BORDERS``
+   Uses ``⋯``, ``⋮``, and ``·``::
+
+       ·⋯·⋯·
+       ⋮A⋮B⋮
+       ·⋯·⋯·
+       ⋮C⋮D⋮
+       ·⋯·⋯·
+
+If you define your own custom instances of ``BorderStyle``, they must adhere to the following rules:
+
+- The ``hline`` string must be exactly one terminal column wide (the same width
+  as a space character).
+- All strings other than ``hline`` must be the same width.
+- No string may contain a newline.
+
+
 Unicode in Python 2
 -------------------
 The following guarantees are made regarding ``txtble``'s handling of Unicode in
 the fragile twilight realm that is Python 2:
 
-- If all cell values are or stringify to ASCII-only `str` values, calling
+- If all table elements (table cells, ``*_fill`` options, ``none_str``, border
+  style strings, etc.) are or stringify to ASCII-only `str` values, calling
   ``str(tbl)`` will work, and ``tbl.show()`` will return a `str`.
 
-- If one or more cell values are `unicode` and all other cell values are or
+- If one or more table elements are `unicode` and all other cell values are or
   stringify to ASCII-only `str` values, calling ``unicode(tbl)`` will work, and
   ``tbl.show()`` will return a `unicode`.
 

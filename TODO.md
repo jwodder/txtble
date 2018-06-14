@@ -9,17 +9,6 @@
 Features to Add
 ---------------
 - Borders & rules:
-    - Setting the strings to use for column separators, hrules, joints,
-      corners, etc.
-    - Unicode output with box-drawing characters:
-
-            ASCII         - | + + + + + + + + +
-            Light         ─ │ ┌ ┐ └ ┘ ├ ┤ ┬ ┴ ┼
-            Heavy         ━ ┃ ┏ ┓ ┗ ┛ ┣ ┫ ┳ ┻ ╋
-            Double        ═ ║ ╔ ╗ ╚ ╝ ╠ ╣ ╦ ╩ ╬
-            Dots          ⋯ ⋮ · · · · · · · · ·
-
-    - Parameter for a special hrule after the headers?
     - Add an "hrule" class that can be passed in place of a data row to
       indicate that a horizontal rule should be added.  Its constructor should
       take optional keyword arguments for setting the box-drawing characters to
