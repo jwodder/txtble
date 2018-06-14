@@ -1,7 +1,7 @@
-.. image:: http://www.repostatus.org/badges/latest/wip.svg
-    :target: http://www.repostatus.org/#wip
-    :alt: Project Status: WIP — Initial development is in progress, but there
-          has not yet been a stable, usable release suitable for the public.
+.. image:: http://www.repostatus.org/badges/latest/active.svg
+    :target: http://www.repostatus.org/#active
+    :alt: Project Status: Active — The project has reached a stable, usable
+          state and is being actively developed.
 
 .. image:: https://travis-ci.org/jwodder/txtble.svg?branch=master
     :target: https://travis-ci.org/jwodder/txtble
@@ -9,11 +9,15 @@
 .. image:: https://codecov.io/gh/jwodder/txtble/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/jwodder/txtble
 
+.. image:: https://img.shields.io/pypi/pyversions/txtble.svg
+    :target: https://pypi.org/project/txtble/
+
 .. image:: https://img.shields.io/github/license/jwodder/txtble.svg
     :target: https://opensource.org/licenses/MIT
     :alt: MIT License
 
 `GitHub <https://github.com/jwodder/txtble>`_
+| `PyPI <https://pypi.org/project/txtble/>`_
 | `Issues <https://github.com/jwodder/txtble/issues>`_
 
 ``txtble`` is yet another Python library for creating plain-text tables.  (All
@@ -36,6 +40,14 @@ stringable things) and get out something nice like::
     |November |Topaz     |Chrysanthemum     |
     |December |Turquoise |Narcissus         |
     +---------+----------+------------------+
+
+
+Installation
+============
+Just use `pip <https://pip.pypa.io>`_ (You have pip, right?) to install
+``txtble`` and its dependencies::
+
+    pip install txtble
 
 
 Examples
