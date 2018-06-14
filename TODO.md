@@ -1,4 +1,3 @@
-- Expand long description in README & docstring
 - Add docstrings
 - Handle strings for which `wcswidth()` returns a negative number (e.g.,
   anything with an ANSI escape sequence)
