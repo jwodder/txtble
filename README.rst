@@ -158,6 +158,24 @@ for extra columns::
     |V_4  |1       |a     |b     |ab    |      |      |
     +-----+--------+------+------+------+------+------+
 
+Unicode works too, even fullwidth characters and combining characters::
+
+    >>> tbl = Txtble(
+    ...     headers=['Wide', 'Accented'],
+    ...     data=[
+    ...         [
+    ...             u'\uFF37\uFF49\uFF44\uFF45',
+    ...             u'A\u0301c\u0301c\u0301e\u0301n\u0301t\u0301e\u0301d\u0301',
+    ...         ]
+    ...     ]
+    ... )
+    >>> print(tbl.show())
+    +--------+--------+
+    |Wide    |Accented|
+    +--------+--------+
+    |Ｗｉｄｅ|Áććéńt́éd́|
+    +--------+--------+
+
 
 API
 ===
