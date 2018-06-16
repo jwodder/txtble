@@ -361,7 +361,8 @@ drawing a table's borders & rules.  Its attributes are:
        ⋮C⋮D⋮
        ·⋯·⋯·
 
-If you define your own custom instances of ``BorderStyle``, they must adhere to the following rules:
+If you define your own custom instances of ``BorderStyle``, they must adhere to
+the following rules:
 
 - The ``hline`` string must be exactly one terminal column wide (the same width
   as a space character).

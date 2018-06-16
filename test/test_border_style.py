@@ -262,3 +262,70 @@ def test_every_inner_border_different():
         u'─────────┼──────────┼──────────────────\n'
         u'December ┃Turquoise ┃Narcissus'
     )
+
+def test_border_style_overridden():
+    tbl = Txtble(
+        DATA,
+        border        = LIGHT_BORDERS,
+        border_style  = DOT_BORDERS,
+        column_border = HEAVY_BORDERS,
+        header_border = DOUBLE_BORDERS,
+        headers       = HEADERS,
+    )
+    assert text_type(tbl) == (
+        u'┌─────────┬──────────┬──────────────────┐\n'
+        u'│Month    ┃Birthstone┃Birth Flower      │\n'
+        u'╠═════════╬══════════╬══════════════════╣\n'
+        u'│January  ┃Garnet    ┃Carnation         │\n'
+        u'│February ┃Amethyst  ┃Violet            │\n'
+        u'│March    ┃Aquamarine┃Jonquil           │\n'
+        u'│April    ┃Diamond   ┃Sweetpea          │\n'
+        u'│May      ┃Emerald   ┃Lily Of The Valley│\n'
+        u'│June     ┃Pearl     ┃Rose              │\n'
+        u'│July     ┃Ruby      ┃Larkspur          │\n'
+        u'│August   ┃Peridot   ┃Gladiolus         │\n'
+        u'│September┃Sapphire  ┃Aster             │\n'
+        u'│October  ┃Opal      ┃Calendula         │\n'
+        u'│November ┃Topaz     ┃Chrysanthemum     │\n'
+        u'│December ┃Turquoise ┃Narcissus         │\n'
+        u'└─────────┴──────────┴──────────────────┘'
+    )
+
+def test_border_style_mixed_overrides():
+    tbl = Txtble(
+        DATA,
+        border_style  = DOT_BORDERS,
+        column_border = False,
+        header_border = ASCII_EQ_BORDERS,
+        headers       = HEADERS,
+        row_border    = True,
+    )
+    assert text_type(tbl) == (
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮Month    BirthstoneBirth Flower      ⋮\n'
+        u'+=====================================+\n'
+        u'⋮January  Garnet    Carnation         ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮February Amethyst  Violet            ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮March    AquamarineJonquil           ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮April    Diamond   Sweetpea          ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮May      Emerald   Lily Of The Valley⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮June     Pearl     Rose              ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮July     Ruby      Larkspur          ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮August   Peridot   Gladiolus         ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮SeptemberSapphire  Aster             ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮October  Opal      Calendula         ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮November Topaz     Chrysanthemum     ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n'
+        u'⋮December Turquoise Narcissus         ⋮\n'
+        u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·'
+    )

@@ -170,6 +170,38 @@ def test_no_column_border():
         '+-------------------------------------+'
     )
 
+def test_row_border_no_column_border():
+    tbl = Txtble(DATA, headers=HEADERS, column_border=False, row_border=True)
+    assert str(tbl) == (
+        '+-------------------------------------+\n'
+        '|Month    BirthstoneBirth Flower      |\n'
+        '+-------------------------------------+\n'
+        '|January  Garnet    Carnation         |\n'
+        '+-------------------------------------+\n'
+        '|February Amethyst  Violet            |\n'
+        '+-------------------------------------+\n'
+        '|March    AquamarineJonquil           |\n'
+        '+-------------------------------------+\n'
+        '|April    Diamond   Sweetpea          |\n'
+        '+-------------------------------------+\n'
+        '|May      Emerald   Lily Of The Valley|\n'
+        '+-------------------------------------+\n'
+        '|June     Pearl     Rose              |\n'
+        '+-------------------------------------+\n'
+        '|July     Ruby      Larkspur          |\n'
+        '+-------------------------------------+\n'
+        '|August   Peridot   Gladiolus         |\n'
+        '+-------------------------------------+\n'
+        '|SeptemberSapphire  Aster             |\n'
+        '+-------------------------------------+\n'
+        '|October  Opal      Calendula         |\n'
+        '+-------------------------------------+\n'
+        '|November Topaz     Chrysanthemum     |\n'
+        '+-------------------------------------+\n'
+        '|December Turquoise Narcissus         |\n'
+        '+-------------------------------------+'
+    )
+
 @pytest.mark.parametrize('header_border', [None, True])
 def test_headers_header_border(header_border):
     tbl = Txtble(DATA, headers=HEADERS, header_border=header_border)
