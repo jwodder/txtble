@@ -1,5 +1,5 @@
-v0.2.0 (in development)
------------------------
+v0.2.0 (2018-06-16)
+-------------------
 - Custom borders:
     - Added a `BorderStyle` class and several predefined instances for
       describing the strings to use for drawing borders
