@@ -1,8 +1,6 @@
 - Add docstrings
 - Handle strings for which `wcswidth()` returns a negative number (e.g.,
   anything with an ANSI escape sequence)
-- Handle strings that are just/start with combining characters with nothing to
-  combine with (Prepend a space?)
 - Make `to_lines()` also split on `'\v'` and `'\f'` when working with `str`
   objects in Python 2?
 

@@ -54,3 +54,22 @@ def test_fullwidth():
         u'|Test text|Ｔｅｓｔ\u3000ｔｅｘｔ|\n'
         u'+---------+------------------+'
     )
+
+def test_leading_combining():
+    tbl = Txtble(
+        headers=['Category', 'Name', 'Glyph'],
+        data=[
+            ['Mn', 'COMBINING ACUTE ACCENT', u'\u0301'],
+            ['Mc', 'DEVANAGARI SIGN VISARGA', u'\u0903'],
+            ['Me', 'COMBINING CYRILLIC HUNDRED THOUSANDS SIGN', u'\u0488'],
+        ]
+    )
+    assert text_type(tbl) == (
+        u'+--------+-----------------------------------------+-----+\n'
+        u'|Category|Name                                     |Glyph|\n'
+        u'+--------+-----------------------------------------+-----+\n'
+        u'|Mn      |COMBINING ACUTE ACCENT                   | \u0301    |\n'
+        u'|Mc      |DEVANAGARI SIGN VISARGA                  | \u0903   |\n'
+        u'|Me      |COMBINING CYRILLIC HUNDRED THOUSANDS SIGN| \u0488    |\n'
+        u'+--------+-----------------------------------------+-----+'
+    )

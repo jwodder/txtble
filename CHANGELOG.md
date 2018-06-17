@@ -1,3 +1,8 @@
+v0.3.0 (in development)
+-----------------------
+- Table cell values that begin with a combining character will now have a space
+  prepended
+
 v0.2.0 (2018-06-16)
 -------------------
 - Custom borders:

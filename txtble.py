@@ -26,13 +26,14 @@ stringable things) and get out something nice like::
 Visit <https://github.com/jwodder/txtble> for more information.
 """
 
-__version__      = '0.2.0'
+__version__      = '0.3.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
 from   collections import namedtuple
+from   unicodedata import category
 import attr
 from   six         import string_types, text_type
 from   wcwidth     import wcswidth
@@ -212,6 +213,9 @@ class Cell(object):
             value = tbl.none_str
         if not isinstance(value, string_types):
             value = str(value)
+        if value and isinstance(value, text_type) and \
+                category(value[0]).startswith('M'):
+            value = ' ' + value
         self.lines = to_lines(value.expandtabs())
         self.width = max(map(wcswidth, self.lines))
 
