@@ -14,8 +14,7 @@ Features to Add
     - easy way to change just the column separator in non-rule rows?
 
 - Showing, wrapping, & aligning cells:
-    - Parameter for padding between vertical bars and cell contents
-        - separate parameters for padding on the right vs. left?
+    - separate parameters for padding on the right vs. left?
     - Centering & right-aligning of specified columns
     - Setting the text alignment of individual cells (e.g., having a centered
       "—" cell in the middle of a bunch of left-aligned cells)

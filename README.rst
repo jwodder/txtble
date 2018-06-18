@@ -261,6 +261,10 @@ constructor or as attributes on a ``Txtble`` instance::
    The string to display in place of `None` values (Setting ``none_str=None``
    is the same as setting it to ``'None'``)
 
+``padding=0``
+   Padding to insert on the left & right of every table cell.  This can be
+   either an integer (to insert that many space characters) or a string.
+
 ``row_border=False``
    Whether to draw horizontal rules between data rows.  ``row_border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used
@@ -273,11 +277,11 @@ constructor or as attributes on a ``Txtble`` instance::
 
 ``rstrip=True``
    When ``border=False``, setting ``rstrip=False`` will cause the last cell of
-   each row to still be padded with trailing whitespace in order to reach the
-   full column width.  (Normally, this whitespace is omitted when
-   ``border=False`` as there is no end-of-line border to align.)  This option
-   is useful if you wish to append text to one or more lines of the output and
-   have it appear strictly outside the table.
+   each row to still be padded with trailing whitespace and ``padding`` in
+   order to reach the full column width.  (Normally, this whitespace and
+   ``padding`` is omitted when ``border=False`` as there is no end-of-line
+   border to align.)  This option is useful if you wish to append text to one
+   or more lines of the output and have it appear strictly outside the table.
 
 
 .. _borderstyle:

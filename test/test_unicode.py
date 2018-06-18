@@ -2,6 +2,23 @@
 from six    import text_type
 from txtble import Txtble
 
+# Taken from /usr/share/misc/birthtoken.gz in Ubuntu Xenial's miscfiles package:
+HEADERS = ['Month', 'Birthstone', 'Birth Flower']
+DATA = [
+    ['January',   'Garnet',     'Carnation'],
+    ['February',  'Amethyst',   'Violet'],
+    ['March',     'Aquamarine', 'Jonquil'],
+    ['April',     'Diamond',    'Sweetpea'],
+    ['May',       'Emerald',    'Lily Of The Valley'],
+    ['June',      'Pearl',      'Rose'],
+    ['July',      'Ruby',       'Larkspur'],
+    ['August',    'Peridot',    'Gladiolus'],
+    ['September', 'Sapphire',   'Aster'],
+    ['October',   'Opal',       'Calendula'],
+    ['November',  'Topaz',      'Chrysanthemum'],
+    ['December',  'Turquoise',  'Narcissus'],
+]
+
 def test_unicode():
     tbl = Txtble(
         headers=('English', 'Latin'),
@@ -72,4 +89,25 @@ def test_leading_combining():
         u'|Mc      |DEVANAGARI SIGN VISARGA                  | \u0903   |\n'
         u'|Me      |COMBINING CYRILLIC HUNDRED THOUSANDS SIGN| \u0488    |\n'
         u'+--------+-----------------------------------------+-----+'
+    )
+
+def test_fullwidth_padding():
+    tbl = Txtble(DATA, headers=HEADERS, padding=u'\uFF0D')
+    assert text_type(tbl) == (
+        u'+-------------+--------------+----------------------+\n'
+        u'|－Month    －|－Birthstone－|－Birth Flower      －|\n'
+        u'+-------------+--------------+----------------------+\n'
+        u'|－January  －|－Garnet    －|－Carnation         －|\n'
+        u'|－February －|－Amethyst  －|－Violet            －|\n'
+        u'|－March    －|－Aquamarine－|－Jonquil           －|\n'
+        u'|－April    －|－Diamond   －|－Sweetpea          －|\n'
+        u'|－May      －|－Emerald   －|－Lily Of The Valley－|\n'
+        u'|－June     －|－Pearl     －|－Rose              －|\n'
+        u'|－July     －|－Ruby      －|－Larkspur          －|\n'
+        u'|－August   －|－Peridot   －|－Gladiolus         －|\n'
+        u'|－September－|－Sapphire  －|－Aster             －|\n'
+        u'|－October  －|－Opal      －|－Calendula         －|\n'
+        u'|－November －|－Topaz     －|－Chrysanthemum     －|\n'
+        u'|－December －|－Turquoise －|－Narcissus         －|\n'
+        u'+-------------+--------------+----------------------+'
     )

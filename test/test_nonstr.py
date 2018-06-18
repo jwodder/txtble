@@ -182,3 +182,18 @@ def test_custom_row_fill():
         '|B     |C     |\n'
         '+------+------+'
     )
+
+def test_custom_padding():
+    tbl = Txtble(
+        headers=['Header', 'Header'],
+        data=[['A', 'B'], ['C', 'D']],
+        padding=Custom(),
+    )
+    assert str(tbl) == (
+        '+------------+------------+\n'
+        '|strHeaderstr|strHeaderstr|\n'
+        '+------------+------------+\n'
+        '|strA     str|strB     str|\n'
+        '|strC     str|strD     str|\n'
+        '+------------+------------+'
+    )

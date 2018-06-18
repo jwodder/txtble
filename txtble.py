@@ -35,7 +35,7 @@ __url__          = 'https://github.com/jwodder/txtble'
 from   collections import namedtuple
 from   unicodedata import category
 import attr
-from   six         import string_types, text_type
+from   six         import integer_types, string_types, text_type
 from   wcwidth     import wcswidth
 
 __all__ = [
@@ -90,6 +90,7 @@ class Txtble(object):
     header_fill   = attr.ib(default=None)
     headers       = attr.ib(default=None, converter=attr.converters.optional(list))
     none_str      = attr.ib(default='')
+    padding       = attr.ib(default=0)
     row_border    = attr.ib(default=False)
     row_fill      = attr.ib(default='')
     rstrip        = attr.ib(default=True)
@@ -149,6 +150,15 @@ class Txtble(object):
                 # This happens when there are no data rows
                 widths = [h.width for h in headers]
 
+        if not self.padding:
+            padding = ''
+        elif isinstance(self.padding, integer_types):
+            padding = ' ' * self.padding
+        elif not isinstance(self.padding, string_types):
+            padding = str(self.padding)
+        else:
+            padding = self.padding
+
         if not self.border:
             border = None
         elif isinstance(self.border, BorderStyle):
@@ -186,10 +196,15 @@ class Txtble(object):
                 col_sep = column_border.vline if column_border else '',
                 border  = border.vline        if border        else '',
                 rstrip  = self.rstrip,
+                padding = padding,
             )
 
         output = []
-        rule_args = (widths, bool(border), bool(column_border))
+        rule_args = (
+            [w + 2*wcswidth(padding) for w in widths],
+            bool(border),
+            bool(column_border),
+        )
         if border:
             output.append(border.top_rule(*rule_args))
         if headers is not None:
@@ -227,14 +242,16 @@ class Cell(object):
         return to_len(lines, height, ' ' * width)
 
 
-def join_cells(cells, widths, col_sep='|', border='|', rstrip=True):
+def join_cells(cells, widths, col_sep='|', border='|', rstrip=True, padding=''):
     assert 0 < len(cells) == len(widths)
     height = max(len(c.lines) for c in cells)
     boxes = [c.box(w, height) for (c,w) in zip(cells, widths)]
     if not border and rstrip:
         boxes[-1] = cells[-1].box(0, height)
     return [
-        border + col_sep.join(line_bits) + border
+        border + padding
+            + (padding + col_sep + padding).join(line_bits)
+            + (padding if border or not rstrip else '') + border
         for line_bits in zip(*boxes)
     ]
 
