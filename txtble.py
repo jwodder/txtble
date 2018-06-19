@@ -45,6 +45,7 @@ __all__ = [
     'DOT_BORDERS',
     'DOUBLE_BORDERS',
     'HEAVY_BORDERS',
+    'IndeterminateWidthError',
     'LIGHT_BORDERS',
     'Txtble',
 ]
@@ -158,6 +159,8 @@ class Txtble(object):
             padding = str(self.padding)
         else:
             padding = self.padding
+        if wcswidth(padding) < 0:
+            raise IndeterminateWidthError(padding)
 
         if not self.border:
             border = None
@@ -232,6 +235,9 @@ class Cell(object):
                 category(value[0]).startswith('M'):
             value = ' ' + value
         self.lines = to_lines(value.expandtabs())
+        for line in self.lines:
+            if wcswidth(line) < 0:
+                raise IndeterminateWidthError(line)
         self.width = max(map(wcswidth, self.lines))
 
     def box(self, width, height):
@@ -286,3 +292,17 @@ def to_lines(s):
         assert len(l2) in (0,1)
         lines[i] = l2[0] if l2 else ''
     return lines
+
+
+class IndeterminateWidthError(ValueError):
+    """
+    Raised when a string is reported as having negative/indeterminate width
+    """
+
+    def __init__(self, string):
+        #: The string in question
+        self.string = string
+        super(IndeterminateWidthError, self).__init__(string)
+
+    def __str__(self):
+        return '{0.string!r}: string has indeterminate width'.format(self)

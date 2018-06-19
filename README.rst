@@ -186,7 +186,10 @@ API
    Table cells and filler values that are not already strings are converted by
    calling `str()` on them; the exceptions are `None` values, which are
    displayed according to the ``none_str`` option (see below).  All tab
-   characters are expanded to spaces before building the table.
+   characters are expanded to spaces before building the table.  If any of the
+   resulting strings have indeterminate width (i.e., if ``wcwidth.wcswidth()``
+   returns a negative number for any of them), an ``IndeterminateWidthError``
+   (a subclass of `ValueError`) is raised.
 
    Note that the resulting string will likely contain one or more embedded
    newlines, but (outside of some very odd cases) it will not end with a
