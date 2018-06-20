@@ -159,6 +159,7 @@ class Txtble(object):
             padding = str(self.padding)
         else:
             padding = self.padding
+        padding = padding.expandtabs()
         if wcswidth(padding) < 0:
             raise IndeterminateWidthError(padding)
 

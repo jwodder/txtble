@@ -328,6 +328,27 @@ def test_two_padding(padding):
         '+-------------+--------------+----------------------+'
     )
 
+def test_tab_padding():
+    tbl = Txtble(DATA, headers=HEADERS, padding='\t')
+    assert str(tbl) == (
+        '+-------------------------+--------------------------+----------------------------------+\n'
+        '|        Month            |        Birthstone        |        Birth Flower              |\n'
+        '+-------------------------+--------------------------+----------------------------------+\n'
+        '|        January          |        Garnet            |        Carnation                 |\n'
+        '|        February         |        Amethyst          |        Violet                    |\n'
+        '|        March            |        Aquamarine        |        Jonquil                   |\n'
+        '|        April            |        Diamond           |        Sweetpea                  |\n'
+        '|        May              |        Emerald           |        Lily Of The Valley        |\n'
+        '|        June             |        Pearl             |        Rose                      |\n'
+        '|        July             |        Ruby              |        Larkspur                  |\n'
+        '|        August           |        Peridot           |        Gladiolus                 |\n'
+        '|        September        |        Sapphire          |        Aster                     |\n'
+        '|        October          |        Opal              |        Calendula                 |\n'
+        '|        November         |        Topaz             |        Chrysanthemum             |\n'
+        '|        December         |        Turquoise         |        Narcissus                 |\n'
+        '+-------------------------+--------------------------+----------------------------------+'
+    )
+
 def test_non_space_padding():
     tbl = Txtble(DATA, headers=HEADERS, padding='x')
     assert str(tbl) == (
