@@ -428,3 +428,8 @@ def test_padding_no_border_no_rstrip():
         ' November  | Topaz      | Chrysanthemum      \n'
         ' December  | Turquoise  | Narcissus          '
     )
+
+def test_multiline_padding():
+    tbl = Txtble(DATA, headers=HEADERS, padding='x\ny')
+    with pytest.raises(ValueError):
+        str(tbl)

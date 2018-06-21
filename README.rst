@@ -266,7 +266,8 @@ constructor or as attributes on a ``Txtble`` instance::
 
 ``padding=0``
    Padding to insert on the left & right of every table cell.  This can be
-   either an integer (to insert that many space characters) or a string.
+   either an integer (to insert that many space characters) or a string.  If a
+   string, it may not contain any newlines.
 
 ``row_border=False``
    Whether to draw horizontal rules between data rows.  ``row_border`` may
