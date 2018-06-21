@@ -5,6 +5,8 @@ v0.3.0 (in development)
 - Added a `padding` option
 - Strings with indeterminate widths now cause an `IndeterminateWidthError` to
   be raised
+- `'\f'` and `'\v'` are now always treated as line separators, even inside
+  `str` objects in Python 2
 
 v0.2.0 (2018-06-16)
 -------------------

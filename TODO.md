@@ -1,8 +1,4 @@
 - Add docstrings
-- Handle strings for which `wcswidth()` returns a negative number (e.g.,
-  anything with an ANSI escape sequence)
-- Make `to_lines()` also split on `'\v'` and `'\f'` when working with `str`
-  objects in Python 2?
 
 Features to Add
 ---------------

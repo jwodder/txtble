@@ -35,7 +35,7 @@ __url__          = 'https://github.com/jwodder/txtble'
 from   collections import namedtuple
 from   unicodedata import category
 import attr
-from   six         import integer_types, string_types, text_type
+from   six         import PY2, integer_types, string_types, text_type
 from   wcwidth     import wcswidth
 
 __all__ = [
@@ -282,6 +282,10 @@ def to_lines(s):
     ['foo', '']
     >>> to_lines('foo\\nbar')
     ['foo', 'bar']
+    >>> to_lines('foo\\fbar')
+    ['foo', 'bar']
+    >>> to_lines('foo\\vbar')
+    ['foo', 'bar']
     """
     lines = s.splitlines(True)
     if not lines:
@@ -292,6 +296,13 @@ def to_lines(s):
         l2 = l.splitlines()
         assert len(l2) in (0,1)
         lines[i] = l2[0] if l2 else ''
+    if PY2 and isinstance(s, str):
+        # Manually split on \f and \v
+        lines = [
+            lf for l in lines
+               for lv in l.split('\v')
+               for lf in lv.split('\f')
+        ]
     return lines
 
 
