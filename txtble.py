@@ -155,11 +155,8 @@ class Txtble(object):
             padding = ''
         elif isinstance(self.padding, integer_types):
             padding = ' ' * self.padding
-        elif not isinstance(self.padding, string_types):
-            padding = str(self.padding)
         else:
-            padding = self.padding
-        padding = padding.expandtabs()
+            padding = strify(self.padding)
         if wcswidth(padding) < 0:
             raise IndeterminateWidthError(padding)
 
@@ -230,12 +227,7 @@ class Cell(object):
     def __init__(self, tbl, value):
         if value is None:
             value = tbl.none_str
-        if not isinstance(value, string_types):
-            value = str(value)
-        if value and isinstance(value, text_type) and \
-                category(value[0]).startswith('M'):
-            value = ' ' + value
-        self.lines = to_lines(value.expandtabs())
+        self.lines = to_lines(strify(value))
         for line in self.lines:
             if wcswidth(line) < 0:
                 raise IndeterminateWidthError(line)
@@ -304,6 +296,13 @@ def to_lines(s):
                for lf in lv.split('\f')
         ]
     return lines
+
+def strify(s):
+    if not isinstance(s, string_types):
+        s = str(s)
+    if s and isinstance(s, text_type) and category(s[0]).startswith('M'):
+        s = ' ' + s
+    return s.expandtabs()
 
 
 class IndeterminateWidthError(ValueError):

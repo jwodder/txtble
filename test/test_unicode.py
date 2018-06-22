@@ -72,25 +72,6 @@ def test_fullwidth():
         u'+---------+------------------+'
     )
 
-def test_leading_combining():
-    tbl = Txtble(
-        headers=['Category', 'Name', 'Glyph'],
-        data=[
-            ['Mn', 'COMBINING ACUTE ACCENT', u'\u0301'],
-            ['Mc', 'DEVANAGARI SIGN VISARGA', u'\u0903'],
-            ['Me', 'COMBINING CYRILLIC HUNDRED THOUSANDS SIGN', u'\u0488'],
-        ]
-    )
-    assert text_type(tbl) == (
-        u'+--------+-----------------------------------------+-----+\n'
-        u'|Category|Name                                     |Glyph|\n'
-        u'+--------+-----------------------------------------+-----+\n'
-        u'|Mn      |COMBINING ACUTE ACCENT                   | \u0301    |\n'
-        u'|Mc      |DEVANAGARI SIGN VISARGA                  | \u0903   |\n'
-        u'|Me      |COMBINING CYRILLIC HUNDRED THOUSANDS SIGN| \u0488    |\n'
-        u'+--------+-----------------------------------------+-----+'
-    )
-
 def test_fullwidth_padding():
     tbl = Txtble(DATA, headers=HEADERS, padding=u'\uFF0D')
     assert text_type(tbl) == (
@@ -110,4 +91,44 @@ def test_fullwidth_padding():
         u'|－November －|－Topaz     －|－Chrysanthemum     －|\n'
         u'|－December －|－Turquoise －|－Narcissus         －|\n'
         u'+-------------+--------------+----------------------+'
+    )
+
+def test_leading_combining():
+    tbl = Txtble(
+        headers=['Category', 'Name', 'Glyph'],
+        data=[
+            ['Mn', 'COMBINING ACUTE ACCENT', u'\u0301'],
+            ['Mc', 'DEVANAGARI SIGN VISARGA', u'\u0903'],
+            ['Me', 'COMBINING CYRILLIC HUNDRED THOUSANDS SIGN', u'\u0488'],
+        ]
+    )
+    assert text_type(tbl) == (
+        u'+--------+-----------------------------------------+-----+\n'
+        u'|Category|Name                                     |Glyph|\n'
+        u'+--------+-----------------------------------------+-----+\n'
+        u'|Mn      |COMBINING ACUTE ACCENT                   | \u0301    |\n'
+        u'|Mc      |DEVANAGARI SIGN VISARGA                  | \u0903   |\n'
+        u'|Me      |COMBINING CYRILLIC HUNDRED THOUSANDS SIGN| \u0488    |\n'
+        u'+--------+-----------------------------------------+-----+'
+    )
+
+def test_leading_combining_padding():
+    tbl = Txtble(DATA, headers=HEADERS, padding=u'\u0301')
+    assert text_type(tbl) == (
+        u'+-----------+------------+--------------------+\n'
+        u'| \u0301Month     \u0301| \u0301Birthstone \u0301| \u0301Birth Flower       \u0301|\n'
+        u'+-----------+------------+--------------------+\n'
+        u'| \u0301January   \u0301| \u0301Garnet     \u0301| \u0301Carnation          \u0301|\n'
+        u'| \u0301February  \u0301| \u0301Amethyst   \u0301| \u0301Violet             \u0301|\n'
+        u'| \u0301March     \u0301| \u0301Aquamarine \u0301| \u0301Jonquil            \u0301|\n'
+        u'| \u0301April     \u0301| \u0301Diamond    \u0301| \u0301Sweetpea           \u0301|\n'
+        u'| \u0301May       \u0301| \u0301Emerald    \u0301| \u0301Lily Of The Valley \u0301|\n'
+        u'| \u0301June      \u0301| \u0301Pearl      \u0301| \u0301Rose               \u0301|\n'
+        u'| \u0301July      \u0301| \u0301Ruby       \u0301| \u0301Larkspur           \u0301|\n'
+        u'| \u0301August    \u0301| \u0301Peridot    \u0301| \u0301Gladiolus          \u0301|\n'
+        u'| \u0301September \u0301| \u0301Sapphire   \u0301| \u0301Aster              \u0301|\n'
+        u'| \u0301October   \u0301| \u0301Opal       \u0301| \u0301Calendula          \u0301|\n'
+        u'| \u0301November  \u0301| \u0301Topaz      \u0301| \u0301Chrysanthemum      \u0301|\n'
+        u'| \u0301December  \u0301| \u0301Turquoise  \u0301| \u0301Narcissus          \u0301|\n'
+        u'+-----------+------------+--------------------+'
     )
