@@ -22,6 +22,8 @@ Features to Add
     - setting a function to use for stringification of all non-string cell
       values
     - aligning numeric cells on a decimal point
+    - configuring vertical alignment of cells when other cells in the same row
+      have more lines
 
 - API:
     - constructing a table from a sequence of dicts whose keys match the

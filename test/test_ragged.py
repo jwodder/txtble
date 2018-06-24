@@ -77,6 +77,26 @@ def test_ragged_rows_no_headers_tab_row_fill(header_fill):
     )
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])
+def test_ragged_rows_no_headers_multiline_row_fill(header_fill):
+    tbl = Txtble(
+        data        = DATA,
+        header_fill = header_fill,
+        row_fill    = 'Fill\ner',
+    )
+    assert str(tbl) == (
+        '+---+-+----+----+----+----+----+\n'
+        '|1  |1|Fill|Fill|Fill|Fill|Fill|\n'
+        '|   | |er  |er  |er  |er  |er  |\n'
+        '|Z_6|1|x   |x^2 |x^3 |x^4 |x^5 |\n'
+        '|S_3|1|a   |b   |aba |ba  |ab  |\n'
+        '|Z_4|1|x   |x^2 |x^3 |Fill|Fill|\n'
+        '|   | |    |    |    |er  |er  |\n'
+        '|V_4|1|a   |b   |ab  |Fill|Fill|\n'
+        '|   | |    |    |    |er  |er  |\n'
+        '+---+-+----+----+----+----+----+'
+    )
+
+@pytest.mark.parametrize('header_fill', [None, '', 'foo'])
 def test_ragged_rows_no_headers_columns(header_fill):
     tbl = Txtble(
         columns     = 6,
@@ -219,6 +239,25 @@ def test_long_rows_headers_tab_header_fill():
         '+-----+--------+----------+----------+----------+----------+----------+'
     )
 
+def test_long_rows_headers_multiline_header_fill():
+    tbl = Txtble(
+        data        = DATA,
+        header_fill = 'Fill\ner',
+        headers     = ('Group', 'Elements'),
+    )
+    assert str(tbl) == (
+        '+-----+--------+----+----+----+----+----+\n'
+        '|Group|Elements|Fill|Fill|Fill|Fill|Fill|\n'
+        '|     |        |er  |er  |er  |er  |er  |\n'
+        '+-----+--------+----+----+----+----+----+\n'
+        '|1    |1       |    |    |    |    |    |\n'
+        '|Z_6  |1       |x   |x^2 |x^3 |x^4 |x^5 |\n'
+        '|S_3  |1       |a   |b   |aba |ba  |ab  |\n'
+        '|Z_4  |1       |x   |x^2 |x^3 |    |    |\n'
+        '|V_4  |1       |a   |b   |ab  |    |    |\n'
+        '+-----+--------+----+----+----+----+----+'
+    )
+
 def test_long_rows_headers_header_fill_row_fill():
     tbl = Txtble(
         data        = DATA,
@@ -236,6 +275,26 @@ def test_long_rows_headers_header_fill_row_fill():
         '|Z_4  |1       |x|x^2|x^3|#  |#  |\n'
         '|V_4  |1       |a|b  |ab |#  |#  |\n'
         '+-----+--------+-+---+---+---+---+'
+    )
+
+def test_long_rows_headers_header_fill_row_fill_padding():
+    tbl = Txtble(
+        data        = DATA,
+        header_fill = '?',
+        headers     = ('Group', 'Elements'),
+        padding     = ' ',
+        row_fill    = '#',
+    )
+    assert str(tbl) == (
+        '+-------+----------+---+-----+-----+-----+-----+\n'
+        '| Group | Elements | ? | ?   | ?   | ?   | ?   |\n'
+        '+-------+----------+---+-----+-----+-----+-----+\n'
+        '| 1     | 1        | # | #   | #   | #   | #   |\n'
+        '| Z_6   | 1        | x | x^2 | x^3 | x^4 | x^5 |\n'
+        '| S_3   | 1        | a | b   | aba | ba  | ab  |\n'
+        '| Z_4   | 1        | x | x^2 | x^3 | #   | #   |\n'
+        '| V_4   | 1        | a | b   | ab  | #   | #   |\n'
+        '+-------+----------+---+-----+-----+-----+-----+'
     )
 
 @pytest.mark.parametrize('header_fill', [None, '', 'foo'])

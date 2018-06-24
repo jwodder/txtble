@@ -240,6 +240,58 @@ def test_embedded_form_feeds_and_vtabs():
         '+-------+-----------------------------------------+'
     )
 
+def test_padding_embedded_newlines():
+    tbl = Txtble(
+        [
+            ['Verse 1', 'Twas brillig, and the slithy toves\n'
+                        'Did gyre and gimble in the wabe;\n'
+                        'All mimsy were the borogoves,\n'
+                        'And the mome raths outgrabe.'],
+            ['Verse 2', '"Beware the Jabberwock, my son!\n'
+                        'The jaws that bite, the claws that catch!\n'
+                        'Beware the Jubjub bird, and shun\n'
+                        'The frumious Bandersnatch!"'],
+        ],
+        padding='.',
+    )
+    assert str(tbl) == (
+        '+---------+-------------------------------------------+\n'
+        '|.Verse 1.|.Twas brillig, and the slithy toves       .|\n'
+        '|.       .|.Did gyre and gimble in the wabe;         .|\n'
+        '|.       .|.All mimsy were the borogoves,            .|\n'
+        '|.       .|.And the mome raths outgrabe.             .|\n'
+        '|.Verse 2.|."Beware the Jabberwock, my son!          .|\n'
+        '|.       .|.The jaws that bite, the claws that catch!.|\n'
+        '|.       .|.Beware the Jubjub bird, and shun         .|\n'
+        '|.       .|.The frumious Bandersnatch!"              .|\n'
+        '+---------+-------------------------------------------+'
+    )
+
+def test_embedded_newline_headers():
+    tbl = Txtble(
+        headers=['Month', 'Birth Thingy\n(Gem)', 'Birth Thingy\n(Flower)'],
+        data=DATA
+    )
+    assert str(tbl) ==(
+        '+---------+------------+------------------+\n'
+        '|Month    |Birth Thingy|Birth Thingy      |\n'
+        '|         |(Gem)       |(Flower)          |\n'
+        '+---------+------------+------------------+\n'
+        '|January  |Garnet      |Carnation         |\n'
+        '|February |Amethyst    |Violet            |\n'
+        '|March    |Aquamarine  |Jonquil           |\n'
+        '|April    |Diamond     |Sweetpea          |\n'
+        '|May      |Emerald     |Lily Of The Valley|\n'
+        '|June     |Pearl       |Rose              |\n'
+        '|July     |Ruby        |Larkspur          |\n'
+        '|August   |Peridot     |Gladiolus         |\n'
+        '|September|Sapphire    |Aster             |\n'
+        '|October  |Opal        |Calendula         |\n'
+        '|November |Topaz       |Chrysanthemum     |\n'
+        '|December |Turquoise   |Narcissus         |\n'
+        '+---------+------------+------------------+'
+    )
+
 def test_empty():
     tbl = Txtble()
     assert str(tbl) == '++\n++'
@@ -512,3 +564,26 @@ def test_multiline_padding(padding):
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
     with pytest.raises(ValueError):
         str(tbl)
+
+def test_padding_no_column_border():
+    tbl = Txtble(DATA, headers=HEADERS, padding=1, column_border=False)
+    assert str(tbl) == (
+        '+-------------------------------------------+\n'
+        '| Month      Birthstone  Birth Flower       |\n'
+        '+-------------------------------------------+\n'
+        '| January    Garnet      Carnation          |\n'
+        '| February   Amethyst    Violet             |\n'
+        '| March      Aquamarine  Jonquil            |\n'
+        '| April      Diamond     Sweetpea           |\n'
+        '| May        Emerald     Lily Of The Valley |\n'
+        '| June       Pearl       Rose               |\n'
+        '| July       Ruby        Larkspur           |\n'
+        '| August     Peridot     Gladiolus          |\n'
+        '| September  Sapphire    Aster              |\n'
+        '| October    Opal        Calendula          |\n'
+        '| November   Topaz       Chrysanthemum      |\n'
+        '| December   Turquoise   Narcissus          |\n'
+        '+-------------------------------------------+'
+    )
+
+# vim:set nowrap:

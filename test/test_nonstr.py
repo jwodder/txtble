@@ -115,6 +115,27 @@ def test_custom_none_str():
         '+------+-----+'
     )
 
+def test_multiline_none_str():
+    tbl = Txtble(
+        headers=('repr', 'value'),
+        data=[
+            ("''", ''),
+            ('None', None),
+            ("'None'", 'None'),
+        ],
+        none_str='foo\nbar',
+    )
+    assert str(tbl) == (
+        '+------+-----+\n'
+        '|repr  |value|\n'
+        '+------+-----+\n'
+        "|''    |     |\n"
+        "|None  |foo  |\n"
+        "|      |bar  |\n"
+        "|'None'|None |\n"
+        '+------+-----+'
+    )
+
 def test_custom():
     tbl = Txtble(data=[['A', 'B'], ['C', Custom()]])
     assert str(tbl) == (

@@ -149,6 +149,34 @@ def test_row_border():
         '+---------+----------+------------------+'
     )
 
+def test_row_border_embedded_newlines():
+    tbl = Txtble(
+        [
+            ['Verse 1', 'Twas brillig, and the slithy toves\n'
+                        'Did gyre and gimble in the wabe;\n'
+                        'All mimsy were the borogoves,\n'
+                        'And the mome raths outgrabe.'],
+            ['Verse 2', '"Beware the Jabberwock, my son!\n'
+                        'The jaws that bite, the claws that catch!\n'
+                        'Beware the Jubjub bird, and shun\n'
+                        'The frumious Bandersnatch!"'],
+        ],
+        row_border=True,
+    )
+    assert str(tbl) == (
+        '+-------+-----------------------------------------+\n'
+        '|Verse 1|Twas brillig, and the slithy toves       |\n'
+        '|       |Did gyre and gimble in the wabe;         |\n'
+        '|       |All mimsy were the borogoves,            |\n'
+        '|       |And the mome raths outgrabe.             |\n'
+        '+-------+-----------------------------------------+\n'
+        '|Verse 2|"Beware the Jabberwock, my son!          |\n'
+        '|       |The jaws that bite, the claws that catch!|\n'
+        '|       |Beware the Jubjub bird, and shun         |\n'
+        '|       |The frumious Bandersnatch!"              |\n'
+        '+-------+-----------------------------------------+'
+    )
+
 def test_no_column_border():
     tbl = Txtble(DATA, headers=HEADERS, column_border=False)
     assert str(tbl) == (

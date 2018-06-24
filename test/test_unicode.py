@@ -132,3 +132,55 @@ def test_leading_combining_padding():
         u'| \u0301December  \u0301| \u0301Turquoise  \u0301| \u0301Narcissus          \u0301|\n'
         u'+-----------+------------+--------------------+'
     )
+
+def test_leading_combining_none_str():
+    tbl = Txtble(
+        headers=('repr', 'value'),
+        data=[
+            ("''", ''),
+            ('None', None),
+            ("'None'", 'None'),
+        ],
+        none_str=u'\u0301',
+    )
+    assert text_type(tbl) == (
+        u'+------+-----+\n'
+        u'|repr  |value|\n'
+        u'+------+-----+\n'
+        u"|''    |     |\n"
+        u"|None  | \u0301    |\n"
+        u"|'None'|None |\n"
+        u'+------+-----+'
+    )
+
+def test_leading_combining_header_fill():
+    tbl = Txtble(
+        headers=['Header'],
+        header_fill=u'\u0301',
+        data=[['A'], ['B', 'C']],
+    )
+    assert text_type(tbl) == (
+        u'+------+-+\n'
+        u'|Header| \u0301|\n'
+        u'+------+-+\n'
+        u'|A     | |\n'
+        u'|B     |C|\n'
+        u'+------+-+'
+    )
+
+def test_leading_combining_row_fill():
+    tbl = Txtble(
+        headers=['Header', 'Header'],
+        row_fill=u'\u0301',
+        data=[['A'], ['B', 'C']],
+    )
+    assert text_type(tbl) == (
+        u'+------+------+\n'
+        u'|Header|Header|\n'
+        u'+------+------+\n'
+        u'|A     | \u0301     |\n'
+        u'|B     |C     |\n'
+        u'+------+------+'
+    )
+
+# vim:set nowrap:
