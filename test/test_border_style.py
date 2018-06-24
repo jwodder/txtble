@@ -1,49 +1,16 @@
 # -*- coding: utf-8 -*-
-from six    import text_type
-from txtble import (
+from six       import text_type
+from txtble    import (
     Txtble,
     ASCII_BORDERS, ASCII_EQ_BORDERS,
     LIGHT_BORDERS, HEAVY_BORDERS, DOUBLE_BORDERS,
     DOT_BORDERS,
 )
-
-# Taken from /usr/share/misc/birthtoken.gz in Ubuntu Xenial's miscfiles package:
-HEADERS = ['Month', 'Birthstone', 'Birth Flower']
-DATA = [
-    ['January',   'Garnet',     'Carnation'],
-    ['February',  'Amethyst',   'Violet'],
-    ['March',     'Aquamarine', 'Jonquil'],
-    ['April',     'Diamond',    'Sweetpea'],
-    ['May',       'Emerald',    'Lily Of The Valley'],
-    ['June',      'Pearl',      'Rose'],
-    ['July',      'Ruby',       'Larkspur'],
-    ['August',    'Peridot',    'Gladiolus'],
-    ['September', 'Sapphire',   'Aster'],
-    ['October',   'Opal',       'Calendula'],
-    ['November',  'Topaz',      'Chrysanthemum'],
-    ['December',  'Turquoise',  'Narcissus'],
-]
+from test_data import HEADERS, DATA, TABLE
 
 def test_ascii_border_style():
     tbl = Txtble(DATA, headers=HEADERS, border_style=ASCII_BORDERS)
-    assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|Month    |Birthstone|Birth Flower      |\n'
-        '+---------+----------+------------------+\n'
-        '|January  |Garnet    |Carnation         |\n'
-        '|February |Amethyst  |Violet            |\n'
-        '|March    |Aquamarine|Jonquil           |\n'
-        '|April    |Diamond   |Sweetpea          |\n'
-        '|May      |Emerald   |Lily Of The Valley|\n'
-        '|June     |Pearl     |Rose              |\n'
-        '|July     |Ruby      |Larkspur          |\n'
-        '|August   |Peridot   |Gladiolus         |\n'
-        '|September|Sapphire  |Aster             |\n'
-        '|October  |Opal      |Calendula         |\n'
-        '|November |Topaz     |Chrysanthemum     |\n'
-        '|December |Turquoise |Narcissus         |\n'
-        '+---------+----------+------------------+'
-    )
+    assert str(tbl) == TABLE
 
 def test_ascii_eq_border_style():
     tbl = Txtble(DATA, headers=HEADERS, border_style=ASCII_EQ_BORDERS)
