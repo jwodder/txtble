@@ -159,6 +159,8 @@ class Txtble(object):
             padding = strify(self.padding)
         if wcswidth(padding) < 0:
             raise IndeterminateWidthError(padding)
+        if len(to_lines(padding)) > 1:
+            raise ValueError('padding cannot contain newlines')
 
         if not self.border:
             border = None

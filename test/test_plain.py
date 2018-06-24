@@ -524,11 +524,13 @@ def test_padding_no_border_no_rstrip():
         ' December  | Turquoise  | Narcissus          '
     )
 
-@pytest.mark.parametrize('padding', ['x\ny', 'x\ry', 'x\fy', 'x\vy'])
+@pytest.mark.parametrize('padding', [
+    'x\ny', 'x\ry', 'x\fy', 'x\vy', u'x\x85y', u'x\u2028y', u'x\u2029y',
+])
 def test_multiline_padding(padding):
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
     with pytest.raises(ValueError):
-        str(tbl)
+        tbl.show()
 
 def test_padding_no_column_border():
     tbl = Txtble(DATA, headers=HEADERS, padding=1, column_border=False)
