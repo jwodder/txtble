@@ -206,8 +206,9 @@ API
    displayed according to the ``none_str`` option (see below).  All tab
    characters are expanded to spaces before building the table.  If any of the
    resulting strings have indeterminate width (i.e., if ``wcwidth.wcswidth()``
-   returns a negative number for any of them), an ``IndeterminateWidthError``
-   (a subclass of `ValueError`) is raised.
+   returns a negative number for any of them; examples of such strings include
+   ANSI escape sequences), an ``IndeterminateWidthError`` (a subclass of
+   `ValueError`) is raised.
 
    Note that the resulting string will likely contain one or more embedded
    newlines, but (outside of some very odd cases) it will not end with a
@@ -367,7 +368,6 @@ drawing a table's borders & rules.  Its attributes are:
        ┃C┃D┃
        ┗━┻━┛
 
-
 ``DOUBLE_BORDERS``
    Uses the double box drawing characters::
 
@@ -376,7 +376,6 @@ drawing a table's borders & rules.  Its attributes are:
        ╠═╬═╣
        ║C║D║
        ╚═╩═╝
-
 
 ``DOT_BORDERS``
    Uses ``⋯``, ``⋮``, and ``·``::
