@@ -336,4 +336,23 @@ def test_short_rows_headers_row_fill(header_fill):
         '+-----+--+--+---+---+---+---+'
     )
 
+def test_empty_headers_no_header_fill():
+    tbl = Txtble(DATA, headers=[])
+    with pytest.raises(ValueError):
+        str(tbl)
+
+def test_empty_headers_header_fill():
+    tbl = Txtble(DATA, headers=[], header_fill='Filler')
+    assert str(tbl) == (
+        '+------+------+------+------+------+------+------+\n'
+        '|Filler|Filler|Filler|Filler|Filler|Filler|Filler|\n'
+        '+------+------+------+------+------+------+------+\n'
+        '|1     |1     |      |      |      |      |      |\n'
+        '|Z_6   |1     |x     |x^2   |x^3   |x^4   |x^5   |\n'
+        '|S_3   |1     |a     |b     |aba   |ba    |ab    |\n'
+        '|Z_4   |1     |x     |x^2   |x^3   |      |      |\n'
+        '|V_4   |1     |a     |b     |ab    |      |      |\n'
+        '+------+------+------+------+------+------+------+'
+    )
+
 # vim:set nowrap:
