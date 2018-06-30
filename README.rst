@@ -279,6 +279,11 @@ constructor or as attributes on a ``Txtble`` instance::
    non-`None` value or else a `ValueError` will be raised upon trying to render
    the ``Txtble``.
 
+``left_padding=None``
+   Padding to insert on the left of every table cell.  This can be either an
+   integer (to insert that many space characters) or a string.  If a string, it
+   may not contain any newlines.  ``left_padding`` overrides ``padding``.
+
 ``none_str=''``
    The string to display in place of `None` values (Setting ``none_str=None``
    is the same as setting it to ``'None'``)
@@ -287,6 +292,11 @@ constructor or as attributes on a ``Txtble`` instance::
    Padding to insert on the left & right of every table cell.  This can be
    either an integer (to insert that many space characters) or a string.  If a
    string, it may not contain any newlines.
+
+``right_padding=None``
+   Padding to insert on the right of every table cell.  This can be either an
+   integer (to insert that many space characters) or a string.  If a string, it
+   may not contain any newlines.  ``right_padding`` overrides ``padding``.
 
 ``row_border=False``
    Whether to draw horizontal rules between data rows.  ``row_border`` may

@@ -26,7 +26,7 @@ stringable things) and get out something nice like::
 Visit <https://github.com/jwodder/txtble> for more information.
 """
 
-__version__      = '0.3.0'
+__version__      = '0.4.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
@@ -90,8 +90,10 @@ class Txtble(object):
     header_border = attr.ib(default=None)
     header_fill   = attr.ib(default=None)
     headers       = attr.ib(default=None, converter=attr.converters.optional(list))
+    left_padding  = attr.ib(default=None)
     none_str      = attr.ib(default='')
     padding       = attr.ib(default=0)
+    right_padding = attr.ib(default=None)
     row_border    = attr.ib(default=False)
     row_fill      = attr.ib(default='')
     rstrip        = attr.ib(default=True)
@@ -151,16 +153,15 @@ class Txtble(object):
                 # This happens when there are no data rows
                 widths = [h.width for h in headers]
 
-        if not self.padding:
-            padding = ''
-        elif isinstance(self.padding, integer_types):
-            padding = ' ' * self.padding
+        padding = mkpadding(self.padding)
+        if self.left_padding is None:
+            left_padding = padding
         else:
-            padding = strify(self.padding)
-        if wcswidth(padding) < 0:
-            raise IndeterminateWidthError(padding)
-        if len(to_lines(padding)) > 1:
-            raise ValueError('padding cannot contain newlines')
+            left_padding = mkpadding(self.left_padding)
+        if self.right_padding is None:
+            right_padding = padding
+        else:
+            right_padding = mkpadding(self.right_padding)
 
         if not self.border:
             border = None
@@ -199,12 +200,13 @@ class Txtble(object):
                 col_sep = column_border.vline if column_border else '',
                 border  = border.vline        if border        else '',
                 rstrip  = self.rstrip,
-                padding = padding,
+                left_padding  = left_padding,
+                right_padding = right_padding,
             )
 
         output = []
         rule_args = (
-            [w + 2*wcswidth(padding) for w in widths],
+            [w+wcswidth(left_padding)+wcswidth(right_padding) for w in widths],
             bool(border),
             bool(column_border),
         )
@@ -243,16 +245,17 @@ class Cell(object):
         return to_len(lines, height, ' ' * width)
 
 
-def join_cells(cells, widths, col_sep='|', border='|', rstrip=True, padding=''):
+def join_cells(cells, widths, col_sep='|', border='|', rstrip=True,
+               left_padding='', right_padding=''):
     assert 0 < len(cells) == len(widths)
     height = max(len(c.lines) for c in cells)
     boxes = [c.box(w, height) for (c,w) in zip(cells, widths)]
     if not border and rstrip:
         boxes[-1] = cells[-1].box(0, height)
     return [
-        border + padding
-            + (padding + col_sep + padding).join(line_bits)
-            + (padding if border or not rstrip else '') + border
+        border + left_padding
+            + (right_padding + col_sep + left_padding).join(line_bits)
+            + (right_padding if border or not rstrip else '') + border
         for line_bits in zip(*boxes)
     ]
 
@@ -305,6 +308,19 @@ def strify(s):
     if s and isinstance(s, text_type) and category(s[0]).startswith('M'):
         s = ' ' + s
     return s.expandtabs()
+
+def mkpadding(s):
+    if not s:
+        padding = ''
+    elif isinstance(s, integer_types):
+        padding = ' ' * s
+    else:
+        padding = strify(s)
+    if wcswidth(padding) < 0:
+        raise IndeterminateWidthError(padding)
+    if len(to_lines(padding)) > 1:
+        raise ValueError('padding cannot contain newlines')
+    return padding
 
 
 class IndeterminateWidthError(ValueError):

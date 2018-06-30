@@ -1,3 +1,7 @@
+v0.4.0 (in development)
+-----------------------
+- Added `left_padding` and `right_padding` options
+
 v0.3.0 (2018-06-25)
 -------------------
 - Table cell values that begin with a combining character will now have a space

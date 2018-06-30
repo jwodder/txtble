@@ -8,6 +8,7 @@ Features to Add
       take optional keyword arguments for setting the box-drawing characters to
       use ('dash', 'joint', '`left_joint`', '`right_joint`', 'midjoint'?)
     - easy way to change just the column separator in non-rule rows?
+    - "doubling" ('|' → '||') specific vrules
 
 - Showing, wrapping, & aligning cells:
     - separate parameters for padding on the right vs. left?
