@@ -1,5 +1,5 @@
-v0.4.0 (in development)
------------------------
+v0.4.0 (2018-07-01)
+-------------------
 - Added `left_padding` and `right_padding` options
 
 v0.3.0 (2018-06-25)
