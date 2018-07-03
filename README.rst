@@ -232,6 +232,17 @@ constructor or as attributes on a ``Txtble`` instance::
     tbl = Txtble(data)
     tbl.border = False
 
+``align=()``
+   A sequence of alignment specifiers indicating how the contents of each
+   column, in order, should be horizontally aligned.  The alignment specifiers
+   are ``'l'`` (left alignment), ``'c'`` (centered alignment), and ``'r'``
+   (right alignment).  ``align`` may optionally be set to a single alignment
+   specifier to cause all columns to be aligned in that way.
+
+``align_fill='l'``
+   If there are more columns than there are entries in ``align``, the extra
+   columns will have their alignment set to ``align_fill``.
+
 ``border=True``
    Whether to draw a border around the edge of the table.  ``border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used

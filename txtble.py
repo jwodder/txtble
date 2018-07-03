@@ -26,7 +26,7 @@ stringable things) and get out something nice like::
 Visit <https://github.com/jwodder/txtble> for more information.
 """
 
-__version__      = '0.4.0'
+__version__      = '0.5.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
@@ -83,6 +83,8 @@ DOT_BORDERS      = BorderStyle(*u'⋯⋮·········')
 @attr.s
 class Txtble(object):
     data          = attr.ib(default=(), converter=lambda d: list(map(list, d)))
+    align         = attr.ib(default=())
+    align_fill    = attr.ib(default='l')
     border        = attr.ib(default=True)
     border_style  = attr.ib(default=ASCII_BORDERS)
     column_border = attr.ib(default=True)
@@ -193,10 +195,16 @@ class Txtble(object):
         else:
             row_border = self.border_style
 
+        if isinstance(self.align, string_types):
+            align = [self.align] * columns
+        else:
+            align = to_len(list(self.align), columns, self.align_fill)
+
         def showrow(row):
             return join_cells(
                 row,
                 widths,
+                align   = align,
                 col_sep = column_border.vline if column_border else '',
                 border  = border.vline        if border        else '',
                 rstrip  = self.rstrip,
@@ -237,21 +245,21 @@ class Cell(object):
                 raise IndeterminateWidthError(line)
         self.width = max(map(wcswidth, self.lines))
 
-    def box(self, width, height):
+    def box(self, width, height, align):
         if width == 0:
             lines = list(self.lines)
         else:
-            lines = [line + ' ' * (width-wcswidth(line)) for line in self.lines]
+            lines = [afill(line, width, align) for line in self.lines]
         return to_len(lines, height, ' ' * width)
 
 
-def join_cells(cells, widths, col_sep='|', border='|', rstrip=True,
-               left_padding='', right_padding=''):
-    assert 0 < len(cells) == len(widths)
+def join_cells(cells, widths, align, col_sep, border, rstrip, left_padding,
+               right_padding):
+    assert 0 < len(cells) == len(widths) == len(align)
     height = max(len(c.lines) for c in cells)
-    boxes = [c.box(w, height) for (c,w) in zip(cells, widths)]
+    boxes = [c.box(w, height, a) for (c,w,a) in zip(cells, widths, align)]
     if not border and rstrip:
-        boxes[-1] = cells[-1].box(0, height)
+        boxes[-1] = cells[-1].box(0, height, align[-1])
     return [
         border + left_padding
             + (right_padding + col_sep + left_padding).join(line_bits)
@@ -321,6 +329,17 @@ def mkpadding(s):
     if len(to_lines(padding)) > 1:
         raise ValueError('padding cannot contain newlines')
     return padding
+
+def afill(s, width, align):
+    spaces = width - wcswidth(s)
+    if align == 'l':
+        return s + ' ' * spaces
+    elif align == 'c':
+        return ' ' * (spaces // 2) + s + ' ' * ((spaces+1) // 2)
+    elif align == 'r':
+        return ' ' * spaces + s
+    else:
+        raise ValueError('{!r}: invalid alignment specifier'.format(align))
 
 
 class IndeterminateWidthError(ValueError):

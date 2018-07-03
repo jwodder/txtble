@@ -1,3 +1,7 @@
+v0.5.0 (in development)
+-----------------------
+- Added `align` and `align_fill` options
+
 v0.4.0 (2018-07-01)
 -------------------
 - Added `left_padding` and `right_padding` options
