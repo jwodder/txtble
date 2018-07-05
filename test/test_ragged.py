@@ -355,4 +355,14 @@ def test_empty_headers_header_fill():
         '+------+------+------+------+------+------+------+'
     )
 
+def test_bad_row_fill():
+    with pytest.raises(ValueError, match='row_fill cannot be None'):
+        Txtble(DATA, row_fill=None)
+
+def test_bad_row_fill_attr():
+    tbl = Txtble(DATA)
+    tbl.row_fill = None
+    with pytest.raises(ValueError, match='row_fill cannot be None'):
+        str(tbl)
+
 # vim:set nowrap:

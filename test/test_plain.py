@@ -136,3 +136,15 @@ def test_headers_not_matching_columns(columns):
     tbl = Txtble(DATA, headers=HEADERS, columns=columns)
     with pytest.raises(ValueError):
         str(tbl)
+
+@pytest.mark.parametrize('columns', [0, -1])
+def test_bad_columns(columns):
+    with pytest.raises(ValueError, match='columns must be at least 1'):
+        Txtble(DATA, columns=columns)
+
+@pytest.mark.parametrize('columns', [0, -1])
+def test_bad_columns_attr(columns):
+    tbl = Txtble(DATA)
+    tbl.columns = columns
+    with pytest.raises(ValueError, match='columns must be at least 1'):
+        str(tbl)

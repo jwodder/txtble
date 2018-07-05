@@ -2,6 +2,7 @@ import pytest
 from   txtble import Txtble, IndeterminateWidthError
 
 BAD_STRING = '\033[31mRed\033[0m'
+ERRMSG = repr(BAD_STRING) + ': string has indeterminate width'
 
 def test_indeterminate_cell():
     tbl = Txtble(
@@ -11,6 +12,7 @@ def test_indeterminate_cell():
     with pytest.raises(IndeterminateWidthError) as excinfo:
         str(tbl)
     assert excinfo.value.string == BAD_STRING
+    assert str(excinfo.value) == ERRMSG
 
 def test_indeterminate_header():
     tbl = Txtble(
@@ -20,6 +22,7 @@ def test_indeterminate_header():
     with pytest.raises(IndeterminateWidthError) as excinfo:
         str(tbl)
     assert excinfo.value.string == BAD_STRING
+    assert str(excinfo.value) == ERRMSG
 
 def test_indeterminate_header_fill():
     tbl = Txtble(
@@ -30,6 +33,7 @@ def test_indeterminate_header_fill():
     with pytest.raises(IndeterminateWidthError) as excinfo:
         str(tbl)
     assert excinfo.value.string == BAD_STRING
+    assert str(excinfo.value) == ERRMSG
 
 def test_indeterminate_row_fill():
     tbl = Txtble(
@@ -40,6 +44,7 @@ def test_indeterminate_row_fill():
     with pytest.raises(IndeterminateWidthError) as excinfo:
         str(tbl)
     assert excinfo.value.string == BAD_STRING
+    assert str(excinfo.value) == ERRMSG
 
 def test_indeterminate_none_str():
     tbl = Txtble(
@@ -50,6 +55,7 @@ def test_indeterminate_none_str():
     with pytest.raises(IndeterminateWidthError) as excinfo:
         str(tbl)
     assert excinfo.value.string == BAD_STRING
+    assert str(excinfo.value) == ERRMSG
 
 def test_indeterminate_padding():
     tbl = Txtble(
@@ -60,3 +66,4 @@ def test_indeterminate_padding():
     with pytest.raises(IndeterminateWidthError) as excinfo:
         str(tbl)
     assert excinfo.value.string == BAD_STRING
+    assert str(excinfo.value) == ERRMSG
