@@ -1,7 +1,7 @@
 import pytest
-from   txtble import Txtble
+from   txtble import Txtble, UnterminatedColorError, strwidth
 
-@pytest.mark.parametrize('colored,plain', [
+COLORED_STRINGS = [
     ('\033[31mRed\033[0m', 'Red'),
     ('\033[31mRed\033[m', 'Red'),
     ('\033[3;1mIndeterminate\033[0m', 'Indeterminate'),
@@ -11,7 +11,17 @@ from   txtble import Txtble
     ('Misplaced \033[0m sgr0', 'Misplaced  sgr0'),
     ('\033[32mGr\033[34mue\033[m', 'Grue'),
     ('\033[41mExtra\033[00m \033[05mzeroes\033[000m', 'Extra zeroes'),
-])
+]
+
+@pytest.mark.parametrize('colored,plain', COLORED_STRINGS)
+def test_color_aware_len(colored, plain):
+    assert strwidth(colored) == len(plain)
+
+def test_bad_color_aware_len():
+    with pytest.raises(UnterminatedColorError):
+        strwidth('\033[1mNo terminating sgr0')
+
+@pytest.mark.parametrize('colored,plain', COLORED_STRINGS)
 def test_colored_text(colored, plain):
     tbl = Txtble(data=[[colored], [plain]])
     w = len(plain)

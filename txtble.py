@@ -33,9 +33,10 @@ __license__      = 'MIT'
 __url__          = 'https://github.com/jwodder/txtble'
 
 from   collections import namedtuple
+import re
 from   unicodedata import category
 import attr
-from   six         import PY2, integer_types, string_types, text_type
+from   six         import PY2, integer_types, string_types, text_type, wraps
 from   wcwidth     import wcswidth
 
 __all__ = [
@@ -357,3 +358,33 @@ class IndeterminateWidthError(ValueError):
 
     def __str__(self):
         return '{0.string!r}: string has indeterminate width'.format(self)
+
+
+def color_aware(f):
+    @wraps(f)
+    def colored_len(s):
+        s2 = re.sub(
+            COLOR_BEGIN_RGX + '(.*?)' + COLOR_END_RGX,
+            lambda m: re.sub(COLOR_BEGIN_RGX, '', m.group(1)),
+            s,
+        )
+        if re.search(COLOR_BEGIN_RGX, s2):
+            raise UnterminatedColorError(s)
+        return f(re.sub(COLOR_END_RGX, '', s2))
+    return colored_len
+
+strwidth = color_aware(wcswidth)
+
+
+class UnterminatedColorError(ValueError):
+    """
+    Raised when a string contains an ANSI color escape sequence without a reset
+    """
+
+    def __init__(self, string):
+        #: The string in question
+        self.string = string
+        super(UnterminatedColorError, self).__init__(string)
+
+    def __str__(self):
+        return '{0.string!r}: ANSI color sequence not reset'.format(self)
