@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
 import pytest
-from   txtble import Txtble, UnterminatedColorError, strwidth
+from   six     import text_type
+from   wcwidth import wcswidth
+from   txtble  import Txtble, UnterminatedColorError, strwidth
 
 COLORED_STRINGS = [
     ('\033[31mRed\033[0m', 'Red'),
@@ -11,21 +14,26 @@ COLORED_STRINGS = [
     ('Misplaced \033[0m sgr0', 'Misplaced  sgr0'),
     ('\033[32mGr\033[34mue\033[m', 'Grue'),
     ('\033[41mExtra\033[00m \033[05mzeroes\033[000m', 'Extra zeroes'),
+    (u'\033[30;47mPoke\u0301mon\033[m', u'Poke\u0301mon'),
+    (u'\033[37;40mＴｅｓｔ\u3000ｔｅｘｔ\033[m', u'Ｔｅｓｔ\u3000ｔｅｘｔ'),
 ]
 
 @pytest.mark.parametrize('colored,plain', COLORED_STRINGS)
 def test_color_aware_len(colored, plain):
-    assert strwidth(colored) == len(plain)
+    assert strwidth(colored) == wcswidth(plain)
 
 def test_bad_color_aware_len():
-    with pytest.raises(UnterminatedColorError):
-        strwidth('\033[1mNo terminating sgr0')
+    s = '\033[1mNo terminating sgr0'
+    with pytest.raises(UnterminatedColorError) as excinfo:
+        strwidth(s)
+    assert excinfo.value.string == s
+    assert str(excinfo.value) == repr(s) + ': ANSI color sequence not reset'
 
 @pytest.mark.parametrize('colored,plain', COLORED_STRINGS)
 def test_colored_text(colored, plain):
     tbl = Txtble(data=[[colored], [plain]])
-    w = len(plain)
-    assert str(tbl) == (
+    w = wcswidth(plain)
+    assert text_type(tbl) == (
           '+' + '-' * w + '+\n'
         + '|' + colored + '|\n'
         + '|' + plain   + '|\n'
