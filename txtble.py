@@ -50,6 +50,9 @@ __all__ = [
     'Txtble',
 ]
 
+COLOR_BEGIN_RGX = r'\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m'
+COLOR_END_RGX   = r'\033\[(?:[0-9;]*;)?0*m'
+
 class BorderStyle(namedtuple('BorderStyle', '''
     hline    vline
     ulcorner urcorner llcorner lrcorner
