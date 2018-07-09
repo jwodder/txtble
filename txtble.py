@@ -218,7 +218,7 @@ class Txtble(object):
 
         output = []
         rule_args = (
-            [w+wcswidth(left_padding)+wcswidth(right_padding) for w in widths],
+            [w+strwidth(left_padding)+strwidth(right_padding) for w in widths],
             bool(border),
             bool(column_border),
         )
@@ -245,9 +245,9 @@ class Cell(object):
             value = tbl.none_str
         self.lines = to_lines(strify(value))
         for line in self.lines:
-            if wcswidth(line) < 0:
+            if strwidth(line) < 0:
                 raise IndeterminateWidthError(line)
-        self.width = max(map(wcswidth, self.lines))
+        self.width = max(map(strwidth, self.lines))
 
     def box(self, width, height, align):
         if width == 0:
@@ -328,14 +328,14 @@ def mkpadding(s):
         padding = ' ' * s
     else:
         padding = strify(s)
-    if wcswidth(padding) < 0:
+    if strwidth(padding) < 0:
         raise IndeterminateWidthError(padding)
     if len(to_lines(padding)) > 1:
         raise ValueError('padding cannot contain newlines')
     return padding
 
 def afill(s, width, align):
-    spaces = width - wcswidth(s)
+    spaces = width - strwidth(s)
     if align == 'l':
         return s + ' ' * spaces
     elif align == 'c':

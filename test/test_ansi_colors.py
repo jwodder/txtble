@@ -29,7 +29,7 @@ def test_colored_text(colored, plain):
           '+' + '-' * w + '+\n'
         + '|' + colored + '|\n'
         + '|' + plain   + '|\n'
-        + '+' + '-' * w + '+\n'
+        + '+' + '-' * w + '+'
     )
 
 def test_multiline_colors():

@@ -12,7 +12,6 @@ ERRMSG = repr(BAD_STRING) + ': string has indeterminate width'
     '!\b!', '_\bx',  # overstruck printing
     '\x7F',          # delete
     '\033[H\033[J',  # clear screen
-    '\033[1mNo terminating sgr0',
     '\033[?1049h',   # altscreen on
     '\033[?1049l',   # altscreen off
 ])
