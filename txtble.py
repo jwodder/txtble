@@ -243,7 +243,7 @@ class Cell(object):
     def __init__(self, tbl, value):
         if value is None:
             value = tbl.none_str
-        self.lines = to_lines(strify(value))
+        self.lines = carry_over_color(to_lines(strify(value)))
         for line in self.lines:
             if strwidth(line) < 0:
                 raise IndeterminateWidthError(line)
@@ -374,6 +374,24 @@ def color_aware(f):
     return colored_len
 
 strwidth = color_aware(wcswidth)
+
+def carry_over_color(lines):
+    """
+    Given a sequence of lines, for each line that contains a ANSI color escape
+    sequence without a reset, add a reset to the end of that line and copy all
+    colors in effect at the end of it to the beginning of the next line.
+    """
+    lines2 = []
+    in_effect = ''
+    for s in lines:
+        s = in_effect + s
+        in_effect = ''
+        m = re.search(COLOR_BEGIN_RGX + '(?:(?!' + COLOR_END_RGX + ').)*$', s)
+        if m:
+            s += '\033[m'
+            in_effect = ''.join(re.findall(COLOR_BEGIN_RGX, m.group(0)))
+        lines2.append(s)
+    return lines2
 
 
 class UnterminatedColorError(ValueError):
