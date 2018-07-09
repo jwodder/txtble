@@ -70,5 +70,3 @@ Features to Add
       columns
 - cells that span multiple columns and/or rows
 - sorting rows?
-- Wrap `wcswidth()` with code for measuring the width of text with basic ANSI
-  color sequences?

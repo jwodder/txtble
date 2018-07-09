@@ -361,6 +361,12 @@ class IndeterminateWidthError(ValueError):
 
 
 def color_aware(f):
+    """
+    A function decorator for applying to `len` or imitators thereof that strips
+    ANSI color sequences from a string before passing it on.  If any color
+    sequences are not followed by a reset sequence, an `UnterminatedColorError`
+    is raised.
+    """
     @wraps(f)
     def colored_len(s):
         s2 = re.sub(
