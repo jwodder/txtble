@@ -1,3 +1,6 @@
+v0.6.0 (in development)
+-----------------------
+
 v0.5.0 (2018-07-06)
 -------------------
 - Added `align` and `align_fill` options

@@ -26,7 +26,7 @@ stringable things) and get out something nice like::
 Visit <https://github.com/jwodder/txtble> for more information.
 """
 
-__version__      = '0.5.0'
+__version__      = '0.6.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'

@@ -7,6 +7,8 @@ Features to Add
       indicate that a horizontal rule should be added.  Its constructor should
       take an optional `border_style` argument.
     - easy way to change just the column separator in non-rule rows?
+        - Allow `column_border` to be just a string? (since only one string of
+          `BorderStyle` gets used anyway)
     - easy way to change the column separator in all rows?
         - "doubling" ('|' → '||') specific vrules
     - using different column vrules in the header (and/or header rule) than in
@@ -28,6 +30,8 @@ Features to Add
       cell in the middle of a bunch of left-aligned cells)
     - configuring vertical alignment of cells when other cells in the same row
       have more lines
+    - different alignment for headers than for data
+    - per-row alignments
 
 - Cell widths and line-wrapping:
     - parameters for setting minimum, maximum, and exact column widths
@@ -57,6 +61,7 @@ Features to Add
     - Add `Txtble` subclasses with default values configured for various common
       types of text tables?
         - cf. `tabulate`'s `tablefmt`
+    - querying the width of a column before showing?
 
 - Parameters for setting exact (and/or min/max?) number of columns
     - adding filler cells to short rows until they reach a certain number of
@@ -65,3 +70,5 @@ Features to Add
       columns
 - cells that span multiple columns and/or rows
 - sorting rows?
+- Wrap `wcswidth()` with code for measuring the width of text with basic ANSI
+  color sequences?
