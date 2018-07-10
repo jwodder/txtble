@@ -180,3 +180,24 @@ def test_align_all_c(align_fill):
         '|December |Turquoise |    Narcissus     |\n'
         '+---------+----------+------------------+'
     )
+
+def test_align_fill_c():
+    tbl = Txtble(DATA, headers=HEADERS, align_fill='c')
+    assert str(tbl) == (
+        '+---------+----------+------------------+\n'
+        '|  Month  |Birthstone|   Birth Flower   |\n'
+        '+---------+----------+------------------+\n'
+        '| January |  Garnet  |    Carnation     |\n'
+        '|February | Amethyst |      Violet      |\n'
+        '|  March  |Aquamarine|     Jonquil      |\n'
+        '|  April  | Diamond  |     Sweetpea     |\n'
+        '|   May   | Emerald  |Lily Of The Valley|\n'
+        '|  June   |  Pearl   |       Rose       |\n'
+        '|  July   |   Ruby   |     Larkspur     |\n'
+        '| August  | Peridot  |    Gladiolus     |\n'
+        '|September| Sapphire |      Aster       |\n'
+        '| October |   Opal   |    Calendula     |\n'
+        '|November |  Topaz   |  Chrysanthemum   |\n'
+        '|December |Turquoise |    Narcissus     |\n'
+        '+---------+----------+------------------+'
+    )

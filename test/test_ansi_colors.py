@@ -65,6 +65,30 @@ def test_multiline_colors():
         '+------------------------------+'
     )
 
+def test_multiline_long_colors():
+    tbl = Txtble([
+        [
+            '\033[1mThe Flower Poem\n'
+            'All of the red\n'
+            'flowers are \033[4mvery bold\n'
+            'green, and\033[m the petals are \033[7mblue\n'
+            'on cyan.  The CMYK\n'
+            'of it all just boggles\n'
+            'the mind.\033[m'
+        ]
+    ])
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|\033[1mThe Flower Poem\033[m               |\n'
+        '|\033[1mAll of the red\033[m                |\n'
+        '|\033[1mflowers are \033[4mvery bold\033[m         |\n'
+        '|\033[1m\033[4mgreen, and\033[m the petals are \033[7mblue\033[m|\n'
+        '|\033[7mon cyan.  The CMYK\033[m            |\n'
+        '|\033[7mof it all just boggles\033[m        |\n'
+        '|\033[7mthe mind.\033[m                     |\n'
+        '+------------------------------+'
+    )
+
 def test_color_none_str():
     tbl = Txtble(
         headers=('repr', 'value'),
