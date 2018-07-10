@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 import pytest
-from   six     import text_type
-from   wcwidth import wcswidth
-from   txtble  import Txtble, UnterminatedColorError, strwidth
+from   six       import text_type
+from   wcwidth   import wcswidth
+from   txtble    import Txtble, UnterminatedColorError, strwidth
+from   test_data import HEADERS, DATA
 
 COLORED_STRINGS = [
     ('\033[31mRed\033[0m', 'Red'),
@@ -62,4 +63,95 @@ def test_multiline_colors():
         '|\033[36m\033[35m\033[33m\033[30mof it all\033[m just \033[40;34;46;0;7mboggles\033[m        |\n'
         '|\033[40;34;46;0;7mthe mind\033[0m.                     |\n'
         '+------------------------------+'
+    )
+
+def test_color_none_str():
+    tbl = Txtble(
+        headers=('repr', 'value'),
+        data=[
+            ("''", ''),
+            ('None', None),
+            ("'None'", 'None'),
+        ],
+        none_str='\033[31mRed\ntext\033[0m',
+    )
+    assert str(tbl) == (
+        '+------+-----+\n'
+        '|repr  |value|\n'
+        '+------+-----+\n'
+        "|''    |     |\n"
+        "|None  |\033[31mRed\033[m  |\n"
+        "|      |\033[31mtext\033[0m |\n"
+        "|'None'|None |\n"
+        '+------+-----+'
+    )
+
+def test_color_row_fill():
+    tbl = Txtble(
+        [
+            ['1', '1'],
+            ['Z_6', '1', 'x', 'x^2', 'x^3', 'x^4', 'x^5'],
+            ['S_3', '1', 'a', 'b', 'aba', 'ba', 'ab'],
+            ['Z_4', '1', 'x', 'x^2', 'x^3'],
+            ['V_4', '1', 'a', 'b', 'ab'],
+        ],
+        row_fill='\033[31mRed\ntext\033[0m',
+    )
+    assert str(tbl) == (
+        '+---+-+----+----+----+----+----+\n'
+        '|1  |1|\033[31mRed\033[m |\033[31mRed\033[m |\033[31mRed\033[m |\033[31mRed\033[m |\033[31mRed\033[m |\n'
+        '|   | |\033[31mtext\033[0m|\033[31mtext\033[0m|\033[31mtext\033[0m|\033[31mtext\033[0m|\033[31mtext\033[0m|\n'
+        '|Z_6|1|x   |x^2 |x^3 |x^4 |x^5 |\n'
+        '|S_3|1|a   |b   |aba |ba  |ab  |\n'
+        '|Z_4|1|x   |x^2 |x^3 |\033[31mRed\033[m |\033[31mRed\033[m |\n'
+        '|   | |    |    |    |\033[31mtext\033[0m|\033[31mtext\033[0m|\n'
+        '|V_4|1|a   |b   |ab  |\033[31mRed\033[m |\033[31mRed\033[m |\n'
+        '|   | |    |    |    |\033[31mtext\033[0m|\033[31mtext\033[0m|\n'
+        '+---+-+----+----+----+----+----+'
+    )
+
+def test_color_header_fill():
+    tbl = Txtble(
+        [
+            ['1', '1'],
+            ['Z_6', '1', 'x', 'x^2', 'x^3', 'x^4', 'x^5'],
+            ['S_3', '1', 'a', 'b', 'aba', 'ba', 'ab'],
+            ['Z_4', '1', 'x', 'x^2', 'x^3'],
+            ['V_4', '1', 'a', 'b', 'ab'],
+        ],
+        header_fill = '\033[31mRed\ntext\033[0m',
+        headers     = ('Group', 'Elements'),
+    )
+    assert str(tbl) == (
+        '+-----+--------+----+----+----+----+----+\n'
+        '|Group|Elements|\033[31mRed\033[m |\033[31mRed\033[m |\033[31mRed\033[m |\033[31mRed\033[m |\033[31mRed\033[m |\n'
+        '|     |        |\033[31mtext\033[0m|\033[31mtext\033[0m|\033[31mtext\033[0m|\033[31mtext\033[0m|\033[31mtext\033[0m|\n'
+        '+-----+--------+----+----+----+----+----+\n'
+        '|1    |1       |    |    |    |    |    |\n'
+        '|Z_6  |1       |x   |x^2 |x^3 |x^4 |x^5 |\n'
+        '|S_3  |1       |a   |b   |aba |ba  |ab  |\n'
+        '|Z_4  |1       |x   |x^2 |x^3 |    |    |\n'
+        '|V_4  |1       |a   |b   |ab  |    |    |\n'
+        '+-----+--------+----+----+----+----+----+'
+    )
+
+def test_color_padding():
+    tbl = Txtble(DATA, headers=HEADERS, padding='\033[31m-\033[m')
+    assert str(tbl) == (
+        '+-----------+------------+--------------------+\n'
+        '|\033[31m-\033[mMonth    \033[31m-\033[m|\033[31m-\033[mBirthstone\033[31m-\033[m|\033[31m-\033[mBirth Flower      \033[31m-\033[m|\n'
+        '+-----------+------------+--------------------+\n'
+        '|\033[31m-\033[mJanuary  \033[31m-\033[m|\033[31m-\033[mGarnet    \033[31m-\033[m|\033[31m-\033[mCarnation         \033[31m-\033[m|\n'
+        '|\033[31m-\033[mFebruary \033[31m-\033[m|\033[31m-\033[mAmethyst  \033[31m-\033[m|\033[31m-\033[mViolet            \033[31m-\033[m|\n'
+        '|\033[31m-\033[mMarch    \033[31m-\033[m|\033[31m-\033[mAquamarine\033[31m-\033[m|\033[31m-\033[mJonquil           \033[31m-\033[m|\n'
+        '|\033[31m-\033[mApril    \033[31m-\033[m|\033[31m-\033[mDiamond   \033[31m-\033[m|\033[31m-\033[mSweetpea          \033[31m-\033[m|\n'
+        '|\033[31m-\033[mMay      \033[31m-\033[m|\033[31m-\033[mEmerald   \033[31m-\033[m|\033[31m-\033[mLily Of The Valley\033[31m-\033[m|\n'
+        '|\033[31m-\033[mJune     \033[31m-\033[m|\033[31m-\033[mPearl     \033[31m-\033[m|\033[31m-\033[mRose              \033[31m-\033[m|\n'
+        '|\033[31m-\033[mJuly     \033[31m-\033[m|\033[31m-\033[mRuby      \033[31m-\033[m|\033[31m-\033[mLarkspur          \033[31m-\033[m|\n'
+        '|\033[31m-\033[mAugust   \033[31m-\033[m|\033[31m-\033[mPeridot   \033[31m-\033[m|\033[31m-\033[mGladiolus         \033[31m-\033[m|\n'
+        '|\033[31m-\033[mSeptember\033[31m-\033[m|\033[31m-\033[mSapphire  \033[31m-\033[m|\033[31m-\033[mAster             \033[31m-\033[m|\n'
+        '|\033[31m-\033[mOctober  \033[31m-\033[m|\033[31m-\033[mOpal      \033[31m-\033[m|\033[31m-\033[mCalendula         \033[31m-\033[m|\n'
+        '|\033[31m-\033[mNovember \033[31m-\033[m|\033[31m-\033[mTopaz     \033[31m-\033[m|\033[31m-\033[mChrysanthemum     \033[31m-\033[m|\n'
+        '|\033[31m-\033[mDecember \033[31m-\033[m|\033[31m-\033[mTurquoise \033[31m-\033[m|\033[31m-\033[mNarcissus         \033[31m-\033[m|\n'
+        '+-----------+------------+--------------------+'
     )
