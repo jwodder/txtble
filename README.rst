@@ -47,10 +47,10 @@ stringable things) and get out something nice like::
 Features:
 
 - ANSI color aware
-- Unicode wide character & combining character aware
-- Customize the characters used for drawing borders
+- Unicode fullwidth & combining character aware
+- Customize characters used for drawing borders
 - Left-align, center, and right-align individual columns
-- Control inter-row and inter-column borders
+- Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
 - Pad cells on the left & right
 
