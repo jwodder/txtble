@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from six       import text_type
-from txtble    import Txtble, color_aware
+from txtble    import Txtble, with_color_stripped
 from test_data import HEADERS, DATA, TABLE
 
 def test_custom_len_func_old_not_called(mocker):
@@ -42,7 +42,10 @@ def test_builtin_len_func_ansi():
     )
 
 def test_color_aware_len_func_ansi():
-    tbl = Txtble([['\033[31mRed\033[0m'], ['Red']], len_func=color_aware(len))
+    tbl = Txtble(
+        [['\033[31mRed\033[0m'], ['Red']],
+        len_func=with_color_stripped(len),
+    )
     assert str(tbl) == (
         '+---+\n'
         '|\033[31mRed\033[0m|\n'

@@ -84,7 +84,7 @@ def mkpadding(s, len_func):
         raise ValueError('padding cannot contain newlines')
     return padding
 
-def color_aware(f):
+def with_color_stripped(f):
     """
     A function decorator for applying to `len` or imitators thereof that strips
     ANSI color sequences from a string before passing it on.  If any color
@@ -103,7 +103,7 @@ def color_aware(f):
         return f(re.sub(COLOR_END_RGX, '', s2))
     return colored_len
 
-strwidth = color_aware(wcswidth)
+strwidth = with_color_stripped(wcswidth)
 
 def carry_over_color(lines):
     """

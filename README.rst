@@ -304,6 +304,13 @@ constructor or as attributes on a ``Txtble`` instance::
    integer (to insert that many space characters) or a string.  If a string, it
    may not contain any newlines.  ``left_padding`` overrides ``padding``.
 
+``len_func``
+   The function to use for calculating how many terminal cells wide a string
+   is; it should take one string argument and return a width.  Returning a
+   negative width causes ``Txtble`` to raise an ``IndeterminateWidthError``.
+   The default value is ``with_color_stripped(wcwidth.wcswidth)`` (See "`Other
+   <other_>`_" below).
+
 ``none_str=''``
    The string to display in place of `None` values (Setting ``none_str=None``
    is the same as setting it to ``'None'``)
@@ -423,6 +430,31 @@ the following rules:
   as a space character).
 - All strings other than ``hline`` must be the same width.
 - No string may contain a newline.
+
+
+.. _other:
+
+Other
+-----
+
+``IndeterminateWidthError``
+   Subclass of ``ValueError``.  Raised when a string is reported as having
+   negative/indeterminate width.  (For the default ``len_func``, this happens
+   when the string contains a DEL or a C0 or C1 control character other than a
+   tab, newline, or ANSI color escape sequence.)  The string in question is
+   available as the exception's ``string`` attribute.
+
+``UnterminatedColorError``
+   Subclass of ``ValueError``.  Raised by ``with_color_stripped`` upon
+   encountering an ANSI color escape sequence that is not eventually terminated
+   by a reset/sgr0 sequence.  The string in question is available as the
+   exception's ``string`` attribute.
+
+``with_color_stripped``
+   A function decorator for applying to ``len`` or imitators thereof that
+   strips ANSI color sequences from a single string argument before passing it
+   on.  If any color sequences are not followed by a reset sequence, an
+   ``UnterminatedColorError`` is raised.
 
 
 Unicode in Python 2
