@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from six       import text_type
 from txtble    import Txtble, color_aware
 from test_data import HEADERS, DATA, TABLE
 
@@ -44,4 +46,37 @@ def test_color_aware_len_func_ansi():
         '|\033[31mRed\033[0m|\n'
         '|Red|\n'
         '+---+'
+    )
+
+def test_fullwidth_builtin_len_func():
+    tbl = Txtble(
+        [
+            [u'Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ'],
+            ['Lorem ipsum dolor sit amet'],
+        ],
+        len_func=len,
+    )
+    assert text_type(tbl) == (
+        u'+--------------------------+\n'
+        u'|Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ|\n'
+        u'|Lorem ipsum dolor sit amet|\n'
+        u'+--------------------------+'
+    )
+
+def test_combining_builtin_len_func():
+    s = (
+        u'L\u0301o\u0301r\u0301e\u0301m\u0301'
+        u' i\u0301p\u0301s\u0301u\u0301m\u0301'
+        u' d\u0301o\u0301l\u0301o\u0301r\u0301'
+        u' s\u0301i\u0301t\u0301'
+        u' a\u0301m\u0301e\u0301t\u0301'
+    )
+    s2 = 'Lorem ipsum dolor sit amet'
+    tbl = Txtble([[s], [s2]], len_func=len)
+    w = len(s)
+    assert text_type(tbl) == (
+          '+' + '-' * w + '+\n'
+        + '|' + s       + '|\n'
+        + '|' + s2 + ' ' * s.count('\u0301') + '|\n'
+        + '+' + '-' * w + '+'
     )
