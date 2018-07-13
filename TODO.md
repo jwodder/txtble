@@ -50,7 +50,6 @@ Features to Add
       table's headers
         - specifying a mapping from dict keys to headers so that they don't
           have to use the exact same strings?
-    - specifying a custom function for calculating text width
     - specifying a custom function for line wrapping
         - The default wrapping function should use the specified width function
     - manipulating (editing, deleting, etc.) rows & cells that have already

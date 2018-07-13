@@ -31,6 +31,7 @@ from .border_style import (
 )
 from .classes      import Txtble
 from .errors       import IndeterminateWidthError, UnterminatedColorError
+from .util         import color_aware
 
 __version__      = '0.7.0.dev1'
 __author__       = 'John Thorvald Wodder II'
@@ -49,4 +50,5 @@ __all__ = [
     'LIGHT_BORDERS',
     'Txtble',
     'UnterminatedColorError',
+    'color_aware',
 ]

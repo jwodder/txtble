@@ -4,13 +4,15 @@ from txtble    import Txtble, color_aware
 from test_data import HEADERS, DATA, TABLE
 
 def test_custom_len_func_old_not_called(mocker):
-    strwidth = mocker.patch('txtble.strwidth')
+    strwidth = mocker.patch('txtble.classes.strwidth')
     tbl = Txtble(DATA, headers=HEADERS, len_func=len)
     assert str(tbl) == TABLE
     assert not strwidth.called
 
 def test_constant_len_func():
-    tbl = Txtble(DATA, headers=HEADERS, len_func=lambda _: 5)
+    tbl = Txtble(DATA, headers=HEADERS, len_func=lambda s: 5 if s else 0)
+    # The `if s` check prevents the left & right padding from adding to the
+    # hrule width, which would just make for a confusing test.
     assert str(tbl) == (
         '+-----+-----+-----+\n'
         '|Month|Birthstone|Birth Flower|\n'
@@ -77,6 +79,6 @@ def test_combining_builtin_len_func():
     assert text_type(tbl) == (
           '+' + '-' * w + '+\n'
         + '|' + s       + '|\n'
-        + '|' + s2 + ' ' * s.count('\u0301') + '|\n'
+        + '|' + s2 + ' ' * s.count(u'\u0301') + '|\n'
         + '+' + '-' * w + '+'
     )

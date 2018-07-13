@@ -2,8 +2,8 @@ import attr
 from   six           import string_types, text_type
 from   .border_style import BorderStyle, ASCII_BORDERS
 from   .errors       import IndeterminateWidthError
-from   .util         import afill, carry_over_color, join_cells, mkpadding, \
-                            strify, strwidth, to_len, to_lines
+from   .util         import carry_over_color, join_cells, mkpadding, strify, \
+                            strwidth, to_len, to_lines
 
 @attr.s
 class Txtble(object):
@@ -18,6 +18,7 @@ class Txtble(object):
     header_fill   = attr.ib(default=None)
     headers       = attr.ib(default=None, converter=attr.converters.optional(list))
     left_padding  = attr.ib(default=None)
+    len_func      = attr.ib(default=strwidth)
     none_str      = attr.ib(default='')
     padding       = attr.ib(default=0)
     right_padding = attr.ib(default=None)
@@ -80,15 +81,15 @@ class Txtble(object):
                 # This happens when there are no data rows
                 widths = [h.width for h in headers]
 
-        padding = mkpadding(self.padding)
+        padding = mkpadding(self.padding, self.len_func)
         if self.left_padding is None:
             left_padding = padding
         else:
-            left_padding = mkpadding(self.left_padding)
+            left_padding = mkpadding(self.left_padding, self.len_func)
         if self.right_padding is None:
             right_padding = padding
         else:
-            right_padding = mkpadding(self.right_padding)
+            right_padding = mkpadding(self.right_padding, self.len_func)
 
         if not self.border:
             border = None
@@ -139,7 +140,10 @@ class Txtble(object):
 
         output = []
         rule_args = (
-            [w+strwidth(left_padding)+strwidth(right_padding) for w in widths],
+            [
+                w + self.len_func(left_padding) + self.len_func(right_padding)
+                for w in widths
+            ],
             bool(border),
             bool(column_border),
         )
@@ -166,13 +170,25 @@ class Cell(object):
             value = tbl.none_str
         self.lines = carry_over_color(to_lines(strify(value)))
         for line in self.lines:
-            if strwidth(line) < 0:
+            if tbl.len_func(line) < 0:
                 raise IndeterminateWidthError(line)
-        self.width = max(map(strwidth, self.lines))
+        self.width = max(map(tbl.len_func, self.lines))
+        self.len_func = tbl.len_func
 
     def box(self, width, height, align):
         if width == 0:
             lines = list(self.lines)
         else:
-            lines = [afill(line, width, align) for line in self.lines]
+            lines = [self.afill(line, width, align) for line in self.lines]
         return to_len(lines, height, ' ' * width)
+
+    def afill(self, s, width, align):
+        spaces = width - self.len_func(s)
+        if align == 'l':
+            return s + ' ' * spaces
+        elif align == 'c':
+            return ' ' * (spaces // 2) + s + ' ' * ((spaces+1) // 2)
+        elif align == 'r':
+            return ' ' * spaces + s
+        else:
+            raise ValueError('{!r}: invalid alignment specifier'.format(align))

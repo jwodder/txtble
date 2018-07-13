@@ -71,29 +71,18 @@ def strify(s):
         s = ' ' + s
     return s.expandtabs()
 
-def mkpadding(s):
+def mkpadding(s, len_func):
     if not s:
         padding = ''
     elif isinstance(s, integer_types):
         padding = ' ' * s
     else:
         padding = strify(s)
-    if strwidth(padding) < 0:
+    if len_func(padding) < 0:
         raise IndeterminateWidthError(padding)
     if len(to_lines(padding)) > 1:
         raise ValueError('padding cannot contain newlines')
     return padding
-
-def afill(s, width, align):
-    spaces = width - strwidth(s)
-    if align == 'l':
-        return s + ' ' * spaces
-    elif align == 'c':
-        return ' ' * (spaces // 2) + s + ' ' * ((spaces+1) // 2)
-    elif align == 'r':
-        return ' ' * spaces + s
-    else:
-        raise ValueError('{!r}: invalid alignment specifier'.format(align))
 
 def color_aware(f):
     """
