@@ -30,7 +30,7 @@ Features to Add
       cell in the middle of a bunch of left-aligned cells)
     - configuring vertical alignment of cells when other cells in the same row
       have more lines
-    - different alignment for headers than for data
+    - different horizontal & vertical alignment for headers than for data
     - per-row alignments
 
 - Cell widths and line-wrapping:

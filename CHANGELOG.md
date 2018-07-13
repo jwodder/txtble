@@ -1,3 +1,6 @@
+v0.7.0 (in development)
+-----------------------
+
 v0.6.0 (2018-07-11)
 -------------------
 - Added ANSI color escape sequence support

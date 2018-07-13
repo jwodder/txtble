@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import pytest
-from   six       import text_type
-from   wcwidth   import wcswidth
-from   txtble    import Txtble, UnterminatedColorError, strwidth
-from   test_data import HEADERS, DATA
+from   six         import text_type
+from   wcwidth     import wcswidth
+from   txtble      import Txtble, UnterminatedColorError
+from   txtble.util import strwidth
+from   test_data   import HEADERS, DATA
 
 COLORED_STRINGS = [
     ('\033[31mRed\033[0m', 'Red'),

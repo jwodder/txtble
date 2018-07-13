@@ -1,6 +1,6 @@
 import re
 import pytest
-from   txtble import COLOR_BEGIN_RGX, COLOR_END_RGX
+from   txtble.util import COLOR_BEGIN_RGX, COLOR_END_RGX
 
 BEGIN_COLORS = [
     '\033[31m',
