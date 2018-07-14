@@ -1,4 +1,11 @@
 - Add docstrings
+- Better handling of Unicode when wrapping text:
+    - Don't break across zero-width joiner, word joiner, or non-breaking space
+    - Don't break in the middle of combining character sequences
+        - Don't break on a space or hyphen followed by combining characters
+    - Break on more than just spaces and hyphens?
+    - cf. the Unicode line breaking algorithm
+    - cf. `uniseg` package
 
 Features to Add
 ---------------

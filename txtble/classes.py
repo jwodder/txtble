@@ -1,30 +1,34 @@
 import attr
-from   six           import string_types, text_type
+from   six           import integer_types, string_types, text_type
 from   .border_style import BorderStyle, ASCII_BORDERS
 from   .errors       import IndeterminateWidthError
 from   .util         import carry_over_color, join_cells, mkpadding, strify, \
-                            strwidth, to_len, to_lines
+                            strwidth, to_len, to_lines, wrap
 
 @attr.s
 class Txtble(object):
-    data          = attr.ib(default=(), converter=lambda d: list(map(list, d)))
-    align         = attr.ib(default=())
-    align_fill    = attr.ib(default='l')
-    border        = attr.ib(default=True)
-    border_style  = attr.ib(default=ASCII_BORDERS)
-    column_border = attr.ib(default=True)
-    columns       = attr.ib(default=None)
-    header_border = attr.ib(default=None)
-    header_fill   = attr.ib(default=None)
-    headers       = attr.ib(default=None, converter=attr.converters.optional(list))
-    left_padding  = attr.ib(default=None)
-    len_func      = attr.ib(default=strwidth)
-    none_str      = attr.ib(default='')
-    padding       = attr.ib(default=0)
-    right_padding = attr.ib(default=None)
-    row_border    = attr.ib(default=False)
-    row_fill      = attr.ib(default='')
-    rstrip        = attr.ib(default=True)
+    data             = attr.ib(default=(), converter=lambda d: list(map(list, d)))
+    align            = attr.ib(default=())
+    align_fill       = attr.ib(default='l')
+    border           = attr.ib(default=True)
+    border_style     = attr.ib(default=ASCII_BORDERS)
+    break_long_words = attr.ib(default=True)
+    break_on_hyphens = attr.ib(default=True)
+    column_border    = attr.ib(default=True)
+    columns          = attr.ib(default=None)
+    header_border    = attr.ib(default=None)
+    header_fill      = attr.ib(default=None)
+    headers          = attr.ib(default=None, converter=attr.converters.optional(list))
+    left_padding     = attr.ib(default=None)
+    len_func         = attr.ib(default=strwidth)
+    none_str         = attr.ib(default='')
+    padding          = attr.ib(default=0)
+    right_padding    = attr.ib(default=None)
+    row_border       = attr.ib(default=False)
+    row_fill         = attr.ib(default='')
+    rstrip           = attr.ib(default=True)
+    width_fill       = attr.ib(default=None)
+    widths           = attr.ib(default=())
 
     @row_fill.validator
     def _row_fill_validator(self, attrib, value):
@@ -73,8 +77,22 @@ class Txtble(object):
             else:
                 columns = max(map(len, data)) if data else 0
         data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
-        widths = [max(c.width for c in col) for col in zip(*data)]
+
+        if isinstance(self.widths, integer_types):
+            wrap_widths = [self.widths] * columns
+        else:
+            wrap_widths = to_len(list(self.widths), columns, self.width_fill)
+        for row in data:
+            for c,w in zip(row, wrap_widths):
+                c.wrap(w)
+
+        widths = [
+            max(w or 0, max(c.width for c in col))
+            for w,col in zip(wrap_widths, zip(*data))
+        ]
         if headers is not None:
+            for h,w in zip(headers, wrap_widths):
+                h.wrap(w)
             if widths:
                 widths = [max(w, h.width) for (w,h) in zip(widths, headers)]
             else:
@@ -173,7 +191,7 @@ class Cell(object):
             if tbl.len_func(line) < 0:
                 raise IndeterminateWidthError(line)
         self.width = max(map(tbl.len_func, self.lines))
-        self.len_func = tbl.len_func
+        self.table = tbl
 
     def box(self, width, height, align):
         if width == 0:
@@ -183,7 +201,7 @@ class Cell(object):
         return to_len(lines, height, ' ' * width)
 
     def afill(self, s, width, align):
-        spaces = width - self.len_func(s)
+        spaces = width - self.table.len_func(s)
         if align == 'l':
             return s + ' ' * spaces
         elif align == 'c':
@@ -192,3 +210,25 @@ class Cell(object):
             return ' ' * spaces + s
         else:
             raise ValueError('{!r}: invalid alignment specifier'.format(align))
+
+    def wrap(self, width):
+        if width is None:
+            return
+        elif width <= 0:
+            raise ValueError(width)
+        elif not isinstance(width, integer_types):
+            raise TypeError(width)
+        self.lines = [
+            wrapped
+            for line in self.lines
+            for wrapped in wrap(
+                line, width,
+                len_func         = self.table.len_func,
+                break_long_words = self.table.break_long_words,
+                break_on_hyphens = self.table.break_on_hyphens,
+            )
+        ]
+        for line in self.lines:
+            if self.table.len_func(line) < 0:
+                raise IndeterminateWidthError(line)
+        self.width = max(map(self.table.len_func, self.lines))

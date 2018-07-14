@@ -1,3 +1,4 @@
+from   itertools   import cycle
 import re
 from   unicodedata import category
 from   six         import PY2, integer_types, string_types, text_type, wraps
@@ -122,3 +123,85 @@ def carry_over_color(lines):
             in_effect = ''.join(re.findall(COLOR_BEGIN_RGX, m.group(0)))
         lines2.append(s)
     return lines2
+
+def wrap(s, width, len_func=strwidth, break_long_words=True,
+                                      break_on_hyphens=True):
+    def length(ss):
+        try:
+            return len_func(ss)
+        except UnterminatedColorError:
+            # Appending sgr0 unconditionally is the wrong thing to do when
+            # len_func is set to, say, the builtin `len`.
+            return len_func(ss + '\033[m')
+    if not s:
+        return [s]
+    wrapped = []
+    break_point = r'-| +' if break_on_hyphens else r' +'
+    while length(s) > width:
+        for m in reversed(list(re.finditer(break_point, s))):
+            pre = s[:m.end()].rstrip(' ')
+            post = s[m.end():]
+            assert not re.search(r'\033[^m]*$', pre), \
+                'Space or hyphen inside ANSI sequence'
+                ### XXX: Problem: What if a custom len_func accepts ESC not
+                ### followed by 'm'?
+            if 0 <= length(pre) <= width:
+                wrapped.append(pre)
+                s = post
+                break
+        else:
+            if break_long_words:
+                # Do a binary search on valid breakpoints until we find the
+                # longest initial substring shorter than `width`
+                units = breakable_units(s)
+                low = 0
+                high = len(units)
+                i = high // 2
+                while True:
+                    pre = ''.join(units[:i])
+                    w = length(pre)
+                    if w < 0:
+                        raise IndeterminateWidthError(s)
+                    elif w < width:
+                        if length(''.join(units[:i+1])) > width:
+                            break
+                        else:
+                            low = i
+                    elif w == width:
+                        break
+                    elif w > width:
+                        high = i
+                    i = (low + high) // 2
+                wrapped.append(pre)
+                s = ''.join(units[i:])
+            else:
+                # Break at the first hyphen or space, if any
+                m = re.search(break_point, s)
+                if m:
+                    wrapped.append(s[:m.end()].rstrip(' '))
+                    s = s[m.end():]
+                else:
+                    # `s` is just one long, unbreakable word; break out of
+                    # the `for` loop
+                    break
+    if s:
+        wrapped.append(s)
+    return carry_over_color(wrapped)
+
+def breakable_units(s):
+    """
+    Break a string into a list of substrings, breaking at each point that it is
+    permissible for `wrap(..., break_long_words=True)` to break; i.e., _not_
+    breaking in the middle of ANSI color escape sequences.
+    """
+    units = []
+    for run, color in zip(
+        re.split('(' + COLOR_BEGIN_RGX + '|' + COLOR_END_RGX + ')', s),
+        cycle([False, True]),
+    ):
+        if color:
+            units.append(run)
+        else:
+            ### TODO: Keep combining characters together
+            units.extend(run)
+    return units

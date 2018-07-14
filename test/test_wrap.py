@@ -94,6 +94,28 @@ def test_wrap_long_hyphenated_word(break_long):
         '+--------------------+'
     )
 
+@pytest.mark.parametrize('break_long', [True, False])
+def test_wrap_long_multi_hyphenated_word(break_long):
+    ### XXX: textwrap.wrap would insert a break before the '---'; should txtble
+    ### do likewise?
+    tbl = Txtble(
+        [[LONG_STRING], ['anti-dis-establish---ment-ari-an-ism']],
+        break_long_words = break_long,
+        row_border       = True,
+        widths           = [20],
+    )
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|Lorem ipsum dolor   |\n'
+        '|sit amet,           |\n'
+        '|consectetur         |\n'
+        '|adipisicing elit    |\n'
+        '+--------------------+\n'
+        '|anti-dis-establish--|\n'
+        '|-ment-ari-an-ism    |\n'
+        '+--------------------+'
+    )
+
 def test_wrap_long_hyphenated_word_no_break_on_hyphens():
     tbl = Txtble(
         [[LONG_STRING], ['anti-dis-establish-ment-ari-an-ism']],
@@ -204,7 +226,7 @@ def test_wrap_running_color():
                 '\033[31mLorem'
                 ' \033[32mipsum'
                 ' \033[33mdolor'
-                ' \033[34msit \033[35mamet'
+                ' \033[34msit \033[35mamet,'
                 ' \033[36mconsectetur'
                 ' \033[41madipisicing'
                 ' \033[42melit\033[m'
@@ -215,7 +237,7 @@ def test_wrap_running_color():
     assert str(tbl) == (
         '+--------------------+\n'
         '|\033[31mLorem \033[32mipsum \033[33mdolor\033[m   |\n'
-        '|\033[31m\033[32m\033[33m\033[34msit \033[35mamet\033[m,           |\n'
+        '|\033[31m\033[32m\033[33m\033[34msit \033[35mamet,\033[m           |\n'
         '|\033[31m\033[32m\033[33m\033[34m\033[35m\033[36mconsectetur\033[m         |\n'
         '|\033[31m\033[32m\033[33m\033[34m\033[35m\033[36m\033[41madipisicing \033[42melit\033[m    |\n'
         '+--------------------+'
@@ -359,7 +381,7 @@ def test_wrap_padding():
 @pytest.mark.parametrize('width', [-42, 0, '', 'q'])
 def test_invalid_width(s, width):
     tbl = Txtble([[s]], widths=[width])
-    with pytest.raises(ValueError):
+    with pytest.raises((TypeError, ValueError)):
         str(tbl)
 
 def test_wrap_header():
@@ -410,6 +432,71 @@ def test_wrap_header_fill_row_fill():
         '|    |adipisicing elit    |\n'
         '|bar |baz                 |\n'
         '+----+--------------------+'
+    )
+
+def test_wrap_empty():
+    tbl = Txtble([['']], widths=[20])
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|                    |\n'
+        '+--------------------+'
+    )
+
+def test_wrap_long_word_short_words():
+    tbl = Txtble(
+        [['"Antidisestablishmentarianism" is not that hard to spell.']],
+        widths=[20],
+    )
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|"Antidisestablishmen|\n'
+        '|tarianism" is not   |\n'
+        '|that hard to spell. |\n'
+        '+--------------------+'
+    )
+
+def test_wrap_long_word_short_words_no_break_long_words():
+    tbl = Txtble(
+        [['"Antidisestablishmentarianism" is not that hard to spell.']],
+        break_long_words = False,
+        widths           = [20],
+    )
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|"Antidisestablishmentarianism"|\n'
+        '|is not that hard to           |\n'
+        '|spell.                        |\n'
+        '+------------------------------+'
+    )
+
+@pytest.mark.parametrize('hyph_break', [True, False])
+def test_wrap_hyphen_after_width(hyph_break):
+    tbl = Txtble(
+        [['Antidisestablishmentarianism-length words are hard to wrap.']],
+        break_on_hyphens = hyph_break,
+        widths           = [20],
+    )
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|Antidisestablishment|\n'
+        '|arianism-length     |\n'
+        '|words are hard to   |\n'
+        '|wrap.               |\n'
+        '+--------------------+'
+    )
+
+def test_wrap_hyphen_after_width_no_break_long_words():
+    tbl = Txtble(
+        [['Antidisestablishmentarianism-length words are hard to wrap.']],
+        break_long_words = False,
+        widths           = [20],
+    )
+    assert str(tbl) == (
+        '+-----------------------------+\n'
+        '|Antidisestablishmentarianism-|\n'
+        '|length words are             |\n'
+        '|hard to wrap.                |\n'
+        '+-----------------------------+'
     )
 
 # vim:set nowrap:
