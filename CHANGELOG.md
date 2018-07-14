@@ -4,6 +4,9 @@ v0.7.0 (in development)
   calculating text width
 - Added a `with_color_stripped` function decorator for use by custom
   `len_func`s
+- Added `widths` and `width_fill` options for wrapping columns to fixed widths
+- Added `break_long_words` and `break_on_hyphens` options for controlling text
+  wrapping
 
 v0.6.0 (2018-07-11)
 -------------------

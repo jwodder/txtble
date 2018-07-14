@@ -78,7 +78,7 @@ class Txtble(object):
                 columns = max(map(len, data)) if data else 0
         data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
 
-        if isinstance(self.widths, integer_types):
+        if isinstance(self.widths, (integer_types, type(None))):
             wrap_widths = [self.widths] * columns
         else:
             wrap_widths = to_len(list(self.widths), columns, self.width_fill)

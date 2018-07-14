@@ -156,9 +156,10 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
                 units = breakable_units(s)
                 low = 0
                 high = len(units)
-                i = high // 2
-                while True:
+                while low < high:
+                    i = (low + high) // 2
                     pre = ''.join(units[:i])
+                    post = ''.join(units[i:])
                     w = length(pre)
                     if w < 0:
                         raise IndeterminateWidthError(s)
@@ -166,14 +167,15 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
                         if length(''.join(units[:i+1])) > width:
                             break
                         else:
-                            low = i
+                            low = i+1
                     elif w == width:
                         break
                     elif w > width:
                         high = i
-                    i = (low + high) // 2
+                else:
+                    assert False  # pragma: no cover
                 wrapped.append(pre)
-                s = ''.join(units[i:])
+                s = post
             else:
                 # Break at the first hyphen or space, if any
                 m = re.search(break_point, s)

@@ -53,6 +53,7 @@ Features:
 - Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
 - Pad cells on the left & right
+- Wrapping text to fixed widths
 
 
 Installation
@@ -263,6 +264,13 @@ constructor or as attributes on a ``Txtble`` instance::
    their respective options (``border``, ``column_border``, etc.).  See
    "`BorderStyle <borderstyle_>`_" below for more information.
 
+``break_long_words=True``
+   Whether to force a line break in the middle of a word if said word is too
+   long for the column's width
+
+``break_on_hyphens=True``
+   Whether to break on hyphens in addition to whitespace when wrapping text
+
 ``column_border=True``
    Whether to draw a vertical rule between individual columns.
    ``column_border`` may optionally be set to a ``BorderStyle`` instance to set
@@ -342,6 +350,18 @@ constructor or as attributes on a ``Txtble`` instance::
    ``padding`` is omitted when ``border=False`` as there is no end-of-line
    border to align.)  This option is useful if you wish to append text to one
    or more lines of the output and have it appear strictly outside the table.
+
+``width_fill=None``
+   If there are more columns than there are entries in ``widths``, the extra
+   columns will have their widths set to ``width_fill``.
+
+``widths=()``
+   A sequence of integers specifying the width of each column, in order.  Lines
+   wider than the given width will be wrapped; the wrapping can be configured
+   via the ``break_long_words`` and ``break_on_hyphens`` options.  A width of
+   `None` disables wrapping for that column and causes the column's width to be
+   set to the width of the longest line.  ``widths`` may optionally be set to a
+   single width to cause all columns to be that wide.
 
 
 .. _borderstyle:
