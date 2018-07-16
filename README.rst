@@ -48,8 +48,8 @@ Features:
 
 - ANSI color aware
 - Unicode fullwidth & combining character aware
-- Customize characters used for drawing borders
 - Left-align, center, and right-align individual columns
+- Customize characters used for drawing borders
 - Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
 - Pad cells on the left & right
@@ -170,6 +170,49 @@ for extra columns::
     |V_4  |1       |a     |b     |ab    |      |      |
     +-----+--------+------+------+------+------+------+
 
+You can set the widths of columns; long lines will be wrapped to fit::
+
+    >>> tbl = Txtble(
+    ...     headers=['Short Text', 'Long Text'],
+    ...     data=[
+    ...         [
+    ...             'Hi there!',
+    ...             'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+    ...         ]
+    ...     ],
+    ...     widths=[20, 20],
+    ... )
+    >>> print(tbl)
+    +--------------------+--------------------+
+    |Short Text          |Long Text           |
+    +--------------------+--------------------+
+    |Hi there!           |Lorem ipsum dolor   |
+    |                    |sit amet,           |
+    |                    |consectetur         |
+    |                    |adipisicing elit    |
+    +--------------------+--------------------+
+
+You can align column text to the left, right, or center::
+
+    >>> tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', 'l'])
+    >>> print(tbl)
+    +---------+----------+------------------+
+    |    Month|Birthstone|Birth Flower      |
+    +---------+----------+------------------+
+    |  January|  Garnet  |Carnation         |
+    | February| Amethyst |Violet            |
+    |    March|Aquamarine|Jonquil           |
+    |    April| Diamond  |Sweetpea          |
+    |      May| Emerald  |Lily Of The Valley|
+    |     June|  Pearl   |Rose              |
+    |     July|   Ruby   |Larkspur          |
+    |   August| Peridot  |Gladiolus         |
+    |September| Sapphire |Aster             |
+    |  October|   Opal   |Calendula         |
+    | November|  Topaz   |Chrysanthemum     |
+    | December|Turquoise |Narcissus         |
+    +---------+----------+------------------+
+
 Unicode works too, even fullwidth characters and combining characters::
 
     >>> tbl = Txtble(
@@ -187,6 +230,68 @@ Unicode works too, even fullwidth characters and combining characters::
     +--------+--------+
     |Ｗｉｄｅ|Áććéńt́éd́|
     +--------+--------+
+
+You can configure the borders and make them fancy::
+
+    >>> from txtble import ASCII_EQ_BORDERS
+    >>> tbl = Txtble(
+    ...     DATA,
+    ...     headers       = HEADERS,
+    ...     header_border = ASCII_EQ_BORDERS,
+    ...     row_border    = True,
+    ... )
+    >>> print(tbl)
+    +---------+----------+------------------+
+    |Month    |Birthstone|Birth Flower      |
+    +=========+==========+==================+
+    |January  |Garnet    |Carnation         |
+    +---------+----------+------------------+
+    |February |Amethyst  |Violet            |
+    +---------+----------+------------------+
+    |March    |Aquamarine|Jonquil           |
+    +---------+----------+------------------+
+    |April    |Diamond   |Sweetpea          |
+    +---------+----------+------------------+
+    |May      |Emerald   |Lily Of The Valley|
+    +---------+----------+------------------+
+    |June     |Pearl     |Rose              |
+    +---------+----------+------------------+
+    |July     |Ruby      |Larkspur          |
+    +---------+----------+------------------+
+    |August   |Peridot   |Gladiolus         |
+    +---------+----------+------------------+
+    |September|Sapphire  |Aster             |
+    +---------+----------+------------------+
+    |October  |Opal      |Calendula         |
+    +---------+----------+------------------+
+    |November |Topaz     |Chrysanthemum     |
+    +---------+----------+------------------+
+    |December |Turquoise |Narcissus         |
+    +---------+----------+------------------+
+
+... or *very* fancy::
+
+    >>> from txtble import DOUBLE_BORDERS
+    >>> tbl = Txtble(DATA, headers=HEADERS, border_style=DOUBLE_BORDERS)
+    >>> print(tbl.show())
+    ╔═════════╦══════════╦══════════════════╗
+    ║Month    ║Birthstone║Birth Flower      ║
+    ╠═════════╬══════════╬══════════════════╣
+    ║January  ║Garnet    ║Carnation         ║
+    ║February ║Amethyst  ║Violet            ║
+    ║March    ║Aquamarine║Jonquil           ║
+    ║April    ║Diamond   ║Sweetpea          ║
+    ║May      ║Emerald   ║Lily Of The Valley║
+    ║June     ║Pearl     ║Rose              ║
+    ║July     ║Ruby      ║Larkspur          ║
+    ║August   ║Peridot   ║Gladiolus         ║
+    ║September║Sapphire  ║Aster             ║
+    ║October  ║Opal      ║Calendula         ║
+    ║November ║Topaz     ║Chrysanthemum     ║
+    ║December ║Turquoise ║Narcissus         ║
+    ╚═════════╩══════════╩══════════════════╝
+
+See the following documentation for more information:
 
 
 API
