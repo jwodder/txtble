@@ -54,6 +54,7 @@ Features:
 - Set the value used to fill out ragged rows
 - Pad cells on the left & right
 - Wrapping text to fixed widths
+- Configure how `None` values are displayed
 
 
 Installation
@@ -362,6 +363,15 @@ constructor or as attributes on a ``Txtble`` instance::
    `None` disables wrapping for that column and causes the column's width to be
    set to the width of the longest line.  ``widths`` may optionally be set to a
    single width to cause all columns to be that wide.
+
+``wrap_func``
+   The function to use for wrapping long lines; it should take a string and a
+   width and return an iterable of strings.  The default value is a custom
+   function that properly handles fullwidth characters, ANSI color escape
+   sequences, etc.; if your table contains such strings, any user-supplied
+   ``wrap_func`` must be able to handle them as well.  When ``wrap_func`` is
+   set to a user-supplied value, the ``break_long_words`` and
+   ``break_on_hyphens`` options are ignored.
 
 
 .. _borderstyle:

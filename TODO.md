@@ -41,11 +41,10 @@ Features to Add
     - per-row alignments
 
 - Cell widths and line-wrapping:
-    - parameters for setting minimum, maximum, and exact column widths
-    - parameter for setting how to handle overly large fields: let them
-      overflow, truncate them, or line-wrap them
+    - parameters for setting minimum & maximum column widths
     - handling of lines that are still too long (e.g., due to containing a very
-      long word) after wrapping
+      long word) after wrapping: let them overflow or expand the column to
+      contain them
 
 - Showing cells:
     - setting a function to use for stringification of all non-string cell
@@ -57,8 +56,6 @@ Features to Add
       table's headers
         - specifying a mapping from dict keys to headers so that they don't
           have to use the exact same strings?
-    - specifying a custom function for line wrapping
-        - The default wrapping function should use the specified width function
     - manipulating (editing, deleting, etc.) rows & cells that have already
       been added to the Txtble
     - Allow `header_fill` and `row_fill` to be callables that are called

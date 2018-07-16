@@ -7,6 +7,8 @@ v0.7.0 (in development)
 - Added `widths` and `width_fill` options for wrapping columns to fixed widths
 - Added `break_long_words` and `break_on_hyphens` options for controlling text
   wrapping
+- Added a `wrap_func` option, allowing the user to specify a custom function
+  for wrapping text
 
 v0.6.0 (2018-07-11)
 -------------------
