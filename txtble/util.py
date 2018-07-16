@@ -186,9 +186,8 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
                     # `s` is just one long, unbreakable word; break out of
                     # the `for` loop
                     break
-    if s:
-        wrapped.append(s)
-    return carry_over_color(wrapped)
+    wrapped.append(s)
+    return wrapped
 
 def breakable_units(s):
     """

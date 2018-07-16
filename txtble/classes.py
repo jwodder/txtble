@@ -29,6 +29,7 @@ class Txtble(object):
     rstrip           = attr.ib(default=True)
     width_fill       = attr.ib(default=None)
     widths           = attr.ib(default=())
+    wrap_func        = attr.ib(default=None)
 
     @row_fill.validator
     def _row_fill_validator(self, attrib, value):
@@ -218,15 +219,23 @@ class Cell(object):
             raise ValueError(width)
         elif not isinstance(width, integer_types):
             raise TypeError(width)
+        if self.table.wrap_func is None:
+            def wrap_func(s):
+                return carry_over_color(wrap(
+                    s, width,
+                    len_func         = self.table.len_func,
+                    break_long_words = self.table.break_long_words,
+                    break_on_hyphens = self.table.break_on_hyphens,
+                ))
+        else:
+            def wrap_func(s):
+                if self.table.len_func(s) <= width:
+                    return [s]
+                return carry_over_color(
+                    [x.expandtabs() for x in self.table.wrap_func(s, width)]
+                )
         self.lines = [
-            wrapped
-            for line in self.lines
-            for wrapped in wrap(
-                line, width,
-                len_func         = self.table.len_func,
-                break_long_words = self.table.break_long_words,
-                break_on_hyphens = self.table.break_on_hyphens,
-            )
+            wrapped for line in self.lines for wrapped in wrap_func(line)
         ]
         for line in self.lines:
             if self.table.len_func(line) < 0:

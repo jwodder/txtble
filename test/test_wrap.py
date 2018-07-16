@@ -288,6 +288,22 @@ def test_widths_all(width_fill):
         '+--------------------+--------------------+'
     )
 
+@pytest.mark.parametrize('width_fill', [None, 30])
+def test_widths_all_none(width_fill):
+    tbl = Txtble(
+        [[LONG_STRING, LONG_STRING]],
+        width_fill = width_fill,
+        widths     = None,
+    )
+    assert str(tbl) == (
+        '+--------------------------------------------------------'
+        '+--------------------------------------------------------+\n'
+        '|Lorem ipsum dolor sit amet, consectetur adipisicing elit'
+        '|Lorem ipsum dolor sit amet, consectetur adipisicing elit|\n'
+        '+--------------------------------------------------------'
+        '+--------------------------------------------------------+'
+    )
+
 def test_wrap_multiline():
     tbl = Txtble([['Lorem ipsum\n' + LONG_STRING]], widths=[20])
     assert str(tbl) == (
@@ -497,6 +513,28 @@ def test_wrap_hyphen_after_width_no_break_long_words():
         '|length words are             |\n'
         '|hard to wrap.                |\n'
         '+-----------------------------+'
+    )
+
+def test_wrap_even_multiple():
+    tbl = Txtble(
+        [['"The time has come," the Walrus said, "To talk of many things"']],
+        widths=[20],
+    )
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|"The time has come,"|\n'
+        '|the Walrus said, "To|\n'
+        '|talk of many things"|\n'
+        '+--------------------+'
+    )
+
+def test_wrap_before_trailing_space():
+    tbl = Txtble([['"The time has come." ']], widths=[20])
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|"The time has come."|\n'
+        '|                    |\n'
+        '+--------------------+'
     )
 
 # vim:set nowrap:
