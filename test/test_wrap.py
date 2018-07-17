@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 from   six       import text_type
-from   txtble    import Txtble
+from   txtble    import Txtble, IndeterminateWidthError
 from   test_data import HEADERS, DATA
 
 LONG_STRING = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
@@ -53,6 +53,24 @@ def test_wrap_long_word():
         '+--------------------+\n'
         '|antidisestablishment|\n'
         '|arianism            |\n'
+        '+--------------------+'
+    )
+
+def test_wrap_colored_long_word():
+    tbl = Txtble(
+        [[LONG_STRING], ['\033[31mantidisestablishmentarianism\033[m']],
+        row_border = True,
+        widths     = [20],
+    )
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|Lorem ipsum dolor   |\n'
+        '|sit amet,           |\n'
+        '|consectetur         |\n'
+        '|adipisicing elit    |\n'
+        '+--------------------+\n'
+        '|\033[31mantidisestablishment\033[m|\n'
+        '|\033[31marianism\033[m            |\n'
         '+--------------------+'
     )
 
@@ -328,6 +346,18 @@ def test_wrap_fullwidth():
         u'+------------------------------+'
     )
 
+def test_wrap_fullwidth_long_word():
+    tbl = Txtble(
+        [[u'ａｎｔｉｄｉｓｅｓｔａｂｌｉｓｈｍｅｎｔａｒｉａｎｉｓｍ']],
+        widths=[30],
+    )
+    assert text_type(tbl) == (
+        u'+------------------------------+\n'
+        u'|ａｎｔｉｄｉｓｅｓｔａｂｌｉｓ|\n'
+        u'|ｈｍｅｎｔａｒｉａｎｉｓｍ    |\n'
+        u'+------------------------------+'
+    )
+
 def test_wrap_combining():
     tbl = Txtble(
         [
@@ -535,6 +565,27 @@ def test_wrap_before_trailing_space():
         '|"The time has come."|\n'
         '|                    |\n'
         '+--------------------+'
+    )
+
+def test_wrap_bad_len_func():
+    width = 20
+    def len_func(s):
+        return -1 if 0 < len(s) <= width else len(s)
+    tbl = Txtble([[LONG_STRING]], len_func=len_func, widths=[width])
+    with pytest.raises(IndeterminateWidthError):
+        str(tbl)
+
+def test_wrap_implementation_bsearch_boundary():
+    """
+    Test a boundary condition in the implementation of the long-word-splitting
+    algorithm
+    """
+    tbl = Txtble([[u'antidisestablishme\u0301n\uFF54arianism']], widths=[20])
+    assert text_type(tbl) == (
+        u'+--------------------+\n'
+        u'|antidisestablishme\u0301n |\n'
+        u'|\uFF54arianism          |\n'
+        u'+--------------------+'
     )
 
 # vim:set nowrap:

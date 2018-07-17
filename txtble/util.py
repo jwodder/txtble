@@ -170,7 +170,8 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
                             low = i+1
                     elif w == width:
                         break
-                    elif w > width:
+                    else:
+                        assert w > width
                         high = i
                 else:
                     assert False  # pragma: no cover
