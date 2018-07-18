@@ -1,5 +1,5 @@
-v0.7.0 (in development)
------------------------
+v0.7.0 (2017-07-18)
+-------------------
 - Added a `len_func` option, allowing the user to specify a custom function for
   calculating text width
 - Added a `with_color_stripped` function decorator for use by custom
