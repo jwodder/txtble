@@ -146,7 +146,7 @@ def test_ulborder():
         '|September|Sapphire  |Aster\n'
         '|October  |Opal      |Calendula\n'
         '|November |Topaz     |Chrysanthemum\n'
-        '|December |Turquoise |Narcissus\n'
+        '|December |Turquoise |Narcissus'
     )
 
 def test_no_right_border():

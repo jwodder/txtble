@@ -1,9 +1,9 @@
 import attr
 from   six           import integer_types, string_types, text_type
-from   .border_style import BorderStyle, ASCII_BORDERS
+from   .border_style import ASCII_BORDERS
 from   .errors       import IndeterminateWidthError
 from   .util         import carry_over_color, join_cells, mkpadding, strify, \
-                            strwidth, to_len, to_lines, wrap
+                            strwidth, to_len, to_lines, wrap, first_style
 
 @attr.s
 class Txtble(object):
@@ -12,6 +12,7 @@ class Txtble(object):
     align_fill       = attr.ib(default='l')
     border           = attr.ib(default=True)
     border_style     = attr.ib(default=ASCII_BORDERS)
+    bottom_border    = attr.ib(default=None)
     break_long_words = attr.ib(default=True)
     break_on_hyphens = attr.ib(default=True)
     column_border    = attr.ib(default=True)
@@ -19,14 +20,17 @@ class Txtble(object):
     header_border    = attr.ib(default=None)
     header_fill      = attr.ib(default=None)
     headers          = attr.ib(default=None, converter=attr.converters.optional(list))
+    left_border      = attr.ib(default=None)
     left_padding     = attr.ib(default=None)
     len_func         = attr.ib(default=strwidth)
     none_str         = attr.ib(default='')
     padding          = attr.ib(default=0)
+    right_border     = attr.ib(default=None)
     right_padding    = attr.ib(default=None)
     row_border       = attr.ib(default=False)
     row_fill         = attr.ib(default='')
     rstrip           = attr.ib(default=True)
+    top_border       = attr.ib(default=None)
     width_fill       = attr.ib(default=None)
     widths           = attr.ib(default=())
     wrap_func        = attr.ib(default=None)
@@ -110,35 +114,42 @@ class Txtble(object):
         else:
             right_padding = mkpadding(self.right_padding, self.len_func)
 
-        if not self.border:
-            border = None
-        elif isinstance(self.border, BorderStyle):
-            border = self.border
+        border = self.border and first_style(self.border, self.border_style)
+
+        if self.left_border is None:
+            left_border = border
         else:
-            border = self.border_style
+            left_border = self.left_border and \
+                first_style(self.left_border, border, self.border_style)
+
+        if self.right_border is None:
+            right_border = border
+        else:
+            right_border = self.right_border and \
+                first_style(self.right_border, border, self.border_style)
+
+        if self.top_border is None:
+            top_border = border
+        else:
+            top_border = self.top_border and \
+                first_style(self.top_border, border, self.border_style)
+
+        if self.bottom_border is None:
+            bottom_border = border
+        else:
+            bottom_border = self.bottom_border and \
+                first_style(self.bottom_border, border, self.border_style)
 
         if self.header_border or \
                 (self.header_border is None and headers is not None):
-            if isinstance(self.header_border, BorderStyle):
-                header_border = self.header_border
-            else:
-                header_border = self.border_style
+            header_border = first_style(self.header_border, self.border_style)
         else:
             header_border = None
 
-        if not self.column_border:
-            column_border = None
-        elif isinstance(self.column_border, BorderStyle):
-            column_border = self.column_border
-        else:
-            column_border = self.border_style
-
-        if not self.row_border:
-            row_border = None
-        elif isinstance(self.row_border, BorderStyle):
-            row_border = self.row_border
-        else:
-            row_border = self.border_style
+        column_border = self.column_border and \
+            first_style(self.column_border, self.border_style)
+        row_border = self.row_border and \
+            first_style(self.row_border, self.border_style)
 
         if isinstance(self.align, string_types):
             align = [self.align] * columns
@@ -151,7 +162,8 @@ class Txtble(object):
                 widths,
                 align   = align,
                 col_sep = column_border.vline if column_border else '',
-                border  = border.vline        if border        else '',
+                left_border_line  = left_border.vline  if left_border  else '',
+                right_border_line = right_border.vline if right_border else '',
                 rstrip  = self.rstrip,
                 left_padding  = left_padding,
                 right_padding = right_padding,
@@ -163,23 +175,24 @@ class Txtble(object):
                 w + self.len_func(left_padding) + self.len_func(right_padding)
                 for w in widths
             ],
-            bool(border),
+            bool(left_border),
+            bool(right_border),
             bool(column_border),
         )
-        if border:
-            output.append(border.top_rule(*rule_args))
+        if top_border:
+            output.append(top_border.top_rule(*rule_args))
         if headers is not None:
             output.extend(showrow(headers))
             if data and header_border:
                 output.append(header_border.mid_rule(*rule_args))
-        elif header_border and not border:
+        elif header_border and not top_border:
             output.append(header_border.top_rule(*rule_args))
         for i,row in enumerate(data):
             if i>0 and row_border:
                 output.append(row_border.mid_rule(*rule_args))
             output.extend(showrow(row))
-        if border:
-            output.append(border.bot_rule(*rule_args))
+        if bottom_border:
+            output.append(bottom_border.bot_rule(*rule_args))
         return '\n'.join(output)
 
 

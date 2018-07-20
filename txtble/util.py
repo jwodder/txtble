@@ -1,24 +1,26 @@
-from   itertools   import cycle
+from   itertools     import cycle
 import re
-from   unicodedata import category
-from   six         import PY2, integer_types, string_types, text_type, wraps
-from   wcwidth     import wcswidth
-from   .errors     import IndeterminateWidthError, UnterminatedColorError
+from   unicodedata   import category
+from   six           import PY2, integer_types, string_types, text_type, wraps
+from   wcwidth       import wcswidth
+from   .border_style import BorderStyle
+from   .errors       import IndeterminateWidthError, UnterminatedColorError
 
 COLOR_BEGIN_RGX = r'\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m'
 COLOR_END_RGX   = r'\033\[(?:[0-9;]*;)?0*m'
 
-def join_cells(cells, widths, align, col_sep, border, rstrip, left_padding,
-               right_padding):
+def join_cells(cells, widths, align, col_sep, left_border_line,
+               right_border_line, rstrip, left_padding, right_padding):
     assert 0 < len(cells) == len(widths) == len(align)
     height = max(len(c.lines) for c in cells)
     boxes = [c.box(w, height, a) for (c,w,a) in zip(cells, widths, align)]
-    if not border and rstrip:
+    if not right_border_line and rstrip:
         boxes[-1] = cells[-1].box(0, height, align[-1])
     return [
-        border + left_padding
+        left_border_line + left_padding
             + (right_padding + col_sep + left_padding).join(line_bits)
-            + (right_padding if border or not rstrip else '') + border
+            + (right_padding if right_border_line or not rstrip else '')
+            + right_border_line
         for line_bits in zip(*boxes)
     ]
 
@@ -207,3 +209,9 @@ def breakable_units(s):
             ### TODO: Keep combining characters together
             units.extend(run)
     return units
+
+def first_style(*args):
+    for a in args:
+        if isinstance(a, BorderStyle):
+            return a
+    return None
