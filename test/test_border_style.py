@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from six       import text_type
-from txtble    import (
+import pytest
+from   six       import text_type
+from   txtble    import (
     Txtble,
     ASCII_BORDERS, ASCII_EQ_BORDERS,
     LIGHT_BORDERS, HEAVY_BORDERS, DOUBLE_BORDERS,
     DOT_BORDERS,
 )
-from test_data import HEADERS, DATA, TABLE
+from   test_data import HEADERS, DATA, TABLE
 
 def test_ascii_border_style():
     tbl = Txtble(DATA, headers=HEADERS, border_style=ASCII_BORDERS)
@@ -296,3 +297,17 @@ def test_border_style_mixed_overrides():
         u'⋮December Turquoise Narcissus         ⋮\n'
         u'·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·'
     )
+
+@pytest.mark.parametrize('border_style', [
+    None,
+    False,
+    True,
+    tuple('-|+++++++++'),
+])
+def test_bad_border_style(border_style):
+    tbl = Txtble(DATA, border_style=border_style)
+    with pytest.raises(
+        TypeError,
+        match='border_style must be a BorderStyle instance',
+    ):
+        str(tbl)

@@ -1,3 +1,6 @@
+v0.8.0 (in development)
+-----------------------
+
 v0.7.0 (2017-07-18)
 -------------------
 - Added a `len_func` option, allowing the user to specify a custom function for

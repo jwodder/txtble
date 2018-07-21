@@ -214,4 +214,4 @@ def first_style(*args):
     for a in args:
         if isinstance(a, BorderStyle):
             return a
-    return None
+    raise TypeError('border_style must be a BorderStyle instance')
