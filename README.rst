@@ -362,13 +362,22 @@ constructor or as attributes on a ``Txtble`` instance::
 ``border=True``
    Whether to draw a border around the edge of the table.  ``border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used
-   for drawing the border around the edge of the table.
+   for drawing the border around the edge of the table.  Individual edges can
+   be toggled or stylized by setting the ``bottom_border``, ``left_border``,
+   ``right_border``, and ``top_border`` options.
 
 ``border_style=ASCII_BORDERS``
-   Sets the default characters used for drawing all of the table's borders &
-   rules.  The border style can be overridden for individual borders by setting
-   their respective options (``border``, ``column_border``, etc.).  See
-   "`BorderStyle <borderstyle_>`_" below for more information.
+   A ``BorderStyle`` instance specifying the characters to use for drawing all
+   of the table's borders & rules.  The border style can be overridden for
+   individual borders by setting their respective options (``border``,
+   ``column_border``, etc.) to ``BorderStyle`` instances.  See "`BorderStyle
+   <borderstyle_>`_" below for more information.
+
+``bottom_border=None``
+   Whether to draw a border along the bottom edge of the table.  The default
+   value of `None` means to inherit the value set for ``border``.
+   ``bottom_border`` may optionally be set to a ``BorderStyle`` instance to set
+   the characters used for drawing the border along the bottom edge.
 
 ``break_long_words=True``
    Whether to force a line break in the middle of a word if said word is too
@@ -413,10 +422,17 @@ constructor or as attributes on a ``Txtble`` instance::
    non-`None` value or else a `ValueError` will be raised upon trying to render
    the ``Txtble``.
 
+``left_border=None``
+   Whether to draw a border along the left edge of the table.  The default
+   value of `None` means to inherit the value set for ``border``.
+   ``left_border`` may optionally be set to a ``BorderStyle`` instance to set
+   the characters used for drawing the border along the left edge.
+
 ``left_padding=None``
    Padding to insert on the left of every table cell.  This can be either an
    integer (to insert that many space characters) or a string.  If a string, it
-   may not contain any newlines.  ``left_padding`` overrides ``padding``.
+   may not contain any newlines.  The default value of `None` means to inherit
+   the value set for ``padding``.
 
 ``len_func``
    The function to use for calculating how many terminal cells wide a string
@@ -432,12 +448,21 @@ constructor or as attributes on a ``Txtble`` instance::
 ``padding=0``
    Padding to insert on the left & right of every table cell.  This can be
    either an integer (to insert that many space characters) or a string.  If a
-   string, it may not contain any newlines.
+   string, it may not contain any newlines.  Padding for the left and right of
+   table cells can be specified separately via the ``left_padding`` and
+   ``right_padding`` options.
+
+``right_border=None``
+   Whether to draw a border along the right edge of the table.  The default
+   value of `None` means to inherit the value set for ``border``.
+   ``right_border`` may optionally be set to a ``BorderStyle`` instance to set
+   the characters used for drawing the border along the right edge.
 
 ``right_padding=None``
    Padding to insert on the right of every table cell.  This can be either an
    integer (to insert that many space characters) or a string.  If a string, it
-   may not contain any newlines.  ``right_padding`` overrides ``padding``.
+   may not contain any newlines.  The default value of `None` means to inherit
+   the value set for ``padding``.
 
 ``row_border=False``
    Whether to draw horizontal rules between data rows.  ``row_border`` may
@@ -456,6 +481,12 @@ constructor or as attributes on a ``Txtble`` instance::
    ``padding`` is omitted when ``border=False`` as there is no end-of-line
    border to align.)  This option is useful if you wish to append text to one
    or more lines of the output and have it appear strictly outside the table.
+
+``top_border=None``
+   Whether to draw a border along the top edge of the table.  The default value
+   of `None` means to inherit the value set for ``border``.  ``top_border`` may
+   optionally be set to a ``BorderStyle`` instance to set the characters used
+   for drawing the border along the top edge.
 
 ``width_fill=None``
    If there are more columns than there are entries in ``widths``, the extra

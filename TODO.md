@@ -14,15 +14,12 @@ Features to Add
       indicate that a horizontal rule should be added.  Its constructor should
       take an optional `border_style` argument.
     - easy way to change just the column separator in non-rule rows?
-        - Allow `column_border` to be just a string? (since only one string of
-          `BorderStyle` gets used anyway)
+        - Allow `column_border`, `left_border`, and `right_border` to be just a
+          string? (since only one string of `BorderStyle` gets used anyway)
     - easy way to change the column separator in all rows?
         - "doubling" ('|' → '||') specific vrules
     - using different column vrules in the header (and/or header rule) than in
       the data?
-    - drawing left & right border vrules but no top/bottom hrules
-    - drawing top & bottom border hrules but not left/right vrules
-        - drawing just a top or just a bottom border hrule
 
 - Cell alignment:
     - Add an 'n' alignment option for aligning numeric values along a decimal
