@@ -405,6 +405,9 @@ constructor or as attributes on a ``Txtble`` instance::
    set to a ``BorderStyle`` instance to set the characters used for drawing the
    horizontal rule above the data rows.
 
+   If ``headers`` is `None` and ``top_border`` is set to a true value (or
+   inherits a true value from ``border``), the header border will not be drawn.
+
 ``header_fill=None``
    When ``headers`` is non-`None` and ``columns`` is `None`, this option
    determines how rows with more columns than there are headers are handled.

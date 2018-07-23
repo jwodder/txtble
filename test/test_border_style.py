@@ -311,3 +311,78 @@ def test_bad_border_style(border_style):
         match='border_style must be a BorderStyle instance',
     ):
         str(tbl)
+
+def test_border_vs_header_border_style():
+    tbl = Txtble(DATA, border=HEAVY_BORDERS, header_border=DOUBLE_BORDERS)
+    assert text_type(tbl) == (
+        u'┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓\n'
+        u'┃January  |Garnet    |Carnation         ┃\n'
+        u'┃February |Amethyst  |Violet            ┃\n'
+        u'┃March    |Aquamarine|Jonquil           ┃\n'
+        u'┃April    |Diamond   |Sweetpea          ┃\n'
+        u'┃May      |Emerald   |Lily Of The Valley┃\n'
+        u'┃June     |Pearl     |Rose              ┃\n'
+        u'┃July     |Ruby      |Larkspur          ┃\n'
+        u'┃August   |Peridot   |Gladiolus         ┃\n'
+        u'┃September|Sapphire  |Aster             ┃\n'
+        u'┃October  |Opal      |Calendula         ┃\n'
+        u'┃November |Topaz     |Chrysanthemum     ┃\n'
+        u'┃December |Turquoise |Narcissus         ┃\n'
+        u'┗━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━┛'
+    )
+
+def test_top_border_vs_header_border_style():
+    tbl = Txtble(DATA, top_border=HEAVY_BORDERS, header_border=DOUBLE_BORDERS)
+    assert text_type(tbl) == (
+        u'┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓\n'
+        u'|January  |Garnet    |Carnation         |\n'
+        u'|February |Amethyst  |Violet            |\n'
+        u'|March    |Aquamarine|Jonquil           |\n'
+        u'|April    |Diamond   |Sweetpea          |\n'
+        u'|May      |Emerald   |Lily Of The Valley|\n'
+        u'|June     |Pearl     |Rose              |\n'
+        u'|July     |Ruby      |Larkspur          |\n'
+        u'|August   |Peridot   |Gladiolus         |\n'
+        u'|September|Sapphire  |Aster             |\n'
+        u'|October  |Opal      |Calendula         |\n'
+        u'|November |Topaz     |Chrysanthemum     |\n'
+        u'|December |Turquoise |Narcissus         |\n'
+        u'+---------+----------+------------------+'
+    )
+
+def test_no_border_header_border_style():
+    tbl = Txtble(DATA, border=False, header_border=DOUBLE_BORDERS)
+    assert text_type(tbl) == (
+        u'═════════╦══════════╦══════════════════\n'
+        u'January  |Garnet    |Carnation\n'
+        u'February |Amethyst  |Violet\n'
+        u'March    |Aquamarine|Jonquil\n'
+        u'April    |Diamond   |Sweetpea\n'
+        u'May      |Emerald   |Lily Of The Valley\n'
+        u'June     |Pearl     |Rose\n'
+        u'July     |Ruby      |Larkspur\n'
+        u'August   |Peridot   |Gladiolus\n'
+        u'September|Sapphire  |Aster\n'
+        u'October  |Opal      |Calendula\n'
+        u'November |Topaz     |Chrysanthemum\n'
+        u'December |Turquoise |Narcissus'
+    )
+
+def test_no_top_border_header_border_style():
+    tbl = Txtble(DATA, top_border=False, header_border=DOUBLE_BORDERS)
+    assert text_type(tbl) == (
+        u'╔═════════╦══════════╦══════════════════╗\n'
+        u'|January  |Garnet    |Carnation         |\n'
+        u'|February |Amethyst  |Violet            |\n'
+        u'|March    |Aquamarine|Jonquil           |\n'
+        u'|April    |Diamond   |Sweetpea          |\n'
+        u'|May      |Emerald   |Lily Of The Valley|\n'
+        u'|June     |Pearl     |Rose              |\n'
+        u'|July     |Ruby      |Larkspur          |\n'
+        u'|August   |Peridot   |Gladiolus         |\n'
+        u'|September|Sapphire  |Aster             |\n'
+        u'|October  |Opal      |Calendula         |\n'
+        u'|November |Topaz     |Chrysanthemum     |\n'
+        u'|December |Turquoise |Narcissus         |\n'
+        u'+---------+----------+------------------+'
+    )

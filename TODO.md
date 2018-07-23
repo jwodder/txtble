@@ -4,7 +4,7 @@
     - Don't break in the middle of combining character sequences
         - Don't break on a space or hyphen followed by combining characters
     - Break on more than just spaces and hyphens?
-    - cf. the Unicode line breaking algorithm
+    - cf. the Unicode line breaking algorithm and Unicode TR 29
     - cf. `uniseg` package
 
 Features to Add
