@@ -1,5 +1,5 @@
-v0.8.0 (in development)
------------------------
+v0.8.0 (2017-07-24)
+-------------------
 - Added `left_border`, `right_border`, `top_border`, and `bottom_border`
   options
 
