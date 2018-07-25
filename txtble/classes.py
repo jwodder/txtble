@@ -5,9 +5,24 @@ from   .errors       import IndeterminateWidthError
 from   .util         import carry_over_color, join_cells, mkpadding, strify, \
                             strwidth, to_len, to_lines, wrap, first_style
 
+try:
+    from collections.abc import Mapping
+except ImportError:
+    from collections     import Mapping
+
+DICT_FILL_RAISE = object()
+
+def data_converter(value):
+    data = []
+    for row in value:
+        if not isinstance(row, Mapping):
+            row = list(row)
+        data.append(row)
+    return data
+
 @attr.s
 class Txtble(object):
-    data             = attr.ib(default=(), converter=lambda d: list(map(list, d)))
+    data             = attr.ib(default=(), converter=data_converter)
     align            = attr.ib(default=())
     align_fill       = attr.ib(default='l')
     border           = attr.ib(default=True)
@@ -17,6 +32,7 @@ class Txtble(object):
     break_on_hyphens = attr.ib(default=True)
     column_border    = attr.ib(default=True)
     columns          = attr.ib(default=None)
+    dict_fill        = attr.ib(default=DICT_FILL_RAISE)
     header_border    = attr.ib(default=None)
     header_fill      = attr.ib(default=None)
     headers          = attr.ib(default=None, converter=attr.converters.optional(list))
@@ -47,10 +63,13 @@ class Txtble(object):
             raise ValueError('columns must be at least 1')
 
     def append(self, row):
-        self.data.append(list(row))
+        if not isinstance(row, Mapping):
+            row = list(row)
+        self.data.append(row)
 
     def extend(self, data):
-        self.data.extend(map(list, data))
+        for row in data:
+            self.append(row)
 
     def __str__(self):
         return str(self.show())
@@ -63,7 +82,25 @@ class Txtble(object):
             raise ValueError('row_fill cannot be None')
         if self.columns is not None and self.columns < 1:
             raise ValueError('columns must be at least 1')
-        data = [[Cell(self, c) for c in row] for row in self.data]
+
+        def dict_get(d,k):
+            try:
+                return d[k]
+            except KeyError:
+                if self.dict_fill is DICT_FILL_RAISE:
+                    raise
+                else:
+                    return self.dict_fill
+
+        data = []
+        for row in self.data:
+            if isinstance(row, Mapping):
+                if self.headers is None:
+                    raise ValueError('dict row not allowed when headers is None')
+                data.append([Cell(self, dict_get(row,h)) for h in self.headers])
+            else:
+                data.append([Cell(self, c) for c in row])
+
         if self.headers is not None:
             headers = [Cell(self, h) for h in self.headers]
             columns = len(headers)

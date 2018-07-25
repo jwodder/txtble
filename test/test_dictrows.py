@@ -10,6 +10,17 @@ def test_dict_rows():
     )
     assert str(tbl) == TABLE
 
+def test_dict_rows_append_each():
+    tbl = Txtble(headers=HEADERS)
+    for row in DATA:
+        tbl.append(dict(zip(HEADERS, row)))
+    assert str(tbl) == TABLE
+
+def test_dict_rows_extend_all():
+    tbl = Txtble(headers=HEADERS)
+    tbl.extend(dict(zip(HEADERS, row)) for row in DATA)
+    assert str(tbl) == TABLE
+
 def test_dict_rows_no_headers():
     tbl = Txtble(data=[dict(zip(HEADERS, row)) for row in DATA])
     with pytest.raises(ValueError):
@@ -124,7 +135,7 @@ def test_pairs_are_not_dict():
 def test_defaultdict_row():
     tbl = Txtble(
         headers = ['Red', 'Green', 'Blue'],
-        data    = [defaultdict(lambda: 'Missing!', {"Red": 42, "Blue": 23})],
+        data    = [defaultdict(lambda: 'Missing!', {"Red": 42, "Green": 23})],
     )
     assert str(tbl) == (
         '+---+-----+--------+\n'
