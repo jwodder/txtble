@@ -119,6 +119,17 @@ def test_change_dict_headers():
         '+----+------+'
     )
 
+def test_set_dict_headers_late():
+    tbl = Txtble([{"Red": 42, "Green": 23, "Blue": 17, "Yellow": 3.14}])
+    tbl.headers = ['Blue', 'Yellow']
+    assert str(tbl) == (
+        '+----+------+\n'
+        '|Blue|Yellow|\n'
+        '+----+------+\n'
+        '|17  |3.14  |\n'
+        '+----+------+'
+    )
+
 def test_pairs_are_not_dict():
     tbl = Txtble(
         headers = ['Red', 'Green', 'Blue'],
@@ -143,4 +154,36 @@ def test_defaultdict_row():
         '+---+-----+--------+\n'
         '|42 |23   |Missing!|\n'
         '+---+-----+--------+'
+    )
+
+def test_dict_row_mixture_extra_column():
+    tbl = Txtble(
+        headers = ['Red', 'Green', 'Blue'],
+        data    = [
+            ["Ruby", "Emerald", "Sapphire", "Topaz"],
+            {"Red": 42, "Green": 23, "Blue": 17, "Filler": 3.14},
+        ],
+        header_fill = 'Filler',
+        row_fill    = 'row_fill',
+    )
+    assert str(tbl) == (
+        '+----+-------+--------+--------+\n'
+        '|Red |Green  |Blue    |Filler  |\n'
+        '+----+-------+--------+--------+\n'
+        '|Ruby|Emerald|Sapphire|Topaz   |\n'
+        '|42  |23     |17      |row_fill|\n'
+        '+----+-------+--------+--------+'
+    )
+
+def test_dict_row_repeated_header_key():
+    tbl = Txtble(
+        headers = ['Red', 'Green', 'Blue', 'Green'],
+        data    = [{"Red": 42, "Green": 23, "Blue": 17}],
+    )
+    assert str(tbl) == (
+        '+---+-----+----+-----+\n'
+        '|Red|Green|Blue|Green|\n'
+        '+---+-----+----+-----+\n'
+        '|42 |23   |17  |23   |\n'
+        '+---+-----+----+-----+'
     )
