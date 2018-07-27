@@ -302,19 +302,20 @@ API
 
 ``Txtble(data=(), **kwargs)``
    Create a new ``Txtble`` object.  The table's data may be passed to the
-   constructor as an iterable of iterables (rows) of values; otherwise, the
-   data starts out empty.  In either case, further data rows can be added via
-   the ``append()`` and ``extend()`` methods.
+   constructor as an iterable of rows of values, where each row is either an
+   iterable of cell values or a mapping from header names to cell values;
+   otherwise, the data starts out empty.  In either case, further data rows can
+   be added via the ``append()`` and ``extend()`` methods.
 
    ``**kwargs`` are used to configure the ``Txtble`` instance; see
    "`Configuration Options <configuration_options_>`_" below.
 
 ``tbl.append(row)``
-   Add an iterable of values as a new data row at the bottom of the table
+   Add a new data row at the bottom of the table.  ``row`` can be either an
+   iterable of cell values or a mapping from header names to cell values.
 
 ``tbl.extend(rows)``
-   Add an iterable of iterables of values as new data rows at the bottom of the
-   table
+   Add zero or more new data rows at the bottom of the table
 
 ``tbl.show()`` or ``str(tbl)``
    Convert the ``Txtble`` instance to a string showing a plain text table.

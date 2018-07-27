@@ -1,3 +1,8 @@
+v0.9.0 (in development)
+-----------------------
+- Table rows can now be represented by `dict`s that map header names to cell
+  values
+
 v0.8.0 (2017-07-24)
 -------------------
 - Added `left_border`, `right_border`, `top_border`, and `bottom_border`
