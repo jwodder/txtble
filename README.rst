@@ -46,6 +46,7 @@ stringable things) and get out something nice like::
 
 Features:
 
+- Rows can be passed as lists or `dict`\ s
 - ANSI color aware
 - Unicode fullwidth & combining character aware
 - Left-align, center, and right-align individual columns
@@ -53,7 +54,7 @@ Features:
 - Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
 - Pad cells on the left & right
-- Wrapping text to fixed widths
+- Set column widths, with long lines wrapped to fit
 - Configure how `None` values are displayed
 
 
@@ -121,6 +122,45 @@ Or even like this::
 
     >>> tbl = Txtble(DATA)
     >>> tbl.headers = HEADERS
+
+The rows of the table can be lists of values (as seen above) or `dict`\ s that
+map header names to values::
+
+    >>> tbl = Txtble(
+    ...     headers = ["Red", "Green", "Blue"],
+    ...     data    = [
+    ...         {"Red": "Ruby", "Green": "Emerald", "Blue": "Sapphire"},
+    ...         {"Red": "Fire", "Green": "Earth",   "Blue": "Water"},
+    ...     ],
+    ... )
+    >>> print(tbl)
+    +----+-------+--------+
+    |Red |Green  |Blue    |
+    +----+-------+--------+
+    |Ruby|Emerald|Sapphire|
+    |Fire|Earth  |Water   |
+    +----+-------+--------+
+
+Missing `dict` keys can be filled in with the ``dict_fill`` option (Without it,
+you'd get a `KeyError` here)::
+
+    >>> tbl = Txtble(
+    ...     headers = ["Red", "Green", "Blue"],
+    ...     data    = [
+    ...         {"Red": "Ruby", "Green": "Emerald", "Blue": "Sapphire"},
+    ...         {"Red": "Fire", "Green": "Earth",   "Blue": "Water"},
+    ...         {"Red": "Hot",                      "Blue": "Cold"},
+    ...     ],
+    ...     dict_fill = 'UNKNOWN',
+    ... )
+    >>> print(tbl)
+    +----+-------+--------+
+    |Red |Green  |Blue    |
+    +----+-------+--------+
+    |Ruby|Emerald|Sapphire|
+    |Fire|Earth  |Water   |
+    |Hot |UNKNOWN|Cold    |
+    +----+-------+--------+
 
 The number of columns is automatically set to the length of the longest row::
 
