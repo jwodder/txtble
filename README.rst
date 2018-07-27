@@ -399,6 +399,12 @@ constructor or as attributes on a ``Txtble`` instance::
    else a `ValueError` is raised.  Setting both ``columns`` and ``headers``
    causes ``header_fill`` to be ignored.
 
+``dict_fill``
+   If a header name does not appear as a key in a `dict`/mapping row, the value
+   of ``dict_fill`` will be used for the corresponding cell value.  If
+   ``dict_fill`` is not set, a missing key will cause a ``KeyError`` to be
+   raised.
+
 ``header_border=None``
    Whether to draw a horizontal rule above the data rows, below the header row
    (if any).  The default value of `None` means that the border will be drawn

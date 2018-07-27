@@ -2,6 +2,7 @@ v0.9.0 (in development)
 -----------------------
 - Table rows can now be represented by `dict`s that map header names to cell
   values
+- Added a `dict_fill` option for handling missing keys in `dict` rows
 
 v0.8.0 (2017-07-24)
 -------------------
