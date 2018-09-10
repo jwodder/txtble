@@ -2,8 +2,8 @@ import attr
 from   six           import integer_types, string_types, text_type
 from   .border_style import ASCII_BORDERS
 from   .errors       import IndeterminateWidthError
-from   .util         import carry_over_color, join_cells, mkpadding, strify, \
-                            strwidth, to_len, to_lines, wrap, first_style
+from   .util         import carry_over_color, first_style, join_cells, \
+                            mkpadding, strify, strwidth, to_len, to_lines, wrap
 
 try:
     from collections.abc import Mapping
@@ -47,6 +47,8 @@ class Txtble(object):
     row_fill         = attr.ib(default='')
     rstrip           = attr.ib(default=True)
     top_border       = attr.ib(default=None)
+    valign           = attr.ib(default=())
+    valign_fill      = attr.ib(default='t')
     width_fill       = attr.ib(default=None)
     widths           = attr.ib(default=())
     wrap_func        = attr.ib(default=None)
@@ -193,11 +195,17 @@ class Txtble(object):
         else:
             align = to_len(list(self.align), columns, self.align_fill)
 
+        if isinstance(self.valign, string_types):
+            valign = [self.valign] * columns
+        else:
+            valign = to_len(list(self.valign), columns, self.valign_fill)
+
         def showrow(row):
             return join_cells(
                 row,
                 widths,
                 align   = align,
+                valign  = valign,
                 col_sep = column_border.vline if column_border else '',
                 left_border_line  = left_border.vline  if left_border  else '',
                 right_border_line = right_border.vline if right_border else '',
@@ -244,12 +252,21 @@ class Cell(object):
         self.width = max(map(tbl.len_func, self.lines))
         self.table = tbl
 
-    def box(self, width, height, align):
+    def box(self, width, height, align, valign):
         if width == 0:
             lines = list(self.lines)
         else:
             lines = [self.afill(line, width, align) for line in self.lines]
-        return to_len(lines, height, ' ' * width)
+        vspace = [' ' * width] * (height - len(lines))
+        if valign == 't':
+            return lines + vspace
+        elif valign == 'm':
+            return vspace[:len(vspace)//2] + lines + vspace[len(vspace)//2:]
+        elif valign == 'b':
+            return vspace + lines
+        else:
+            raise ValueError('{!r}: invalid vertical alignment specifier'
+                             .format(valign))
 
     def afill(self, s, width, align):
         spaces = width - self.table.len_func(s)

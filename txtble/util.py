@@ -9,13 +9,16 @@ from   .errors       import IndeterminateWidthError, UnterminatedColorError
 COLOR_BEGIN_RGX = r'\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m'
 COLOR_END_RGX   = r'\033\[(?:[0-9;]*;)?0*m'
 
-def join_cells(cells, widths, align, col_sep, left_border_line,
+def join_cells(cells, widths, align, valign, col_sep, left_border_line,
                right_border_line, rstrip, left_padding, right_padding):
     assert 0 < len(cells) == len(widths) == len(align)
     height = max(len(c.lines) for c in cells)
-    boxes = [c.box(w, height, a) for (c,w,a) in zip(cells, widths, align)]
+    boxes = [
+        c.box(w, height, a, v)
+        for (c,w,a,v) in zip(cells, widths, align, valign)
+    ]
     if not right_border_line and rstrip:
-        boxes[-1] = cells[-1].box(0, height, align[-1])
+        boxes[-1] = cells[-1].box(0, height, align[-1], valign[-1])
     return [
         left_border_line + left_padding
             + (right_padding + col_sep + left_padding).join(line_bits)
