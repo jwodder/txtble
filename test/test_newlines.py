@@ -192,7 +192,7 @@ def test_embedded_newline_headers():
         headers=['Month', 'Birth Thingy\n(Gem)', 'Birth Thingy\n(Flower)'],
         data=DATA
     )
-    assert str(tbl) ==(
+    assert str(tbl) == (
         '+---------+------------+------------------+\n'
         '|Month    |Birth Thingy|Birth Thingy      |\n'
         '|         |(Gem)       |(Flower)          |\n'

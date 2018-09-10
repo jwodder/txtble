@@ -49,10 +49,8 @@ Features to Add
     - customizing numeric formatting
 
 - API:
-    - constructing a table from a sequence of dicts whose keys match the
-      table's headers
-        - specifying a mapping from dict keys to headers so that they don't
-          have to use the exact same strings?
+    - specifying a mapping from keys of row dicts to headers so that they don't
+      have to use the exact same strings?
     - manipulating (editing, deleting, etc.) rows & cells that have already
       been added to the Txtble
     - Allow `header_fill` and `row_fill` to be callables that are called
