@@ -49,7 +49,8 @@ Features:
 - Rows can be passed as lists or `dict`\ s
 - ANSI color aware
 - Unicode fullwidth & combining character aware
-- Left-align, center, and right-align individual columns
+- Control the horizontal (left, center, & right) and vertical (top, middle, &
+  bottom) alignment of text
 - Customize characters used for drawing borders
 - Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
@@ -537,6 +538,18 @@ constructor or as attributes on a ``Txtble`` instance::
    of `None` means to inherit the value set for ``border``.  ``top_border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used
    for drawing the border along the top edge.
+
+``valign=()``
+   A sequence of vertical alignment specifiers indicating how the contents of
+   each column, in order, should be vertically aligned.  The vertical alignment
+   specifiers are ``'t'`` (top alignment), ``'m'`` (middle alignment), and
+   ``'b'`` (bottom alignment).  ``valign`` may optionally be set to a single
+   vertical alignment specifier to cause all columns to be vertically aligned
+   in that way.
+
+``valign_fill='t'``
+   If there are more columns than there are entries in ``valign``, the extra
+   columns will have their vertical alignment set to ``valign_fill``.
 
 ``width_fill=None``
    If there are more columns than there are entries in ``widths``, the extra

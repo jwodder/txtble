@@ -1,3 +1,7 @@
+v0.10.0 (in development)
+------------------------
+- Added `valign` and `valign_fill` options
+
 v0.9.0 (2017-07-28)
 -------------------
 - Table rows can now be represented by `dict`s that map header names to cell

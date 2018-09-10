@@ -32,8 +32,6 @@ Features to Add
       when `align` hasn't been previously set to a list
     - setting the alignment of individual cells (e.g., having a centered "—"
       cell in the middle of a bunch of left-aligned cells)
-    - configuring vertical alignment of cells when other cells in the same row
-      have more lines
     - different horizontal & vertical alignment for headers than for data
     - per-row alignments
 
