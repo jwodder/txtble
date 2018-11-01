@@ -1,3 +1,4 @@
+from   numbers       import Number
 import attr
 from   six           import integer_types, string_types, text_type
 from   .border_style import ASCII_BORDERS
@@ -195,6 +196,22 @@ class Txtble(object):
         else:
             align = to_len(list(self.align), columns, self.align_fill)
 
+        num_spacing = [None] * columns
+        for i,a in enumerate(align):
+            if 'n' in (a or ''):
+                predot = 0
+                postdot = 0
+                for row in data:
+                    if isinstance(row[i].value, Number) and len(row[i].lines) == 1:
+                        pred, _, postd = row[i].lines[0].partition('.')
+                        predot = max(predot, len(pred))
+                        postdot = max(postdot, len(postd))
+                num_spacing[i] = (predot, postdot)
+                numwidth = predot
+                if postdot > 0:
+                    numwidth += 1 + postdot
+                widths[i] = max(widths[i], numwidth)
+
         if isinstance(self.valign, string_types):
             valign = [self.valign] * columns
         else:
@@ -212,6 +229,7 @@ class Txtble(object):
                 rstrip  = self.rstrip,
                 left_padding  = left_padding,
                 right_padding = right_padding,
+                num_spacing = num_spacing,
             )
 
         output = []
@@ -245,6 +263,7 @@ class Cell(object):
     def __init__(self, tbl, value):
         if value is None:
             value = tbl.none_str
+        self.value = value
         self.lines = carry_over_color(to_lines(strify(value)))
         for line in self.lines:
             if tbl.len_func(line) < 0:
@@ -252,7 +271,17 @@ class Cell(object):
         self.width = max(map(tbl.len_func, self.lines))
         self.table = tbl
 
-    def box(self, width, height, align, valign):
+    def box(self, width, height, align, valign, num_spacing):
+        if 'n' in (align or ''):
+            if isinstance(self.value, Number) and len(self.lines) == 1:
+                assert num_spacing is not None
+                pred, dot, postd = self.lines[0].partition('.')
+                pred = pred.rjust(num_spacing[0])
+                if not dot and num_spacing[1] > 0:
+                    dot = ' '
+                postd = postd.ljust(num_spacing[1])
+                self.lines[0] = pred + dot + postd
+            align = align.replace('n', '') or 'l'
         if width == 0:
             lines = list(self.lines)
         else:
