@@ -80,6 +80,12 @@ class Txtble(object):
     def __unicode__(self):
         return text_type(self.show())
 
+    def _len(self, s):
+        w = self.len_func(s)
+        if w < 0:
+            raise IndeterminateWidthError(s)
+        return w
+
     def show(self):
         if self.row_fill is None:
             raise ValueError('row_fill cannot be None')
@@ -204,8 +210,8 @@ class Txtble(object):
                 for row in data:
                     if isinstance(row[i].value, Number) and len(row[i].lines) == 1:
                         pred, _, postd = row[i].lines[0].partition('.')
-                        predot = max(predot, len(pred))
-                        postdot = max(postdot, len(postd))
+                        predot = max(predot, self._len(pred))
+                        postdot = max(postdot, self._len(postd))
                 num_spacing[i] = (predot, postdot)
                 numwidth = predot
                 if postdot > 0:
@@ -265,10 +271,7 @@ class Cell(object):
             value = tbl.none_str
         self.value = value
         self.lines = carry_over_color(to_lines(strify(value)))
-        for line in self.lines:
-            if tbl.len_func(line) < 0:
-                raise IndeterminateWidthError(line)
-        self.width = max(map(tbl.len_func, self.lines))
+        self.width = max(map(tbl._len, self.lines))
         self.table = tbl
 
     def box(self, width, height, align, valign, num_spacing):
@@ -276,10 +279,10 @@ class Cell(object):
             if isinstance(self.value, Number) and len(self.lines) == 1:
                 assert num_spacing is not None
                 pred, dot, postd = self.lines[0].partition('.')
-                pred = pred.rjust(num_spacing[0])
+                pred = ' ' * (num_spacing[0] - self.table._len(pred)) + pred
                 if not dot and num_spacing[1] > 0:
                     dot = ' '
-                postd = postd.ljust(num_spacing[1])
+                postd += ' ' * (num_spacing[1] - self.table._len(postd))
                 self.lines[0] = pred + dot + postd
             align = align.replace('n', '') or 'l'
         if width == 0:
@@ -333,7 +336,4 @@ class Cell(object):
         self.lines = [
             wrapped for line in self.lines for wrapped in wrap_func(line)
         ]
-        for line in self.lines:
-            if self.table.len_func(line) < 0:
-                raise IndeterminateWidthError(line)
-        self.width = max(map(self.table.len_func, self.lines))
+        self.width = max(map(self.table._len, self.lines))
