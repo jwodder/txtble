@@ -25,12 +25,6 @@ Features to Add
       overriding this.
 
 - Cell alignment:
-    - Add an 'n' alignment option for aligning numeric values along a decimal
-      point
-        - Support also controlling the alignment of string values in the same
-          column
-        - Support configuring how numeric values should be aligned relative to
-          long string values in the same column
     - Support setting column-specific alignments with `tbl.align[i] = 'c'` even
       when `align` hasn't been previously set to a list
     - setting the alignment of individual cells (e.g., having a centered "—"

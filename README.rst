@@ -54,6 +54,7 @@ Features:
 - Unicode fullwidth & combining character aware
 - Control the horizontal (left, center, & right) and vertical (top, middle, &
   bottom) alignment of text
+- Align numbers along the decimal point
 - Customize characters used for drawing borders
 - Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
@@ -199,8 +200,8 @@ columns::
     |V_4  |1       |
     +-----+--------+
 
-... unless you've *also* specified a ``header_fill`` to use as the the header
-for extra columns::
+... unless you've *also* specified a ``header_fill`` to use as the header for
+extra columns::
 
     >>> tbl.header_fill = 'Extra!'
     >>> print(tbl)
@@ -256,6 +257,32 @@ You can align column text to the left, right, or center::
     | November|  Topaz   |Chrysanthemum     |
     | December|Turquoise |Narcissus         |
     +---------+----------+------------------+
+
+Numbers in the same column can be aligned on their decimal point::
+
+    >>> tbl = Txtble(
+    ...     headers=['Thing', 'Value'],
+    ...     data=[
+    ...         ['Foo', 12345],
+    ...         ['Bar', 1234.5],
+    ...         ['Baz', 123.45],
+    ...         ['Quux', 12.345],
+    ...         ['Glarch', 1.2345],
+    ...         ['Gnusto', .12345],
+    ...     ],
+    ...     align=['l', 'n'],
+    ... )
+    >>> print(tbl)
+    +------+-----------+
+    |Thing |Value      |
+    +------+-----------+
+    |Foo   |12345      |
+    |Bar   | 1234.5    |
+    |Baz   |  123.45   |
+    |Quux  |   12.345  |
+    |Glarch|    1.2345 |
+    |Gnusto|    0.12345|
+    +------+-----------+
 
 Unicode works too, even fullwidth characters and combining characters::
 
@@ -399,6 +426,13 @@ constructor or as attributes on a ``Txtble`` instance::
    are ``'l'`` (left alignment), ``'c'`` (centered alignment), and ``'r'``
    (right alignment).  ``align`` may optionally be set to a single alignment
    specifier to cause all columns to be aligned in that way.
+
+   An alignment specifier may optionally include ``'n'`` to cause all numbers
+   in the relevant column to be aligned on their decimal point; the ``'l'``,
+   ``'c'``, or ``'r'`` then determines how the "block" of numbers is aligned as
+   a whole (This is generally only relevant if the column also contains a
+   string value longer than any of the numbers).  An alignment specifier of
+   just ``'n'`` is equivalent to ``'ln'`` or ``'nl'``.
 
 ``align_fill='l'``
    If there are more columns than there are entries in ``align``, the extra
