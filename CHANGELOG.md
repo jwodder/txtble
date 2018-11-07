@@ -1,3 +1,6 @@
+v0.11.0 (in development)
+------------------------
+
 v0.10.0 (2018-09-10)
 --------------------
 - Added `valign` and `valign_fill` options

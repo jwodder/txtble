@@ -20,6 +20,9 @@ Features to Add
         - "doubling" ('|' → '||') specific vrules
     - using different column vrules in the header (and/or header rule) than in
       the data?
+    - Currently, when a horizontal & vertical rule meet, the style of the
+      horizontal rule is used to draw the intersection.  Add options for
+      overriding this.
 
 - Cell alignment:
     - Add an 'n' alignment option for aligning numeric values along a decimal

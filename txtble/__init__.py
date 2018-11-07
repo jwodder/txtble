@@ -33,7 +33,7 @@ from .classes      import Txtble
 from .errors       import IndeterminateWidthError, UnterminatedColorError
 from .util         import with_color_stripped
 
-__version__      = '0.10.0'
+__version__      = '0.11.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
