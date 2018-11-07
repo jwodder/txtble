@@ -207,8 +207,12 @@ class Txtble(object):
             if 'n' in (a or ''):
                 predot = 0
                 postdot = 0
+                if headers is not None and headers[i].is_numeric:
+                    pred, _, postd = headers[i].lines[0].partition('.')
+                    predot = max(predot, self._len(pred))
+                    postdot = max(postdot, self._len(postd))
                 for row in data:
-                    if isinstance(row[i].value, Number) and len(row[i].lines) == 1:
+                    if row[i].is_numeric:
                         pred, _, postd = row[i].lines[0].partition('.')
                         predot = max(predot, self._len(pred))
                         postdot = max(postdot, self._len(postd))
@@ -273,20 +277,22 @@ class Cell(object):
         self.lines = carry_over_color(to_lines(strify(value)))
         self.width = max(map(tbl._len, self.lines))
         self.table = tbl
+        self.is_numeric = isinstance(value, Number) and len(self.lines) == 1
 
     def box(self, width, height, align, valign, num_spacing):
-        if 'n' in (align or ''):
-            if isinstance(self.value, Number) and len(self.lines) == 1:
-                assert num_spacing is not None
-                pred, dot, postd = self.lines[0].partition('.')
-                pred = ' ' * (num_spacing[0] - self.table._len(pred)) + pred
-                if not dot and num_spacing[1] > 0:
-                    dot = ' '
-                postd += ' ' * (num_spacing[1] - self.table._len(postd))
-                self.lines[0] = pred + dot + postd
-            align = align.replace('n', '') or 'l'
+        if 'n' in (align or '') and self.is_numeric:
+            assert num_spacing is not None
+            pred, dot, postd = self.lines[0].partition('.')
+            pred = ' ' * (num_spacing[0] - self.table._len(pred)) + pred
+            if not dot and num_spacing[1] > 0:
+                dot = ' '
+            postd += ' ' * (num_spacing[1] - self.table._len(postd))
+            self.lines[0] = pred + dot + postd
         if width == 0:
-            lines = list(self.lines)
+            if 'n' in (align or '') and self.is_numeric:
+                lines = list(map(str.rstrip, self.lines))
+            else:
+                lines = list(self.lines)
         else:
             lines = [self.afill(line, width, align) for line in self.lines]
         vspace = [' ' * width] * (height - len(lines))
@@ -302,11 +308,11 @@ class Cell(object):
 
     def afill(self, s, width, align):
         spaces = width - self.table.len_func(s)
-        if align == 'l':
+        if align in ('l', 'n', 'nl', 'ln'):
             return s + ' ' * spaces
-        elif align == 'c':
+        elif align in ('c', 'nc', 'cn'):
             return ' ' * (spaces // 2) + s + ' ' * ((spaces+1) // 2)
-        elif align == 'r':
+        elif align in ('r', 'nr', 'rn'):
             return ' ' * spaces + s
         else:
             raise ValueError('{!r}: invalid alignment specifier'.format(align))
