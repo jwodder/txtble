@@ -567,7 +567,6 @@ def test_numalign_short_width():
             ['Baz', 123.45],
             ['Quux', 12.345],
             ['Glarch', 1.2345],
-            ['Gnusto', .12345],
         ],
         align=['l', 'n'],
         widths=[None, 6],
@@ -589,6 +588,23 @@ def test_numalign_very_short_width():
         ],
         align=['l', 'n'],
         widths=[None, 4],
+    )
+    with pytest.raises(NumericWidthOverflowError) as excinfo:
+        str(tbl)
+    assert str(excinfo.value) == 'Numeric alignment overflows column width'
+
+def test_numalign_long_numeric_header():
+    tbl = Txtble(
+        headers=['Thing', 123456],
+        data=[
+            ['Foo', 1.2],
+            ['Bar', 0.5],
+            ['Baz', 12],
+            ['Quux', 12.34],
+            ['Glarch', 0.12],
+        ],
+        align=['l', 'n'],
+        widths=[None, 5],
     )
     with pytest.raises(NumericWidthOverflowError) as excinfo:
         str(tbl)
