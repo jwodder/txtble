@@ -54,7 +54,7 @@ Features:
 - Unicode fullwidth & combining character aware
 - Control the horizontal (left, center, & right) and vertical (top, middle, &
   bottom) alignment of text
-- Align numbers along the decimal point
+- Align numbers along their decimal points
 - Customize characters used for drawing borders
 - Toggle inter-row, inter-column, and outer borders
 - Set the value used to fill out ragged rows
@@ -258,7 +258,8 @@ You can align column text to the left, right, or center::
     | December|Turquoise |Narcissus         |
     +---------+----------+------------------+
 
-Numbers in the same column can be aligned on their decimal point::
+Numbers in the same column can be aligned on their decimal point with the
+``'n'`` alignment::
 
     >>> tbl = Txtble(
     ...     headers=['Thing', 'Value'],
@@ -709,6 +710,12 @@ Other
    when the string contains a DEL or a C0 or C1 control character other than a
    tab, newline, or ANSI color escape sequence.)  The string in question is
    available as the exception's ``string`` attribute.
+
+``NumericWidthOverflowError``
+   Subclass of ``ValueError``.  Raised when a column has a non-`None` width,
+   the column's ``align`` value contains ``'n'``, and aligning the numbers in
+   the column along their decimal points would cause one or more cells to
+   exceed the column's width.
 
 ``UnterminatedColorError``
    Subclass of ``ValueError``.  Raised by ``with_color_stripped`` upon
