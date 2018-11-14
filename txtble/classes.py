@@ -2,7 +2,7 @@ from   numbers       import Number
 import attr
 from   six           import integer_types, string_types, text_type
 from   .border_style import ASCII_BORDERS
-from   .errors       import IndeterminateWidthError
+from   .errors       import IndeterminateWidthError, NumericWidthOverflowError
 from   .util         import carry_over_color, first_style, join_cells, \
                             mkpadding, strify, strwidth, to_len, to_lines, wrap
 
@@ -208,11 +208,17 @@ class Txtble(object):
                 predot = 0
                 postdot = 0
                 if headers is not None and headers[i].is_numeric:
+                    if len(headers[i].lines) > 1:
+                        # Number overflowed width and was wrapped
+                        raise NumericWidthOverflowError()
                     pred, _, postd = headers[i].lines[0].partition('.')
                     predot = max(predot, self._len(pred))
                     postdot = max(postdot, self._len(postd))
                 for row in data:
                     if row[i].is_numeric:
+                        if len(row[i].lines) > 1:
+                            # Number overflowed width and was wrapped
+                            raise NumericWidthOverflowError()
                         pred, _, postd = row[i].lines[0].partition('.')
                         predot = max(predot, self._len(pred))
                         postdot = max(postdot, self._len(postd))
@@ -220,6 +226,8 @@ class Txtble(object):
                 numwidth = predot
                 if postdot > 0:
                     numwidth += 1 + postdot
+                if wrap_widths[i] is not None and numwidth > wrap_widths[i]:
+                    raise NumericWidthOverflowError()
                 widths[i] = max(widths[i], numwidth)
 
         if isinstance(self.valign, string_types):

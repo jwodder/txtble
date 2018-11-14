@@ -1,5 +1,5 @@
 import pytest
-from   txtble import Txtble
+from   txtble import Txtble, NumericWidthOverflowError
 
 @pytest.mark.parametrize('align', ['n', 'ln', 'nl'])
 def test_align_n(align):
@@ -449,3 +449,147 @@ def test_align_n_numeric_header_fill():
         '|Baz  |    1.2345|    2.1    |\n'
         '+-----+----------+-----------+'
     )
+
+@pytest.mark.parametrize('align', ['n', 'ln', 'nl', 'cn', 'nc', 'rn', 'nr'])
+def test_numalign_exact_width(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 1.2],
+            ['Bar', 0.5],
+            ['Baz', 12],
+            ['Quux', 12.34],
+            ['Glarch', 0.12],
+        ],
+        align=['l', align],
+        widths=[None, 5],
+    )
+    assert str(tbl) == (
+        '+------+-----+\n'
+        '|Thing |Value|\n'
+        '+------+-----+\n'
+        '|Foo   | 1.2 |\n'
+        '|Bar   | 0.5 |\n'
+        '|Baz   |12   |\n'
+        '|Quux  |12.34|\n'
+        '|Glarch| 0.12|\n'
+        '+------+-----+'
+    )
+
+@pytest.mark.parametrize('align', ['n', 'ln', 'nl'])
+def test_numalign_extra_width_left(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 1.2],
+            ['Bar', 0.5],
+            ['Baz', 12],
+            ['Quux', 12.34],
+            ['Glarch', 0.12],
+        ],
+        align=['l', align],
+        widths=[None, 8],
+    )
+    assert str(tbl) == (
+        '+------+--------+\n'
+        '|Thing |Value   |\n'
+        '+------+--------+\n'
+        '|Foo   | 1.2    |\n'
+        '|Bar   | 0.5    |\n'
+        '|Baz   |12      |\n'
+        '|Quux  |12.34   |\n'
+        '|Glarch| 0.12   |\n'
+        '+------+--------+'
+    )
+
+@pytest.mark.parametrize('align', ['cn', 'nc'])
+def test_numalign_extra_width_center(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 1.2],
+            ['Bar', 0.5],
+            ['Baz', 12],
+            ['Quux', 12.34],
+            ['Glarch', 0.12],
+        ],
+        align=['l', align],
+        widths=[None, 8],
+    )
+    assert str(tbl) == (
+        '+------+--------+\n'
+        '|Thing | Value  |\n'
+        '+------+--------+\n'
+        '|Foo   |  1.2   |\n'
+        '|Bar   |  0.5   |\n'
+        '|Baz   | 12     |\n'
+        '|Quux  | 12.34  |\n'
+        '|Glarch|  0.12  |\n'
+        '+------+--------+'
+    )
+
+@pytest.mark.parametrize('align', ['rn', 'nr'])
+def test_numalign_extra_width_right(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 1.2],
+            ['Bar', 0.5],
+            ['Baz', 12],
+            ['Quux', 12.34],
+            ['Glarch', 0.12],
+        ],
+        align=['l', align],
+        widths=[None, 8],
+    )
+    assert str(tbl) == (
+        '+------+--------+\n'
+        '|Thing |   Value|\n'
+        '+------+--------+\n'
+        '|Foo   |    1.2 |\n'
+        '|Bar   |    0.5 |\n'
+        '|Baz   |   12   |\n'
+        '|Quux  |   12.34|\n'
+        '|Glarch|    0.12|\n'
+        '+------+--------+'
+    )
+
+def test_numalign_short_width():
+    """
+    Test handling of numbers that are small enough to fit in the width before
+    numeric alignment is applied but not after
+    """
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Bar', 1234.5],
+            ['Baz', 123.45],
+            ['Quux', 12.345],
+            ['Glarch', 1.2345],
+            ['Gnusto', .12345],
+        ],
+        align=['l', 'n'],
+        widths=[None, 6],
+    )
+    with pytest.raises(NumericWidthOverflowError) as excinfo:
+        str(tbl)
+    assert str(excinfo.value) == 'Numeric alignment overflows column width'
+
+def test_numalign_very_short_width():
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Bar', 1234.5],
+            ['Baz', 123.45],
+            ['Quux', 12.345],
+            ['Glarch', 1.2345],
+            ['Gnusto', .12345],
+        ],
+        align=['l', 'n'],
+        widths=[None, 4],
+    )
+    with pytest.raises(NumericWidthOverflowError) as excinfo:
+        str(tbl)
+    assert str(excinfo.value) == 'Numeric alignment overflows column width'

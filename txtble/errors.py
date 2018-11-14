@@ -24,3 +24,13 @@ class UnterminatedColorError(ValueError):
 
     def __str__(self):
         return '{0.string!r}: ANSI color sequence not reset'.format(self)
+
+
+class NumericWidthOverflowError(ValueError):
+    """
+    Raised when applying numeric alignment to a column causes one or more cells
+    to exceed the column's set width
+    """
+
+    def __str__(self):
+        return 'Numeric alignment overflows column width'

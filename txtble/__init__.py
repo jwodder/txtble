@@ -30,7 +30,8 @@ from .border_style import (
     HEAVY_BORDERS, LIGHT_BORDERS,
 )
 from .classes      import Txtble
-from .errors       import IndeterminateWidthError, UnterminatedColorError
+from .errors       import IndeterminateWidthError, NumericWidthOverflowError, \
+                            UnterminatedColorError
 from .util         import with_color_stripped
 
 __version__      = '0.11.0.dev1'
@@ -48,6 +49,7 @@ __all__ = [
     'HEAVY_BORDERS',
     'IndeterminateWidthError',
     'LIGHT_BORDERS',
+    'NumericWidthOverflowError',
     'Txtble',
     'UnterminatedColorError',
     'with_color_stripped',
