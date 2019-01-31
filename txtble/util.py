@@ -85,10 +85,10 @@ def mkpadding(s, len_func):
         padding = ' ' * s
     else:
         padding = strify(s)
-    if len_func(padding) < 0:
-        raise IndeterminateWidthError(padding)
     if len(to_lines(padding)) > 1:
         raise ValueError('padding cannot contain newlines')
+    if len_func(padding) < 0:
+        raise IndeterminateWidthError(padding)
     return padding
 
 def with_color_stripped(f):

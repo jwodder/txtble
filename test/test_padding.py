@@ -197,7 +197,7 @@ def test_left_padding_right_padding_no_border_no_rstrip():
 ])
 def test_multiline_padding(padding):
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='padding cannot contain newlines'):
         tbl.show()
 
 def test_padding_no_column_border():

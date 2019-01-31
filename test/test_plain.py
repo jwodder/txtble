@@ -134,7 +134,10 @@ def test_headers_matching_columns():
 @pytest.mark.parametrize('columns', [len(HEADERS)-1, len(HEADERS)+1])
 def test_headers_not_matching_columns(columns):
     tbl = Txtble(DATA, headers=HEADERS, columns=columns)
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match=r'len\(headers\) and columns do not match',
+    ):
         str(tbl)
 
 @pytest.mark.parametrize('columns', [0, -1])

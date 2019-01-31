@@ -159,7 +159,17 @@ def test_bad_valign(valign):
         [['Line', 'Line 1\nLine 2\nLine 3\nLine 4', 'Extra 1\nExtra 2']],
         valign=['m', 'm', valign],
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='invalid vertical alignment specifier'):
+        str(tbl)
+
+@pytest.mark.parametrize('valign', ['q', 'T', 'top', None, '<'])
+def test_bad_valign_fill(valign):
+    tbl = Txtble(
+        [['Line', 'Line 1\nLine 2\nLine 3\nLine 4', 'Extra 1\nExtra 2']],
+        valign=['m', 'm'],
+        valign_fill=valign,
+    )
+    with pytest.raises(ValueError, match='invalid vertical alignment specifier'):
         str(tbl)
 
 @pytest.mark.parametrize('valign_fill', [None, 't'])

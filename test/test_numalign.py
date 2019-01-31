@@ -272,6 +272,156 @@ def test_align_nr_long_mixed(align):
     )
 
 @pytest.mark.parametrize('align', ['n', 'ln', 'nl'])
+def test_align_n_long_width_mixed(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Bar', 'red red red red'],
+            ['Baz', 123.45],
+            ['Quux', 'blue'],
+            ['Glarch', 1.23],
+            ['Gnusto', 'green'],
+        ],
+        align=['l', align],
+        widths=[None, 9],
+    )
+    assert str(tbl) == (
+        '+------+---------+\n'
+        '|Thing |Value    |\n'
+        '+------+---------+\n'
+        '|Foo   |12345    |\n'
+        '|Bar   |red red  |\n'
+        '|      |red red  |\n'
+        '|Baz   |  123.45 |\n'
+        '|Quux  |blue     |\n'
+        '|Glarch|    1.23 |\n'
+        '|Gnusto|green    |\n'
+        '+------+---------+'
+    )
+
+@pytest.mark.parametrize('align', ['cn', 'nc'])
+def test_align_nc_long_width_mixed(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Bar', 'red red red red'],
+            ['Baz', 123.45],
+            ['Quux', 'blue'],
+            ['Glarch', 1.23],
+            ['Gnusto', 'green'],
+        ],
+        align=['l', align],
+        widths=[None, 9],
+    )
+    assert str(tbl) == (
+        '+------+---------+\n'
+        '|Thing |  Value  |\n'
+        '+------+---------+\n'
+        '|Foo   |12345    |\n'
+        '|Bar   | red red |\n'
+        '|      | red red |\n'
+        '|Baz   |  123.45 |\n'
+        '|Quux  |  blue   |\n'
+        '|Glarch|    1.23 |\n'
+        '|Gnusto|  green  |\n'
+        '+------+---------+'
+    )
+
+@pytest.mark.parametrize('align', ['rn', 'nr'])
+def test_align_nr_long_width_mixed(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Bar', 'red red red red'],
+            ['Baz', 123.45],
+            ['Quux', 'blue'],
+            ['Glarch', 1.23],
+            ['Gnusto', 'green'],
+        ],
+        align=['l', align],
+        widths=[None, 9],
+    )
+    assert str(tbl) == (
+        '+------+---------+\n'
+        '|Thing |    Value|\n'
+        '+------+---------+\n'
+        '|Foo   | 12345   |\n'
+        '|Bar   |  red red|\n'
+        '|      |  red red|\n'
+        '|Baz   |   123.45|\n'
+        '|Quux  |     blue|\n'
+        '|Glarch|     1.23|\n'
+        '|Gnusto|    green|\n'
+        '+------+---------+'
+    )
+
+@pytest.mark.parametrize('align', ['n', 'ln', 'nl'])
+def test_align_n_mixed_numstr(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Baz', '1.2'],
+            ['Glarch', 1.2345],
+        ],
+        align=['l', align],
+    )
+    assert str(tbl) == (
+        '+------+----------+\n'
+        '|Thing |Value     |\n'
+        '+------+----------+\n'
+        '|Foo   |12345     |\n'
+        '|Baz   |1.2       |\n'
+        '|Glarch|    1.2345|\n'
+        '+------+----------+'
+    )
+
+@pytest.mark.parametrize('align', ['cn', 'nc'])
+def test_align_nc_mixed_numstr(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Baz', '1.2'],
+            ['Glarch', 1.2345],
+        ],
+        align=['l', align],
+    )
+    assert str(tbl) == (
+        '+------+----------+\n'
+        '|Thing |  Value   |\n'
+        '+------+----------+\n'
+        '|Foo   |12345     |\n'
+        '|Baz   |   1.2    |\n'
+        '|Glarch|    1.2345|\n'
+        '+------+----------+'
+    )
+
+@pytest.mark.parametrize('align', ['rn', 'nr'])
+def test_align_nr_mixed_numstr(align):
+    tbl = Txtble(
+        headers=['Thing', 'Value'],
+        data=[
+            ['Foo', 12345],
+            ['Baz', '1.2'],
+            ['Glarch', 1.2345],
+        ],
+        align=['l', align],
+    )
+    assert str(tbl) == (
+        '+------+----------+\n'
+        '|Thing |     Value|\n'
+        '+------+----------+\n'
+        '|Foo   |12345     |\n'
+        '|Baz   |       1.2|\n'
+        '|Glarch|    1.2345|\n'
+        '+------+----------+'
+    )
+
+@pytest.mark.parametrize('align', ['n', 'ln', 'nl'])
 def test_align_n_long_header(align):
     tbl = Txtble(
         headers=['Thing', 'Numeric Value'],
@@ -422,6 +572,45 @@ def test_align_n_numeric_row_fill():
         row_fill=1.2,
     )
     assert str(tbl) == (
+        '+---+----------+------+\n'
+        '|Foo|12345     | 1.2  |\n'
+        '|Bar|  123.45  |54.321|\n'
+        '|Baz|    1.2345| 1.2  |\n'
+        '+---+----------+------+'
+    )
+
+def test_align_n_numeric_none_str():
+    tbl = Txtble(
+        [
+            ['Foo', 12345, None],
+            ['Bar', 123.45, 54.321],
+            ['Baz', 1.2345, None],
+        ],
+        align='n',
+        none_str=1.2,
+    )
+    assert str(tbl) == (
+        '+---+----------+------+\n'
+        '|Foo|12345     | 1.2  |\n'
+        '|Bar|  123.45  |54.321|\n'
+        '|Baz|    1.2345| 1.2  |\n'
+        '+---+----------+------+'
+    )
+
+def test_align_n_numeric_dict_fill():
+    tbl = Txtble(
+        headers=['A', 'B', 'C'],
+        data=[
+            {"A": 'Foo', "B": 12345},
+            {"A": 'Bar', "B": 123.45, "C": 54.321},
+            {"A": 'Baz', "B": 1.2345},
+        ],
+        align='n',
+        dict_fill=1.2,
+    )
+    assert str(tbl) == (
+        '+---+----------+------+\n'
+        '|A  |B         |C     |\n'
         '+---+----------+------+\n'
         '|Foo|12345     | 1.2  |\n'
         '|Bar|  123.45  |54.321|\n'

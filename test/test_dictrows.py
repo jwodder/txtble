@@ -23,7 +23,10 @@ def test_dict_rows_extend_all():
 
 def test_dict_rows_no_headers():
     tbl = Txtble(data=[dict(zip(HEADERS, row)) for row in DATA])
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match='dict row not allowed when headers is None',
+    ):
         str(tbl)
 
 def test_missing_key():

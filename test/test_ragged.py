@@ -338,7 +338,10 @@ def test_short_rows_headers_row_fill(header_fill):
 
 def test_empty_headers_no_header_fill():
     tbl = Txtble(DATA, headers=[])
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError,
+        match='headers is empty but header_fill is None',
+    ):
         str(tbl)
 
 def test_empty_headers_header_fill():
