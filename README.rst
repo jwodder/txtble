@@ -22,6 +22,7 @@
 `GitHub <https://github.com/jwodder/txtble>`_
 | `PyPI <https://pypi.org/project/txtble/>`_
 | `Issues <https://github.com/jwodder/txtble/issues>`_
+| `Changelog <https://github.com/jwodder/txtble/blob/master/CHANGELOG.md>`_
 
 .. contents::
     :backlinks: top
