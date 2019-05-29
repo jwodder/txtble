@@ -1,3 +1,7 @@
+v0.11.1 (2019-05-29)
+--------------------
+- Loosen `attrs` version requirement
+
 v0.11.0 (2018-11-15)
 --------------------
 - Added numeric alignment
