@@ -180,7 +180,7 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
                         assert w > width
                         high = i
                 else:
-                    assert False  # pragma: no cover
+                    raise AssertionError('Unreachable state reached')  # pragma: no cover
                 wrapped.append(pre)
                 s = post
             else:
