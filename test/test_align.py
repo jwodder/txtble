@@ -1,6 +1,6 @@
 import pytest
+from   test_data import DATA, HEADERS, TABLE
 from   txtble    import Txtble
-from   test_data import HEADERS, DATA, TABLE
 
 def test_align_lll():
     tbl = Txtble(DATA, headers=HEADERS, align=['l', 'l', 'l'])

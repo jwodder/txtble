@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from six       import text_type
+from test_data import DATA, HEADERS
 from txtble    import Txtble
-from test_data import HEADERS, DATA
 
 def test_unicode():
     tbl = Txtble(

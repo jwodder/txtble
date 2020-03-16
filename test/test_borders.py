@@ -1,6 +1,6 @@
 import pytest
+from   test_data import DATA, HEADERS, TABLE
 from   txtble    import Txtble
-from   test_data import HEADERS, DATA, TABLE
 
 @pytest.mark.parametrize('header_border', [None, True])
 def test_no_border(header_border):

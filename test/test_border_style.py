@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 import pytest
 from   six       import text_type
+from   test_data import DATA, HEADERS, TABLE
 from   txtble    import (
-    Txtble,
-    ASCII_BORDERS, ASCII_EQ_BORDERS,
-    LIGHT_BORDERS, HEAVY_BORDERS, DOUBLE_BORDERS,
-    DOT_BORDERS,
+    ASCII_BORDERS, ASCII_EQ_BORDERS, DOT_BORDERS, DOUBLE_BORDERS,
+    HEAVY_BORDERS, LIGHT_BORDERS, Txtble,
 )
-from   test_data import HEADERS, DATA, TABLE
 
 def test_ascii_border_style():
     tbl = Txtble(DATA, headers=HEADERS, border_style=ASCII_BORDERS)

@@ -1,5 +1,5 @@
 import pytest
-from   txtble import Txtble, IndeterminateWidthError
+from   txtble import IndeterminateWidthError, Txtble
 
 BAD_STRING = '\x01'
 ERRMSG = repr(BAD_STRING) + ': string has indeterminate width'

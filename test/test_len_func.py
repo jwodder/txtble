@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from six       import text_type
+from test_data import DATA, HEADERS, TABLE
 from txtble    import Txtble, with_color_stripped
-from test_data import HEADERS, DATA, TABLE
 
 def test_custom_len_func_old_not_called(mocker):
     strwidth = mocker.patch('txtble.classes.strwidth')

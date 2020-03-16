@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import pytest
 from   six       import text_type
+from   test_data import DATA, HEADERS
 from   txtble    import (
+    ASCII_EQ_BORDERS, DOT_BORDERS, DOUBLE_BORDERS, HEAVY_BORDERS, LIGHT_BORDERS,
     Txtble,
-    ASCII_EQ_BORDERS, LIGHT_BORDERS, HEAVY_BORDERS, DOUBLE_BORDERS, DOT_BORDERS,
 )
-from   test_data import HEADERS, DATA
 
 def test_vborders_off():
     tbl = Txtble(DATA, headers=HEADERS, left_border=False, right_border=False)

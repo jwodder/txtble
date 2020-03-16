@@ -1,7 +1,7 @@
 from   collections import defaultdict
 import pytest
+from   test_data   import DATA, HEADERS, TABLE
 from   txtble      import Txtble
-from   test_data   import HEADERS, DATA, TABLE
 
 def test_dict_rows():
     tbl = Txtble(

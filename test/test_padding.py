@@ -1,6 +1,6 @@
 import pytest
+from   test_data import DATA, HEADERS, TABLE
 from   txtble    import Txtble
-from   test_data import HEADERS, DATA, TABLE
 
 @pytest.mark.parametrize('padding', ['', 0, None, False])
 def test_no_padding(padding):

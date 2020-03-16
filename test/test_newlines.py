@@ -1,5 +1,5 @@
-from txtble    import Txtble
 from test_data import DATA
+from txtble    import Txtble
 
 def test_embedded_newlines():
     tbl = Txtble(

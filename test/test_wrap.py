@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest
 from   six       import text_type
-from   txtble    import Txtble, IndeterminateWidthError
-from   test_data import HEADERS, DATA
+from   test_data import DATA, HEADERS
+from   txtble    import IndeterminateWidthError, Txtble
 
 LONG_STRING = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
 

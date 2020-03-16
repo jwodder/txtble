@@ -26,7 +26,7 @@ Visit <https://github.com/jwodder/txtble> for more information.
 """
 
 from .border_style import (
-    BorderStyle, ASCII_BORDERS, ASCII_EQ_BORDERS, DOT_BORDERS, DOUBLE_BORDERS,
+    ASCII_BORDERS, ASCII_EQ_BORDERS, BorderStyle, DOT_BORDERS, DOUBLE_BORDERS,
     HEAVY_BORDERS, LIGHT_BORDERS,
 )
 from .classes      import Txtble

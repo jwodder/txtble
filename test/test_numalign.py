@@ -1,5 +1,5 @@
 import pytest
-from   txtble import Txtble, NumericWidthOverflowError
+from   txtble import NumericWidthOverflowError, Txtble
 
 @pytest.mark.parametrize('align', ['n', 'ln', 'nl'])
 def test_align_n(align):

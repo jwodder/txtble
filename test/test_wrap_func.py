@@ -1,5 +1,5 @@
 import pytest
-from   txtble      import Txtble, IndeterminateWidthError
+from   txtble      import IndeterminateWidthError, Txtble
 from   txtble.util import strwidth
 
 LONG_STRING = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit'
