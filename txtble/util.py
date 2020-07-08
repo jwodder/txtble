@@ -58,15 +58,15 @@ def to_lines(s):
         return ['']
     if lines[-1].splitlines() != [lines[-1]]:
         lines.append('')
-    for i,l in enumerate(lines):
-        l2 = l.splitlines()
+    for i,ln in enumerate(lines):
+        l2 = ln.splitlines()
         assert len(l2) in (0,1)
         lines[i] = l2[0] if l2 else ''
     if PY2 and isinstance(s, str):
         # Manually split on \f and \v
         lines = [
-            lf for l in lines
-               for lv in l.split('\v')
+            lf for ln in lines
+               for lv in ln.split('\v')
                for lf in lv.split('\f')
         ]
     return lines
