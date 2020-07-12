@@ -381,7 +381,7 @@ API
    be added via the ``append()`` and ``extend()`` methods.
 
    ``**kwargs`` are used to configure the ``Txtble`` instance; see
-   "`Configuration Options <configuration_options_>`_" below.
+   "`Configuration Options`_" below.
 
 ``tbl.append(row)``
    Add a new data row at the bottom of the table.  ``row`` can be either an
@@ -409,8 +409,6 @@ API
    `unicode` value.  This is necessary if one or more table cells are
    `unicode`.
 
-
-.. _configuration_options:
 
 Configuration Options
 ---------------------
@@ -451,8 +449,8 @@ constructor or as attributes on a ``Txtble`` instance::
    A ``BorderStyle`` instance specifying the characters to use for drawing all
    of the table's borders & rules.  The border style can be overridden for
    individual borders by setting their respective options (``border``,
-   ``column_border``, etc.) to ``BorderStyle`` instances.  See "`BorderStyle
-   <borderstyle_>`_" below for more information.
+   ``column_border``, etc.) to ``BorderStyle`` instances.  See "BorderStyle_"
+   below for more information.
 
 ``bottom_border=None``
    Whether to draw a border along the bottom edge of the table.  The default
@@ -528,8 +526,8 @@ constructor or as attributes on a ``Txtble`` instance::
    The function to use for calculating how many terminal cells wide a string
    is; it should take one string argument and return a width.  Returning a
    negative width causes ``Txtble`` to raise an ``IndeterminateWidthError``.
-   The default value is ``with_color_stripped(wcwidth.wcswidth)`` (See "`Other
-   <other_>`_" below).
+   The default value is ``with_color_stripped(wcwidth.wcswidth)`` (See "Other_"
+   below).
 
 ``none_str=''``
    The string to display in place of `None` values (Setting ``none_str=None``
@@ -611,8 +609,6 @@ constructor or as attributes on a ``Txtble`` instance::
    set to a user-supplied value, the ``break_long_words`` and
    ``break_on_hyphens`` options are ignored.
 
-
-.. _borderstyle:
 
 ``BorderStyle``
 ---------------
@@ -699,8 +695,6 @@ the following rules:
 - All strings other than ``hline`` must be the same width.
 - No string may contain a newline.
 
-
-.. _other:
 
 Other
 -----
