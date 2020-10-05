@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import pytest
-from   six       import text_type
 from   test_data import DATA, HEADERS
 from   txtble    import IndeterminateWidthError, Txtble
 
@@ -336,82 +334,82 @@ def test_wrap_multiline():
 
 def test_wrap_fullwidth():
     tbl = Txtble(
-        [[u'Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ']],
+        [['Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ']],
         widths=[30],
     )
-    assert text_type(tbl) == (
-        u'+------------------------------+\n'
-        u'|Ｌｏｒｅｍ ｉｐｓｕｍ         |\n'
-        u'|ｄｏｌｏｒ ｓｉｔ ａｍｅｔ    |\n'
-        u'+------------------------------+'
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|Ｌｏｒｅｍ ｉｐｓｕｍ         |\n'
+        '|ｄｏｌｏｒ ｓｉｔ ａｍｅｔ    |\n'
+        '+------------------------------+'
     )
 
 def test_wrap_fullwidth_long_word():
     tbl = Txtble(
-        [[u'ａｎｔｉｄｉｓｅｓｔａｂｌｉｓｈｍｅｎｔａｒｉａｎｉｓｍ']],
+        [['ａｎｔｉｄｉｓｅｓｔａｂｌｉｓｈｍｅｎｔａｒｉａｎｉｓｍ']],
         widths=[30],
     )
-    assert text_type(tbl) == (
-        u'+------------------------------+\n'
-        u'|ａｎｔｉｄｉｓｅｓｔａｂｌｉｓ|\n'
-        u'|ｈｍｅｎｔａｒｉａｎｉｓｍ    |\n'
-        u'+------------------------------+'
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|ａｎｔｉｄｉｓｅｓｔａｂｌｉｓ|\n'
+        '|ｈｍｅｎｔａｒｉａｎｉｓｍ    |\n'
+        '+------------------------------+'
     )
 
 def test_wrap_combining():
     tbl = Txtble(
         [
             [
-                u'L\u0301o\u0301r\u0301e\u0301m\u0301'
-                u' i\u0301p\u0301s\u0301u\u0301m\u0301'
-                u' d\u0301o\u0301l\u0301o\u0301r\u0301'
-                u' s\u0301i\u0301t\u0301'
-                u' a\u0301m\u0301e\u0301t\u0301'
+                'L\u0301o\u0301r\u0301e\u0301m\u0301'
+                ' i\u0301p\u0301s\u0301u\u0301m\u0301'
+                ' d\u0301o\u0301l\u0301o\u0301r\u0301'
+                ' s\u0301i\u0301t\u0301'
+                ' a\u0301m\u0301e\u0301t\u0301'
             ],
         ],
         widths=[30],
     )
-    assert text_type(tbl) == (
-        u'+------------------------------+\n'
-        u'|L\u0301o\u0301r\u0301e\u0301m\u0301'
-        u' i\u0301p\u0301s\u0301u\u0301m\u0301'
-        u' d\u0301o\u0301l\u0301o\u0301r\u0301'
-        u' s\u0301i\u0301t\u0301'
-        u' a\u0301m\u0301e\u0301t\u0301    |\n'
-        u'+------------------------------+'
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|L\u0301o\u0301r\u0301e\u0301m\u0301'
+        ' i\u0301p\u0301s\u0301u\u0301m\u0301'
+        ' d\u0301o\u0301l\u0301o\u0301r\u0301'
+        ' s\u0301i\u0301t\u0301'
+        ' a\u0301m\u0301e\u0301t\u0301    |\n'
+        '+------------------------------+'
     )
 
 def test_wrap_fullwidth_builtin_len():
     tbl = Txtble(
-        [[u'Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ']],
+        [['Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ']],
         len_func = len,
         widths   = [30],
     )
-    assert text_type(tbl) == (
-        u'+------------------------------+\n'
-        u'|Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ    |\n'
-        u'+------------------------------+'
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ    |\n'
+        '+------------------------------+'
     )
 
 def test_wrap_combining_builtin_len():
     tbl = Txtble(
         [
             [
-                u'L\u0301o\u0301r\u0301e\u0301m\u0301'
-                u' i\u0301p\u0301s\u0301u\u0301m\u0301'
-                u' d\u0301o\u0301l\u0301o\u0301r\u0301'
-                u' s\u0301i\u0301t\u0301'
-                u' a\u0301m\u0301e\u0301t\u0301'
+                'L\u0301o\u0301r\u0301e\u0301m\u0301'
+                ' i\u0301p\u0301s\u0301u\u0301m\u0301'
+                ' d\u0301o\u0301l\u0301o\u0301r\u0301'
+                ' s\u0301i\u0301t\u0301'
+                ' a\u0301m\u0301e\u0301t\u0301'
             ],
         ],
         len_func = len,
         widths   = [30],
     )
-    assert text_type(tbl) == (
-        u'+------------------------------+\n'
-        u'|L\u0301o\u0301r\u0301e\u0301m\u0301 i\u0301p\u0301s\u0301u\u0301m\u0301         |\n'
-        u'|d\u0301o\u0301l\u0301o\u0301r\u0301 s\u0301i\u0301t\u0301 a\u0301m\u0301e\u0301t\u0301    |\n'
-        u'+------------------------------+'
+    assert str(tbl) == (
+        '+------------------------------+\n'
+        '|L\u0301o\u0301r\u0301e\u0301m\u0301 i\u0301p\u0301s\u0301u\u0301m\u0301         |\n'
+        '|d\u0301o\u0301l\u0301o\u0301r\u0301 s\u0301i\u0301t\u0301 a\u0301m\u0301e\u0301t\u0301    |\n'
+        '+------------------------------+'
     )
 
 def test_wrap_padding():
@@ -580,12 +578,12 @@ def test_wrap_implementation_bsearch_boundary():
     Test a boundary condition in the implementation of the long-word-splitting
     algorithm
     """
-    tbl = Txtble([[u'antidisestablishme\u0301n\uFF54arianism']], widths=[20])
-    assert text_type(tbl) == (
-        u'+--------------------+\n'
-        u'|antidisestablishme\u0301n |\n'
-        u'|\uFF54arianism          |\n'
-        u'+--------------------+'
+    tbl = Txtble([['antidisestablishme\u0301n\uFF54arianism']], widths=[20])
+    assert str(tbl) == (
+        '+--------------------+\n'
+        '|antidisestablishme\u0301n |\n'
+        '|\uFF54arianism          |\n'
+        '+--------------------+'
     )
 
 # vim:set nowrap:

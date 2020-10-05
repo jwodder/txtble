@@ -63,3 +63,8 @@ Features to Add
       columns
 - cells that span multiple columns and/or rows
 - sorting rows?
+- allowing multiple rows in the header
+- Add a `trim_columns=BOOL`(?) option for reducing the width of each set-width
+  column until it has no common character-column of filler whitespace (i.e.,
+  reducing the width as much as possible without causing re-wrapping)
+- table footers?

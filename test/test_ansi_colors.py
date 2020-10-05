@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import pytest
-from   six         import text_type
 from   wcwidth     import wcswidth
 from   test_data   import DATA, HEADERS
 from   txtble      import Txtble, UnterminatedColorError
@@ -16,8 +14,8 @@ COLORED_STRINGS = [
     ('Misplaced \033[0m sgr0', 'Misplaced  sgr0'),
     ('\033[32mGr\033[34mue\033[m', 'Grue'),
     ('\033[41mExtra\033[00m \033[05mzeroes\033[000m', 'Extra zeroes'),
-    (u'\033[30;47mPoke\u0301mon\033[m', u'Poke\u0301mon'),
-    (u'\033[37;40mＴｅｓｔ\u3000ｔｅｘｔ\033[m', u'Ｔｅｓｔ\u3000ｔｅｘｔ'),
+    ('\033[30;47mPoke\u0301mon\033[m', 'Poke\u0301mon'),
+    ('\033[37;40mＴｅｓｔ\u3000ｔｅｘｔ\033[m', 'Ｔｅｓｔ\u3000ｔｅｘｔ'),
 ]
 
 @pytest.mark.parametrize('colored,plain', COLORED_STRINGS)
@@ -35,7 +33,7 @@ def test_bad_color_aware_len():
 def test_colored_text(colored, plain):
     tbl = Txtble(data=[[colored], [plain]])
     w = wcswidth(plain)
-    assert text_type(tbl) == (
+    assert str(tbl) == (
           '+' + '-' * w + '+\n'
         + '|' + colored + '|\n'
         + '|' + plain   + '|\n'

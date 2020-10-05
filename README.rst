@@ -66,10 +66,11 @@ Features:
 
 Installation
 ============
-Just use `pip <https://pip.pypa.io>`_ (You have pip, right?) to install
+``txtble`` requires Python 3.6 or higher.  Just use `pip
+<https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 ``txtble`` and its dependencies::
 
-    pip install txtble
+    python3 -m pip install txtble
 
 
 Examples
@@ -297,7 +298,7 @@ Unicode works too, even fullwidth characters and combining characters::
     ...         ]
     ...     ]
     ... )
-    >>> print(tbl.show())
+    >>> print(tbl)
     +--------+--------+
     |Wide    |Accented|
     +--------+--------+
@@ -346,7 +347,7 @@ You can configure the borders and make them fancy::
 
     >>> from txtble import DOUBLE_BORDERS
     >>> tbl = Txtble(DATA, headers=HEADERS, border_style=DOUBLE_BORDERS)
-    >>> print(tbl.show())
+    >>> print(tbl)
     ╔═════════╦══════════╦══════════════════╗
     ║Month    ║Birthstone║Birth Flower      ║
     ╠═════════╬══════════╬══════════════════╣
@@ -404,10 +405,6 @@ API
    newlines, but (outside of some very odd cases) it will not end with a
    newline.  This means that you can do ``print(tbl)`` and there won't be a
    blank line added at the end.
-
-   In Python 2, ``unicode(tbl)`` is like ``str(tbl)``, except it produces a
-   `unicode` value.  This is necessary if one or more table cells are
-   `unicode`.
 
 
 Configuration Options
@@ -723,19 +720,3 @@ Other
    strips ANSI color sequences from a single string argument before passing it
    on.  If any color sequences are not followed by a reset sequence, an
    ``UnterminatedColorError`` is raised.
-
-
-Unicode in Python 2
--------------------
-The following guarantees are made regarding ``txtble``'s handling of Unicode in
-the fragile twilight realm that is Python 2:
-
-- If all table elements (table cells, ``*_fill`` options, ``none_str``, border
-  style strings, etc.) are or stringify to ASCII-only `str` values, calling
-  ``str(tbl)`` will work, and ``tbl.show()`` will return a `str`.
-
-- If one or more table elements are `unicode` and all other cell values are or
-  stringify to ASCII-only `str` values, calling ``unicode(tbl)`` will work, and
-  ``tbl.show()`` will return a `unicode`.
-
-In all other cases, you're on your own.

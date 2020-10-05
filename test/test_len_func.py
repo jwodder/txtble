@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from six       import text_type
 from test_data import DATA, HEADERS, TABLE
 from txtble    import Txtble, with_color_stripped
 
@@ -56,32 +54,32 @@ def test_color_aware_len_func_ansi():
 def test_fullwidth_builtin_len_func():
     tbl = Txtble(
         [
-            [u'Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ'],
+            ['Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ'],
             ['Lorem ipsum dolor sit amet'],
         ],
         len_func=len,
     )
-    assert text_type(tbl) == (
-        u'+--------------------------+\n'
-        u'|Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ|\n'
-        u'|Lorem ipsum dolor sit amet|\n'
-        u'+--------------------------+'
+    assert str(tbl) == (
+        '+--------------------------+\n'
+        '|Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ|\n'
+        '|Lorem ipsum dolor sit amet|\n'
+        '+--------------------------+'
     )
 
 def test_combining_builtin_len_func():
     s = (
-        u'L\u0301o\u0301r\u0301e\u0301m\u0301'
-        u' i\u0301p\u0301s\u0301u\u0301m\u0301'
-        u' d\u0301o\u0301l\u0301o\u0301r\u0301'
-        u' s\u0301i\u0301t\u0301'
-        u' a\u0301m\u0301e\u0301t\u0301'
+        'L\u0301o\u0301r\u0301e\u0301m\u0301'
+        ' i\u0301p\u0301s\u0301u\u0301m\u0301'
+        ' d\u0301o\u0301l\u0301o\u0301r\u0301'
+        ' s\u0301i\u0301t\u0301'
+        ' a\u0301m\u0301e\u0301t\u0301'
     )
     s2 = 'Lorem ipsum dolor sit amet'
     tbl = Txtble([[s], [s2]], len_func=len)
     w = len(s)
-    assert text_type(tbl) == (
+    assert str(tbl) == (
           '+' + '-' * w + '+\n'
         + '|' + s       + '|\n'
-        + '|' + s2 + ' ' * s.count(u'\u0301') + '|\n'
+        + '|' + s2 + ' ' * s.count('\u0301') + '|\n'
         + '+' + '-' * w + '+'
     )

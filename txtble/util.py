@@ -1,7 +1,7 @@
+from   functools     import wraps
 from   itertools     import cycle
 import re
 from   unicodedata   import category
-from   six           import PY2, integer_types, string_types, text_type, wraps
 from   wcwidth       import wcswidth
 from   .border_style import BorderStyle
 from   .errors       import IndeterminateWidthError, UnterminatedColorError
@@ -62,26 +62,19 @@ def to_lines(s):
         l2 = ln.splitlines()
         assert len(l2) in (0,1)
         lines[i] = l2[0] if l2 else ''
-    if PY2 and isinstance(s, str):
-        # Manually split on \f and \v
-        lines = [
-            lf for ln in lines
-               for lv in ln.split('\v')
-               for lf in lv.split('\f')
-        ]
     return lines
 
 def strify(s):
-    if not isinstance(s, string_types):
+    if not isinstance(s, str):
         s = str(s)
-    if s and isinstance(s, text_type) and category(s[0]).startswith('M'):
+    if s and category(s[0]).startswith('M'):
         s = ' ' + s
     return s.expandtabs()
 
 def mkpadding(s, len_func):
     if not s:
         padding = ''
-    elif isinstance(s, integer_types):
+    elif isinstance(s, int):
         padding = ' ' * s
     else:
         padding = strify(s)

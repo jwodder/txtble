@@ -1,15 +1,11 @@
-from   numbers       import Number
+from   collections.abc import Mapping
+from   numbers         import Number
 import attr
-from   six           import integer_types, string_types, text_type
-from   .border_style import ASCII_BORDERS
-from   .errors       import IndeterminateWidthError, NumericWidthOverflowError
-from   .util         import carry_over_color, first_style, join_cells, \
-                            mkpadding, strify, strwidth, to_len, to_lines, wrap
-
-try:
-    from collections.abc import Mapping
-except ImportError:
-    from collections     import Mapping
+from   .border_style   import ASCII_BORDERS
+from   .errors         import IndeterminateWidthError, NumericWidthOverflowError
+from   .util           import carry_over_color, first_style, join_cells, \
+                                  mkpadding, strify, strwidth, to_len, \
+                                  to_lines, wrap
 
 DICT_FILL_RAISE = object()
 
@@ -22,7 +18,7 @@ def data_converter(value):
     return data
 
 @attr.s
-class Txtble(object):
+class Txtble:
     data             = attr.ib(default=(), converter=data_converter)
     align            = attr.ib(default=())
     align_fill       = attr.ib(default='l')
@@ -77,9 +73,6 @@ class Txtble(object):
     def __str__(self):
         return str(self.show())
 
-    def __unicode__(self):
-        return text_type(self.show())
-
     def _len(self, s):
         w = self.len_func(s)
         if w < 0:
@@ -129,7 +122,7 @@ class Txtble(object):
                 columns = max(map(len, data)) if data else 0
         data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
 
-        if isinstance(self.widths, (integer_types, type(None))):
+        if isinstance(self.widths, (int, type(None))):
             wrap_widths = [self.widths] * columns
         else:
             wrap_widths = to_len(list(self.widths), columns, self.width_fill)
@@ -197,7 +190,7 @@ class Txtble(object):
         row_border = self.row_border and \
             first_style(self.row_border, self.border_style)
 
-        if isinstance(self.align, string_types):
+        if isinstance(self.align, str):
             align = [self.align] * columns
         else:
             align = to_len(list(self.align), columns, self.align_fill)
@@ -230,7 +223,7 @@ class Txtble(object):
                     raise NumericWidthOverflowError()
                 widths[i] = max(widths[i], numwidth)
 
-        if isinstance(self.valign, string_types):
+        if isinstance(self.valign, str):
             valign = [self.valign] * columns
         else:
             valign = to_len(list(self.valign), columns, self.valign_fill)
@@ -277,7 +270,7 @@ class Txtble(object):
         return '\n'.join(output)
 
 
-class Cell(object):
+class Cell:
     def __init__(self, tbl, value):
         if value is None:
             value = tbl.none_str
@@ -328,10 +321,10 @@ class Cell(object):
     def wrap(self, width):
         if width is None:
             return
+        elif not isinstance(width, int):
+            raise TypeError(width)
         elif width <= 0:
             raise ValueError(width)
-        elif not isinstance(width, integer_types):
-            raise TypeError(width)
         if self.table.wrap_func is None:
             def wrap_func(s):
                 return carry_over_color(wrap(

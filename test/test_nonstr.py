@@ -1,13 +1,8 @@
-# -*- coding: utf-8 -*-
-from six    import text_type
 from txtble import Txtble
 
-class Custom(object):
+class Custom:
     def __str__(self):
         return 'str'
-
-    def __unicode__(self):
-        return u'unicode'
 
     def __bytes__(self):
         return b'bytes'
@@ -144,20 +139,20 @@ def test_custom():
         '|C|str|\n'
         '+-+---+'
     )
-    assert text_type(tbl) == (
-        u'+-+---+\n'
-        u'|A|B  |\n'
-        u'|C|str|\n'
-        u'+-+---+'
+    assert str(tbl) == (
+        '+-+---+\n'
+        '|A|B  |\n'
+        '|C|str|\n'
+        '+-+---+'
     )
 
 def test_custom_plus_unicode():
-    tbl = Txtble(data=[[u'Å', u'B'], [u'Č', Custom()]])
-    assert text_type(tbl) == (
-        u'+-+---+\n'
-        u'|Å|B  |\n'
-        u'|Č|str|\n'
-        u'+-+---+'
+    tbl = Txtble(data=[['Å', 'B'], ['Č', Custom()]])
+    assert str(tbl) == (
+        '+-+---+\n'
+        '|Å|B  |\n'
+        '|Č|str|\n'
+        '+-+---+'
     )
 
 def test_custom_header():
