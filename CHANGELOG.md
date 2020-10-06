@@ -4,6 +4,7 @@ v0.12.0 (in development)
 - Drop support for Python 2, Python 3.4, and Python 3.5
 - Update wcwidth requirement to `~= 0.2.0`
 - Drop six requirement
+- Add type annotations
 
 v0.11.1 (2019-05-29)
 --------------------

@@ -3,13 +3,13 @@ class IndeterminateWidthError(ValueError):
     Raised when a string is reported as having negative/indeterminate width
     """
 
-    def __init__(self, string):
+    def __init__(self, string: str):
         #: The string in question
-        self.string = string
+        self.string: str = string
         super(IndeterminateWidthError, self).__init__(string)
 
-    def __str__(self):
-        return '{0.string!r}: string has indeterminate width'.format(self)
+    def __str__(self) -> str:
+        return f'{self.string!r}: string has indeterminate width'
 
 
 class UnterminatedColorError(ValueError):
@@ -17,13 +17,13 @@ class UnterminatedColorError(ValueError):
     Raised when a string contains an ANSI color escape sequence without a reset
     """
 
-    def __init__(self, string):
+    def __init__(self, string: str):
         #: The string in question
-        self.string = string
+        self.string: str = string
         super(UnterminatedColorError, self).__init__(string)
 
-    def __str__(self):
-        return '{0.string!r}: ANSI color sequence not reset'.format(self)
+    def __str__(self) -> str:
+        return f'{self.string!r}: ANSI color sequence not reset'
 
 
 class NumericWidthOverflowError(ValueError):
@@ -32,5 +32,5 @@ class NumericWidthOverflowError(ValueError):
     to exceed the column's set width
     """
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'Numeric alignment overflows column width'

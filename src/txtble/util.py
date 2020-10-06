@@ -1,37 +1,23 @@
 from   functools     import wraps
 from   itertools     import cycle
 import re
+from   typing        import Any, Callable, Iterable, List, TypeVar
 from   unicodedata   import category
 from   wcwidth       import wcswidth
 from   .border_style import BorderStyle
 from   .errors       import IndeterminateWidthError, UnterminatedColorError
 
+LenFunc = Callable[[str], int]
+
+T = TypeVar("T")
+
 COLOR_BEGIN_RGX = r'\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m'
 COLOR_END_RGX   = r'\033\[(?:[0-9;]*;)?0*m'
 
-def join_cells(cells, widths, align, valign, col_sep, left_border_line,
-               right_border_line, rstrip, left_padding, right_padding,
-               num_spacing):
-    assert 0 < len(cells) == len(widths) == len(align)
-    height = max(len(c.lines) for c in cells)
-    boxes = [
-        c.box(w, height, a, v, n)
-        for (c,w,a,v,n) in zip(cells, widths, align, valign, num_spacing)
-    ]
-    if not right_border_line and rstrip:
-        boxes[-1] = cells[-1].box(0, height, align[-1], valign[-1], num_spacing[-1])
-    return [
-        left_border_line + left_padding
-            + (right_padding + col_sep + left_padding).join(line_bits)
-            + (right_padding if right_border_line or not rstrip else '')
-            + right_border_line
-        for line_bits in zip(*boxes)
-    ]
-
-def to_len(xs, length, fill):
+def to_len(xs: List[T], length: int, fill: T) -> List[T]:
     return (xs + [fill] * length)[:length]
 
-def to_lines(s):
+def to_lines(s: str) -> List[str]:
     """
     Like `str.splitlines()`, except that an empty string results in a
     one-element list and a trailing newline results in a trailing empty string
@@ -64,14 +50,16 @@ def to_lines(s):
         lines[i] = l2[0] if l2 else ''
     return lines
 
-def strify(s):
+def strify(s: Any) -> str:
     if not isinstance(s, str):
-        s = str(s)
-    if s and category(s[0]).startswith('M'):
-        s = ' ' + s
-    return s.expandtabs()
+        s2 = str(s)
+    else:
+        s2 = s
+    if s2 and category(s2[0]).startswith('M'):
+        s2 = ' ' + s2
+    return s2.expandtabs()
 
-def mkpadding(s, len_func):
+def mkpadding(s: Any, len_func: LenFunc) -> str:
     if not s:
         padding = ''
     elif isinstance(s, int):
@@ -84,7 +72,7 @@ def mkpadding(s, len_func):
         raise IndeterminateWidthError(padding)
     return padding
 
-def with_color_stripped(f):
+def with_color_stripped(f: Callable[[str], T]) -> Callable[[str], T]:
     """
     A function decorator for applying to `len` or imitators thereof that strips
     ANSI color sequences from a string before passing it on.  If any color
@@ -92,7 +80,7 @@ def with_color_stripped(f):
     is raised.
     """
     @wraps(f)
-    def colored_len(s):
+    def colored_len(s: str) -> T:
         s2 = re.sub(
             COLOR_BEGIN_RGX + '(.*?)' + COLOR_END_RGX,
             lambda m: re.sub(COLOR_BEGIN_RGX, '', m.group(1)),
@@ -103,9 +91,9 @@ def with_color_stripped(f):
         return f(re.sub(COLOR_END_RGX, '', s2))
     return colored_len
 
-strwidth = with_color_stripped(wcswidth)
+strwidth: LenFunc = with_color_stripped(wcswidth)
 
-def carry_over_color(lines):
+def carry_over_color(lines: Iterable[str]) -> List[str]:
     """
     Given a sequence of lines, for each line that contains a ANSI color escape
     sequence without a reset, add a reset to the end of that line and copy all
@@ -123,9 +111,14 @@ def carry_over_color(lines):
         lines2.append(s)
     return lines2
 
-def wrap(s, width, len_func=strwidth, break_long_words=True,
-                                      break_on_hyphens=True):
-    def length(ss):
+def wrap(
+    s: str,
+    width: int,
+    len_func: LenFunc = strwidth,
+    break_long_words: bool = True,
+    break_on_hyphens: bool = True,
+) -> List[str]:
+    def length(ss: str) -> int:
         try:
             return len_func(ss)
         except UnterminatedColorError:
@@ -178,10 +171,10 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
                 s = post
             else:
                 # Break at the first hyphen or space, if any
-                m = re.search(break_point, s)
-                if m:
-                    wrapped.append(s[:m.end()].rstrip(' '))
-                    s = s[m.end():]
+                m2 = re.search(break_point, s)
+                if m2:
+                    wrapped.append(s[:m2.end()].rstrip(' '))
+                    s = s[m2.end():]
                 else:
                     # `s` is just one long, unbreakable word; break out of
                     # the `for` loop
@@ -189,7 +182,7 @@ def wrap(s, width, len_func=strwidth, break_long_words=True,
     wrapped.append(s)
     return wrapped
 
-def breakable_units(s):
+def breakable_units(s: str) -> List[str]:
     """
     Break a string into a list of substrings, breaking at each point that it is
     permissible for `wrap(..., break_long_words=True)` to break; i.e., _not_
@@ -207,7 +200,7 @@ def breakable_units(s):
             units.extend(run)
     return units
 
-def first_style(*args):
+def first_style(*args: Any) -> BorderStyle:
     for a in args:
         if isinstance(a, BorderStyle):
             return a

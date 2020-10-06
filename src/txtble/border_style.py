@@ -1,14 +1,25 @@
-# -*- coding: utf-8 -*-
-from collections import namedtuple
+from typing import Iterable, NamedTuple
 
-class BorderStyle(namedtuple('BorderStyle', '''
-    hline    vline
-    ulcorner urcorner llcorner lrcorner
-    vrtee    vltee    dhtee    uhtee
-    plus
-''')):
+class BorderStyle(NamedTuple):
+    hline: str
+    vline: str
+    ulcorner: str
+    urcorner: str
+    llcorner: str
+    lrcorner: str
+    vrtee: str
+    vltee: str
+    dhtee: str
+    uhtee: str
+    plus: str
 
-    def top_rule(self, widths, left_capped, right_capped, sep_cols):
+    def top_rule(
+        self,
+        widths: Iterable[int],
+        left_capped: bool,
+        right_capped: bool,
+        sep_cols: bool,
+    ) -> str:
         return rule(
             widths,
             self.hline,
@@ -17,7 +28,13 @@ class BorderStyle(namedtuple('BorderStyle', '''
             sep       = self.dhtee if sep_cols else '',
         )
 
-    def mid_rule(self, widths, left_capped, right_capped, sep_cols):
+    def mid_rule(
+        self,
+        widths: Iterable[int],
+        left_capped: bool,
+        right_capped: bool,
+        sep_cols: bool,
+    ) -> str:
         return rule(
             widths,
             self.hline,
@@ -26,7 +43,13 @@ class BorderStyle(namedtuple('BorderStyle', '''
             sep       = self.plus if sep_cols else '',
         )
 
-    def bot_rule(self, widths, left_capped, right_capped, sep_cols):
+    def bot_rule(
+        self,
+        widths: Iterable[int],
+        left_capped: bool,
+        right_capped: bool,
+        sep_cols: bool,
+    ) -> str:
         return rule(
             widths,
             self.hline,
@@ -43,5 +66,5 @@ HEAVY_BORDERS    = BorderStyle(*u'━┃┏┓┗┛┣┫┳┻╋')
 DOUBLE_BORDERS   = BorderStyle(*u'═║╔╗╚╝╠╣╦╩╬')
 DOT_BORDERS      = BorderStyle(*u'⋯⋮·········')
 
-def rule(widths, char, left_cap, right_cap, sep):
+def rule(widths: Iterable[int], char: str, left_cap: str, right_cap: str, sep: str) -> str:
     return left_cap + sep.join(char * w for w in widths) + right_cap

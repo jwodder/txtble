@@ -153,13 +153,13 @@ def test_align_extra_aligns():
         '+---------+----------+------------------+'
     )
 
-@pytest.mark.parametrize('align', ['q', 'L', 'left', None, '<'])
+@pytest.mark.parametrize('align', ['q', 'L', 'left', '<'])
 def test_bad_align(align):
     tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', align])
     with pytest.raises(ValueError, match='invalid alignment specifier'):
         str(tbl)
 
-@pytest.mark.parametrize('align', ['q', 'L', 'left', None, '<'])
+@pytest.mark.parametrize('align', ['q', 'L', 'left', '<'])
 def test_bad_align_fill(align):
     tbl = Txtble(DATA, headers=HEADERS, align=['c', 'c'], align_fill=align)
     with pytest.raises(ValueError, match='invalid alignment specifier'):

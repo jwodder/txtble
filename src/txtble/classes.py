@@ -1,91 +1,101 @@
-from   collections.abc import Mapping
+from   collections.abc import Mapping as MappingABC
 from   numbers         import Number
+from   typing          import Any, Callable, Iterable, List, Mapping, \
+                                Optional, Sequence, Tuple, Union
 import attr
-from   .border_style   import ASCII_BORDERS
+from   .border_style   import ASCII_BORDERS, BorderStyle
 from   .errors         import IndeterminateWidthError, NumericWidthOverflowError
-from   .util           import carry_over_color, first_style, join_cells, \
-                                  mkpadding, strify, strwidth, to_len, \
-                                  to_lines, wrap
+from   .util           import LenFunc, carry_over_color, first_style, \
+                                mkpadding, strify, strwidth, to_len, to_lines, \
+                                wrap
 
 DICT_FILL_RAISE = object()
 
-def data_converter(value):
+def data_converter(value: Iterable[Union[Iterable, Mapping]]) \
+        -> List[Union[List, Mapping]]:
     data = []
     for row in value:
-        if not isinstance(row, Mapping):
+        if not isinstance(row, MappingABC):
             row = list(row)
         data.append(row)
     return data
 
-@attr.s
+@attr.s(auto_attribs=True)
 class Txtble:
-    data             = attr.ib(default=(), converter=data_converter)
-    align            = attr.ib(default=())
-    align_fill       = attr.ib(default='l')
-    border           = attr.ib(default=True)
-    border_style     = attr.ib(default=ASCII_BORDERS)
-    bottom_border    = attr.ib(default=None)
-    break_long_words = attr.ib(default=True)
-    break_on_hyphens = attr.ib(default=True)
-    column_border    = attr.ib(default=True)
-    columns          = attr.ib(default=None)
-    dict_fill        = attr.ib(default=DICT_FILL_RAISE)
-    header_border    = attr.ib(default=None)
-    header_fill      = attr.ib(default=None)
-    headers          = attr.ib(default=None, converter=attr.converters.optional(list))
-    left_border      = attr.ib(default=None)
-    left_padding     = attr.ib(default=None)
-    len_func         = attr.ib(default=strwidth)
-    none_str         = attr.ib(default='')
-    padding          = attr.ib(default=0)
-    right_border     = attr.ib(default=None)
-    right_padding    = attr.ib(default=None)
-    row_border       = attr.ib(default=False)
-    row_fill         = attr.ib(default='')
-    rstrip           = attr.ib(default=True)
-    top_border       = attr.ib(default=None)
-    valign           = attr.ib(default=())
-    valign_fill      = attr.ib(default='t')
-    width_fill       = attr.ib(default=None)
-    widths           = attr.ib(default=())
-    wrap_func        = attr.ib(default=None)
+    data: List[Union[List, Mapping]] \
+        = attr.ib(default=(), converter=data_converter)
+    align: Union[str, Sequence[str]]              = ()
+    align_fill: str                               = "l"
+    border: Union[bool, BorderStyle]              = True
+    border_style: BorderStyle                     = ASCII_BORDERS
+    bottom_border: Union[bool, BorderStyle, None] = None
+    break_long_words: bool                        = True
+    break_on_hyphens: bool                        = True
+    column_border: Union[bool, BorderStyle]       = True
+    columns: Optional[int]                        = attr.ib(default=None)
+    dict_fill: Any                                = DICT_FILL_RAISE
+    header_border: Union[bool, BorderStyle, None] = None
+    header_fill: Any                              = None
+    headers: Optional[List] \
+        = attr.ib(default=None, converter=attr.converters.optional(list))
+    left_border: Union[bool, BorderStyle, None]   = None
+    left_padding: Union[int, str, None]           = None
+    len_func: LenFunc                             = strwidth
+    none_str: Any                                 = ''
+    padding: Union[int, str]                      = 0
+    right_border: Union[bool, BorderStyle, None]  = None
+    right_padding: Union[int, str, None]          = None
+    row_border: Union[bool, BorderStyle]          = False
+    row_fill: Any                                 = attr.ib(default='')
+    rstrip: bool                                  = True
+    top_border: Union[bool, BorderStyle, None]    = None
+    valign: Union[str, Sequence[str]]             = ()
+    valign_fill: str                              = "t"
+    width_fill: Optional[int]                     = None
+    widths: Union[int, Sequence[Optional[int]], None] = ()
+    wrap_func: Optional[Callable[[str, int], Iterable[str]]] = None
 
     @row_fill.validator
-    def _row_fill_validator(self, attrib, value):
+    def _row_fill_validator(self, attrib: attr.Attribute, value: Any) \
+            -> None:
         if value is None:
             # Reserved to mean something in a later version
             raise ValueError('row_fill cannot be None')
 
     @columns.validator
-    def _columns_validator(self, attrib, value):
+    def _columns_validator(
+        self,
+        attrib: attr.Attribute,
+        value: Optional[int],
+    ) -> None:
         if value is not None and value < 1:
             raise ValueError('columns must be at least 1')
 
-    def append(self, row):
-        if not isinstance(row, Mapping):
+    def append(self, row: Union[Iterable, Mapping]) -> None:
+        if not isinstance(row, MappingABC):
             row = list(row)
         self.data.append(row)
 
-    def extend(self, data):
+    def extend(self, data: Iterable[Union[Iterable, Mapping]]) -> None:
         for row in data:
             self.append(row)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.show())
 
-    def _len(self, s):
+    def _len(self, s: str) -> int:
         w = self.len_func(s)
         if w < 0:
             raise IndeterminateWidthError(s)
         return w
 
-    def show(self):
+    def show(self) -> str:
         if self.row_fill is None:
             raise ValueError('row_fill cannot be None')
         if self.columns is not None and self.columns < 1:
             raise ValueError('columns must be at least 1')
 
-        def dict_get(d,k):
+        def dict_get(d: Mapping, k: Any) -> Any:
             try:
                 return d[k]
             except KeyError:
@@ -96,13 +106,14 @@ class Txtble:
 
         data = []
         for row in self.data:
-            if isinstance(row, Mapping):
+            if isinstance(row, MappingABC):
                 if self.headers is None:
                     raise ValueError('dict row not allowed when headers is None')
                 data.append([Cell(self, dict_get(row,h)) for h in self.headers])
             else:
                 data.append([Cell(self, c) for c in row])
 
+        headers: Optional[List["Cell"]]
         if self.headers is not None:
             headers = [Cell(self, h) for h in self.headers]
             columns = len(headers)
@@ -122,7 +133,8 @@ class Txtble:
                 columns = max(map(len, data)) if data else 0
         data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
 
-        if isinstance(self.widths, (int, type(None))):
+        wrap_widths: List[Optional[int]]
+        if isinstance(self.widths, int) or self.widths is None:
             wrap_widths = [self.widths] * columns
         else:
             wrap_widths = to_len(list(self.widths), columns, self.width_fill)
@@ -179,6 +191,7 @@ class Txtble:
             bottom_border = self.bottom_border and \
                 first_style(self.bottom_border, border, self.border_style)
 
+        header_border: Optional[BorderStyle]
         if self.header_border or \
                 (self.header_border is None and headers is not None):
             header_border = first_style(self.header_border, self.border_style)
@@ -190,14 +203,15 @@ class Txtble:
         row_border = self.row_border and \
             first_style(self.row_border, self.border_style)
 
+        align: List[str]
         if isinstance(self.align, str):
             align = [self.align] * columns
         else:
             align = to_len(list(self.align), columns, self.align_fill)
 
-        num_spacing = [None] * columns
+        num_spacing: List[Optional[Tuple[int, int]]] = [None] * columns
         for i,a in enumerate(align):
-            if 'n' in (a or ''):
+            if 'n' in a:
                 predot = 0
                 postdot = 0
                 if headers is not None and headers[i].is_numeric:
@@ -219,7 +233,8 @@ class Txtble:
                 numwidth = predot
                 if postdot > 0:
                     numwidth += 1 + postdot
-                if wrap_widths[i] is not None and numwidth > wrap_widths[i]:
+                wwi = wrap_widths[i]
+                if wwi is not None and numwidth > wwi:
                     raise NumericWidthOverflowError()
                 widths[i] = max(widths[i], numwidth)
 
@@ -228,7 +243,7 @@ class Txtble:
         else:
             valign = to_len(list(self.valign), columns, self.valign_fill)
 
-        def showrow(row):
+        def showrow(row: List["Cell"]) -> List[str]:
             return join_cells(
                 row,
                 widths,
@@ -271,17 +286,24 @@ class Txtble:
 
 
 class Cell:
-    def __init__(self, tbl, value):
+    def __init__(self, tbl: Txtble, value: Any):
         if value is None:
             value = tbl.none_str
-        self.value = value
-        self.lines = carry_over_color(to_lines(strify(value)))
-        self.width = max(map(tbl._len, self.lines))
-        self.table = tbl
-        self.is_numeric = isinstance(value, Number) and len(self.lines) == 1
+        self.value: Any = value
+        self.lines: List[str] = carry_over_color(to_lines(strify(value)))
+        self.width: int = max(map(tbl._len, self.lines))
+        self.table: Txtble = tbl
+        self.is_numeric: bool = isinstance(value, Number) and len(self.lines) == 1
 
-    def box(self, width, height, align, valign, num_spacing):
-        if 'n' in (align or '') and self.is_numeric:
+    def box(
+        self,
+        width: int,
+        height: int,
+        align: str,
+        valign: str,
+        num_spacing: Optional[Tuple[int, int]],
+    ) -> List[str]:
+        if 'n' in align and self.is_numeric:
             assert num_spacing is not None
             pred, dot, postd = self.lines[0].partition('.')
             pred = ' ' * (num_spacing[0] - self.table._len(pred)) + pred
@@ -290,7 +312,7 @@ class Cell:
             postd += ' ' * (num_spacing[1] - self.table._len(postd))
             self.lines[0] = pred + dot + postd
         if width == 0:
-            if 'n' in (align or '') and self.is_numeric:
+            if 'n' in align and self.is_numeric:
                 lines = list(map(str.rstrip, self.lines))
             else:
                 lines = list(self.lines)
@@ -307,7 +329,7 @@ class Cell:
             raise ValueError('{!r}: invalid vertical alignment specifier'
                              .format(valign))
 
-    def afill(self, s, width, align):
+    def afill(self, s: str, width: int, align: str) -> str:
         spaces = width - self.table.len_func(s)
         if align in ('l', 'n', 'nl', 'ln'):
             return s + ' ' * spaces
@@ -318,29 +340,61 @@ class Cell:
         else:
             raise ValueError('{!r}: invalid alignment specifier'.format(align))
 
-    def wrap(self, width):
+    def wrap(self, width: Optional[int]) -> None:
         if width is None:
             return
-        elif not isinstance(width, int):
-            raise TypeError(width)
+        #elif not isinstance(width, int):
+        #    raise TypeError(width)
         elif width <= 0:
-            raise ValueError(width)
+            raise ValueError(f"negative column width: {width}")
+        else:
+            iwidth = width
         if self.table.wrap_func is None:
-            def wrap_func(s):
+            def wrap_func(s: str) -> List[str]:
                 return carry_over_color(wrap(
-                    s, width,
+                    s, iwidth,
                     len_func         = self.table.len_func,
                     break_long_words = self.table.break_long_words,
                     break_on_hyphens = self.table.break_on_hyphens,
                 ))
         else:
-            def wrap_func(s):
-                if self.table.len_func(s) <= width:
+            wrap0 = self.table.wrap_func
+            def wrap_func(s: str) -> List[str]:
+                if self.table.len_func(s) <= iwidth:
                     return [s]
                 return carry_over_color(
-                    [x.expandtabs() for x in self.table.wrap_func(s, width)]
+                    [x.expandtabs() for x in wrap0(s, iwidth)]
                 )
         self.lines = [
             wrapped for line in self.lines for wrapped in wrap_func(line)
         ]
         self.width = max(map(self.table._len, self.lines))
+
+def join_cells(
+    cells: List[Cell],
+    widths: List[int],
+    align: List[str],
+    valign: List[str],
+    col_sep: str,
+    left_border_line: str,
+    right_border_line: str,
+    rstrip: bool,
+    left_padding: str,
+    right_padding: str,
+    num_spacing: List[Optional[Tuple[int, int]]],
+) -> List[str]:
+    assert 0 < len(cells) == len(widths) == len(align)
+    height = max(len(c.lines) for c in cells)
+    boxes = [
+        c.box(w, height, a, v, n)
+        for (c,w,a,v,n) in zip(cells, widths, align, valign, num_spacing)
+    ]
+    if not right_border_line and rstrip:
+        boxes[-1] = cells[-1].box(0, height, align[-1], valign[-1], num_spacing[-1])
+    return [
+        left_border_line + left_padding
+            + (right_padding + col_sep + left_padding).join(line_bits)
+            + (right_padding if right_border_line or not rstrip else '')
+            + right_border_line
+        for line_bits in zip(*boxes)
+    ]
