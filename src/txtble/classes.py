@@ -343,8 +343,6 @@ class Cell:
     def wrap(self, width: Optional[int]) -> None:
         if width is None:
             return
-        #elif not isinstance(width, int):
-        #    raise TypeError(width)
         elif width <= 0:
             raise ValueError(f"negative column width: {width}")
         else:
