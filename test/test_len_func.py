@@ -13,7 +13,7 @@ def test_null_defaulting_len_func(mocker):
     tbl = Txtble(DATA, headers=HEADERS, len_func=None)
     assert str(tbl) == TABLE
     spy.assert_has_calls(
-        [mocker.call(s) for s in HEADERS + sum(DATA, start=[])],
+        [mocker.call(s) for s in HEADERS + sum(DATA, [])],
         any_order=True,
     )
 
