@@ -36,7 +36,7 @@ class Txtble:
     dict_fill: Any                                = DICT_FILL_RAISE
     header_border: Union[bool, BorderStyle, None] = None
     header_fill: Any                              = None
-    headers: Optional[List] \
+    headers: Optional[list] \
         = attr.ib(default=None, converter=attr.converters.optional(list))
     left_border: Union[bool, BorderStyle, None]   = None
     left_padding: Union[int, str, None]           = None

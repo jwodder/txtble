@@ -417,7 +417,7 @@ constructor or as attributes on a ``Txtble`` instance::
     tbl = Txtble(data)
     tbl.border = False
 
-``align=()``
+``align: Union[str, Sequence[str]] = ()``
    A sequence of alignment specifiers indicating how the contents of each
    column, in order, should be horizontally aligned.  The alignment specifiers
    are ``'l'`` (left alignment), ``'c'`` (centered alignment), and ``'r'``
@@ -431,56 +431,56 @@ constructor or as attributes on a ``Txtble`` instance::
    string value longer than any of the numbers).  An alignment specifier of
    just ``'n'`` is equivalent to ``'ln'`` or ``'nl'``.
 
-``align_fill='l'``
+``align_fill: str = 'l'``
    If there are more columns than there are entries in ``align``, the extra
    columns will have their alignment set to ``align_fill``.
 
-``border=True``
+``border: Union[bool, BorderStyle] = True``
    Whether to draw a border around the edge of the table.  ``border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used
    for drawing the border around the edge of the table.  Individual edges can
    be toggled or stylized by setting the ``bottom_border``, ``left_border``,
    ``right_border``, and ``top_border`` options.
 
-``border_style=ASCII_BORDERS``
+``border_style: BorderStyle = ASCII_BORDERS``
    A ``BorderStyle`` instance specifying the characters to use for drawing all
    of the table's borders & rules.  The border style can be overridden for
    individual borders by setting their respective options (``border``,
    ``column_border``, etc.) to ``BorderStyle`` instances.  See "BorderStyle_"
    below for more information.
 
-``bottom_border=None``
+``bottom_border: Union[bool, BorderStyle, None] = None``
    Whether to draw a border along the bottom edge of the table.  The default
    value of `None` means to inherit the value set for ``border``.
    ``bottom_border`` may optionally be set to a ``BorderStyle`` instance to set
    the characters used for drawing the border along the bottom edge.
 
-``break_long_words=True``
+``break_long_words: bool = True``
    Whether to force a line break in the middle of a word if said word is too
    long for the column's width
 
-``break_on_hyphens=True``
+``break_on_hyphens: bool = True``
    Whether to break on hyphens in addition to whitespace when wrapping text
 
-``column_border=True``
+``column_border: Union[bool, BorderStyle] = True``
    Whether to draw a vertical rule between individual columns.
    ``column_border`` may optionally be set to a ``BorderStyle`` instance to set
    the characters used for drawing the vertical rules between columns.
 
-``columns=None``
+``columns: Optional[int] = None``
    An optional positive integer.  When set, show exactly the given number of
    columns per row, adding cells with ``row_fill`` and discarding extra cells
    as needed.  If ``headers`` is also set, its length must equal ``columns`` or
    else a `ValueError` is raised.  Setting both ``columns`` and ``headers``
    causes ``header_fill`` to be ignored.
 
-``dict_fill``
+``dict_fill: Any``
    If a header name does not appear as a key in a `dict`/mapping row, the value
    of ``dict_fill`` will be used for the corresponding cell value.  If
    ``dict_fill`` is not set, a missing key will cause a ``KeyError`` to be
    raised.
 
-``header_border=None``
+``header_border: Union[bool, BorderStyle, None] = None``
    Whether to draw a horizontal rule above the data rows, below the header row
    (if any).  The default value of `None` means that the border will be drawn
    if & only if ``headers`` is non-`None`.  ``header_border`` may optionally be
@@ -490,7 +490,7 @@ constructor or as attributes on a ``Txtble`` instance::
    If ``headers`` is `None` and ``top_border`` is set to a true value (or
    inherits a true value from ``border``), the header border will not be drawn.
 
-``header_fill=None``
+``header_fill: Any = None``
    When ``headers`` is non-`None` and ``columns`` is `None`, this option
    determines how rows with more columns than there are headers are handled.
    When ``header_fill=None``, any extra columns are discarded from long rows.
@@ -498,7 +498,7 @@ constructor or as attributes on a ``Txtble`` instance::
    longest data row, and the new header cells will contain the ``header_fill``
    value.
 
-``headers=None``
+``headers: Optional[list] = None``
    An optional list of cell values to display in a row at the top of the table.
    Setting this option also implicitly sets a minimum number of columns per
    row; see ``header_fill`` for allowing extra columns.
@@ -507,59 +507,59 @@ constructor or as attributes on a ``Txtble`` instance::
    non-`None` value or else a `ValueError` will be raised upon trying to render
    the ``Txtble``.
 
-``left_border=None``
+``left_border: Union[bool, BorderStyle, None] = None``
    Whether to draw a border along the left edge of the table.  The default
    value of `None` means to inherit the value set for ``border``.
    ``left_border`` may optionally be set to a ``BorderStyle`` instance to set
    the characters used for drawing the border along the left edge.
 
-``left_padding=None``
+``left_padding: Union[int, str, None] = None``
    Padding to insert on the left of every table cell.  This can be either an
    integer (to insert that many space characters) or a string.  If a string, it
    may not contain any newlines.  The default value of `None` means to inherit
    the value set for ``padding``.
 
-``len_func``
+``len_func: Callable[[str], int]``
    The function to use for calculating how many terminal cells wide a string
    is; it should take one string argument and return a width.  Returning a
    negative width causes ``Txtble`` to raise an ``IndeterminateWidthError``.
    The default value is ``with_color_stripped(wcwidth.wcswidth)`` (See "Other_"
    below).
 
-``none_str=''``
+``none_str: Any = ''``
    The string to display in place of `None` values (Setting ``none_str=None``
    is the same as setting it to ``'None'``)
 
-``padding=0``
+``padding: Union[int, str] = 0``
    Padding to insert on the left & right of every table cell.  This can be
    either an integer (to insert that many space characters) or a string.  If a
    string, it may not contain any newlines.  Padding for the left and right of
    table cells can be specified separately via the ``left_padding`` and
    ``right_padding`` options.
 
-``right_border=None``
+``right_border: Union[bool, BorderStyle, None] = None``
    Whether to draw a border along the right edge of the table.  The default
    value of `None` means to inherit the value set for ``border``.
    ``right_border`` may optionally be set to a ``BorderStyle`` instance to set
    the characters used for drawing the border along the right edge.
 
-``right_padding=None``
+``right_padding: Union[int, str, None] = None``
    Padding to insert on the right of every table cell.  This can be either an
    integer (to insert that many space characters) or a string.  If a string, it
    may not contain any newlines.  The default value of `None` means to inherit
    the value set for ``padding``.
 
-``row_border=False``
+``row_border: Union[bool, BorderStyle] = False``
    Whether to draw horizontal rules between data rows.  ``row_border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used
    for drawing the horizontal rules between data rows.
 
-``row_fill=''``
+``row_fill: Any = ''``
    If the rows of a table differ in number of columns, cells are added to the
    shorter rows until they all line up, and the added cells contain
    ``row_fill`` as their value.
 
-``rstrip=True``
+``rstrip: bool = True``
    When ``border=False``, setting ``rstrip=False`` will cause the last cell of
    each row to still be padded with trailing whitespace and ``padding`` in
    order to reach the full column width.  (Normally, this whitespace and
@@ -567,13 +567,13 @@ constructor or as attributes on a ``Txtble`` instance::
    border to align.)  This option is useful if you wish to append text to one
    or more lines of the output and have it appear strictly outside the table.
 
-``top_border=None``
+``top_border: Union[bool, BorderStyle, None] = None``
    Whether to draw a border along the top edge of the table.  The default value
    of `None` means to inherit the value set for ``border``.  ``top_border`` may
    optionally be set to a ``BorderStyle`` instance to set the characters used
    for drawing the border along the top edge.
 
-``valign=()``
+``valign: Union[str, Sequence[str]] = ()``
    A sequence of vertical alignment specifiers indicating how the contents of
    each column, in order, should be vertically aligned.  The vertical alignment
    specifiers are ``'t'`` (top alignment), ``'m'`` (middle alignment), and
@@ -581,15 +581,15 @@ constructor or as attributes on a ``Txtble`` instance::
    vertical alignment specifier to cause all columns to be vertically aligned
    in that way.
 
-``valign_fill='t'``
+``valign_fill: str = 't'``
    If there are more columns than there are entries in ``valign``, the extra
    columns will have their vertical alignment set to ``valign_fill``.
 
-``width_fill=None``
+``width_fill: Optional[int] = None``
    If there are more columns than there are entries in ``widths``, the extra
    columns will have their widths set to ``width_fill``.
 
-``widths=()``
+``widths: Union[int, Sequence[Optional[int]], None] = ()``
    A sequence of integers specifying the width of each column, in order.  Lines
    wider than the given width will be wrapped; the wrapping can be configured
    via the ``break_long_words`` and ``break_on_hyphens`` options.  A width of
@@ -597,13 +597,13 @@ constructor or as attributes on a ``Txtble`` instance::
    set to the width of the longest line.  ``widths`` may optionally be set to a
    single width to cause all columns to be that wide.
 
-``wrap_func``
+``wrap_func: Optional[Callable[[str, int], Iterable[str]]] = None``
    The function to use for wrapping long lines; it should take a string and a
-   width and return an iterable of strings.  The default value is a custom
-   function that properly handles fullwidth characters, ANSI color escape
-   sequences, etc.; if your table contains such strings, any user-supplied
-   ``wrap_func`` must be able to handle them as well.  When ``wrap_func`` is
-   set to a user-supplied value, the ``break_long_words`` and
+   width and return an iterable of strings.  The default value of `None` causes
+   a custom function to be used that properly handles fullwidth characters,
+   ANSI color escape sequences, etc.; if your table contains such strings, any
+   user-supplied ``wrap_func`` must be able to handle them as well.  When
+   ``wrap_func`` is set to a user-supplied value, the ``break_long_words`` and
    ``break_on_hyphens`` options are ignored.
 
 
