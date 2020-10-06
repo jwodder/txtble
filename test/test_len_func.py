@@ -7,6 +7,16 @@ def test_custom_len_func_old_not_called(mocker):
     assert str(tbl) == TABLE
     assert not strwidth.called
 
+def test_null_defaulting_len_func(mocker):
+    import txtble.classes
+    spy = mocker.spy(txtble.classes, 'strwidth')
+    tbl = Txtble(DATA, headers=HEADERS, len_func=None)
+    assert str(tbl) == TABLE
+    spy.assert_has_calls(
+        [mocker.call(s) for s in HEADERS + sum(DATA, start=[])],
+        any_order=True,
+    )
+
 def test_constant_len_func():
     tbl = Txtble(DATA, headers=HEADERS, len_func=lambda s: 5 if s else 0)
     # The `if s` check prevents the left & right padding from adding to the

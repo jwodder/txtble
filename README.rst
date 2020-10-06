@@ -519,12 +519,12 @@ constructor or as attributes on a ``Txtble`` instance::
    may not contain any newlines.  The default value of `None` means to inherit
    the value set for ``padding``.
 
-``len_func: Callable[[str], int]``
+``len_func: Optional[Callable[[str], int]]``
    The function to use for calculating how many terminal cells wide a string
    is; it should take one string argument and return a width.  Returning a
    negative width causes ``Txtble`` to raise an ``IndeterminateWidthError``.
-   The default value is ``with_color_stripped(wcwidth.wcswidth)`` (See "Other_"
-   below).
+   The default value (also used when set to `None`) is
+   ``with_color_stripped(wcwidth.wcswidth)`` (See "Other_" below).
 
 ``none_str: Any = ''``
    The string to display in place of `None` values (Setting ``none_str=None``

@@ -40,7 +40,7 @@ class Txtble:
         = attr.ib(default=None, converter=attr.converters.optional(list))
     left_border: Union[bool, BorderStyle, None]   = None
     left_padding: Union[int, str, None]           = None
-    len_func: LenFunc                             = strwidth
+    len_func: Optional[LenFunc]                   = strwidth
     none_str: Any                                 = ''
     padding: Union[int, str]                      = 0
     right_border: Union[bool, BorderStyle, None]  = None
@@ -84,7 +84,7 @@ class Txtble:
         return str(self.show())
 
     def _len(self, s: str) -> int:
-        w = self.len_func(s)
+        w = (self.len_func or strwidth)(s)
         if w < 0:
             raise IndeterminateWidthError(s)
         return w
@@ -155,15 +155,15 @@ class Txtble:
                 # This happens when there are no data rows
                 widths = [h.width for h in headers]
 
-        padding = mkpadding(self.padding, self.len_func)
+        padding = mkpadding(self.padding, self._len)
         if self.left_padding is None:
             left_padding = padding
         else:
-            left_padding = mkpadding(self.left_padding, self.len_func)
+            left_padding = mkpadding(self.left_padding, self._len)
         if self.right_padding is None:
             right_padding = padding
         else:
-            right_padding = mkpadding(self.right_padding, self.len_func)
+            right_padding = mkpadding(self.right_padding, self._len)
 
         border = self.border and first_style(self.border, self.border_style)
 
@@ -261,7 +261,7 @@ class Txtble:
         output = []
         rule_args = (
             [
-                w + self.len_func(left_padding) + self.len_func(right_padding)
+                w + self._len(left_padding) + self._len(right_padding)
                 for w in widths
             ],
             bool(left_border),
@@ -330,7 +330,7 @@ class Cell:
                              .format(valign))
 
     def afill(self, s: str, width: int, align: str) -> str:
-        spaces = width - self.table.len_func(s)
+        spaces = width - self.table._len(s)
         if align in ('l', 'n', 'nl', 'ln'):
             return s + ' ' * spaces
         elif align in ('c', 'nc', 'cn'):
@@ -353,14 +353,14 @@ class Cell:
             def wrap_func(s: str) -> List[str]:
                 return carry_over_color(wrap(
                     s, iwidth,
-                    len_func         = self.table.len_func,
+                    len_func         = self.table._len,
                     break_long_words = self.table.break_long_words,
                     break_on_hyphens = self.table.break_on_hyphens,
                 ))
         else:
             wrap0 = self.table.wrap_func
             def wrap_func(s: str) -> List[str]:
-                if self.table.len_func(s) <= iwidth:
+                if self.table._len(s) <= iwidth:
                     return [s]
                 return carry_over_color(
                     [x.expandtabs() for x in wrap0(s, iwidth)]

@@ -5,6 +5,7 @@ v0.12.0 (in development)
 - Update wcwidth requirement to `~= 0.2.0`
 - Drop six requirement
 - Add type annotations
+- Setting `len_func` to `None` now causes the option's default value to be used
 
 v0.11.1 (2019-05-29)
 --------------------
