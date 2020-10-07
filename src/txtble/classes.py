@@ -1,13 +1,15 @@
 from   collections.abc import Mapping as MappingABC
 from   numbers         import Number
+import re
 from   typing          import Any, Callable, Iterable, List, Mapping, \
                                 Optional, Sequence, Tuple, Union
 import attr
 from   .border_style   import ASCII_BORDERS, BorderStyle
-from   .errors         import IndeterminateWidthError, NumericWidthOverflowError
-from   .util           import LenFunc, carry_over_color, first_style, \
-                                mkpadding, strify, strwidth, to_len, to_lines, \
-                                wrap
+from   .errors         import IndeterminateWidthError, \
+                                NumericWidthOverflowError, \
+                                UnterminatedColorError
+from   .util           import LenFunc, breakable_units, carry_over_color, \
+                                first_style, strify, strwidth, to_len, to_lines
 
 DICT_FILL_RAISE = object()
 
@@ -89,6 +91,92 @@ class Txtble:
             raise IndeterminateWidthError(s)
         return w
 
+    def _mkpadding(self, s: Any) -> str:
+        if not s:
+            padding = ''
+        elif isinstance(s, int):
+            padding = ' ' * s
+        else:
+            padding = strify(s)
+            self._len(padding)  # Raise IndeterminateWidthError if neg. width
+        if len(to_lines(padding)) > 1:
+            raise ValueError('padding cannot contain newlines')
+        return padding
+
+    def _wrap(self, s: str, width: int) -> List[str]:
+        if self.wrap_func is None:
+            return carry_over_color(self._base_wrap(s, width))
+        elif self._len(s) <= width:
+            return [s]
+        else:
+            return carry_over_color(
+                [x.expandtabs() for x in self.wrap_func(s, width)]
+            )
+
+    def _base_wrap(self, s: str, width: int) -> List[str]:
+        def length(ss: str) -> int:
+            try:
+                return self._len(ss)
+            except UnterminatedColorError:
+                # Appending sgr0 unconditionally is the wrong thing to do when
+                # len_func is set to, say, the builtin `len`.
+                return self._len(ss + '\033[m')
+        if not s:
+            return [s]
+        wrapped = []
+        break_point = r'-| +' if self.break_on_hyphens else r' +'
+        while length(s) > width:
+            for m in reversed(list(re.finditer(break_point, s))):
+                pre = s[:m.end()].rstrip(' ')
+                post = s[m.end():]
+                assert not re.search(r'\033[^m]*$', pre), \
+                    'Space or hyphen inside ANSI sequence'
+                    ### XXX: Problem: What if a custom len_func accepts ESC not
+                    ### followed by 'm'?
+                if 0 <= length(pre) <= width:
+                    wrapped.append(pre)
+                    s = post
+                    break
+            else:
+                if self.break_long_words:
+                    # Do a binary search on valid breakpoints until we find the
+                    # longest initial substring shorter than `width`
+                    units = breakable_units(s)
+                    low = 0
+                    high = len(units)
+                    while low < high:
+                        i = (low + high) // 2
+                        pre = ''.join(units[:i])
+                        post = ''.join(units[i:])
+                        w = length(pre)
+                        assert w >= 0
+                        if w < width:
+                            if length(''.join(units[:i+1])) > width:
+                                break
+                            else:
+                                low = i+1
+                        elif w == width:
+                            break
+                        else:
+                            assert w > width
+                            high = i
+                    else:
+                        raise AssertionError('Unreachable state reached')  # pragma: no cover
+                    wrapped.append(pre)
+                    s = post
+                else:
+                    # Break at the first hyphen or space, if any
+                    m2 = re.search(break_point, s)
+                    if m2:
+                        wrapped.append(s[:m2.end()].rstrip(' '))
+                        s = s[m2.end():]
+                    else:
+                        # `s` is just one long, unbreakable word; break out of
+                        # the `for` loop
+                        break
+        wrapped.append(s)
+        return wrapped
+
     def show(self) -> str:
         if self.row_fill is None:
             raise ValueError('row_fill cannot be None')
@@ -155,15 +243,15 @@ class Txtble:
                 # This happens when there are no data rows
                 widths = [h.width for h in headers]
 
-        padding = mkpadding(self.padding, self._len)
+        padding = self._mkpadding(self.padding)
         if self.left_padding is None:
             left_padding = padding
         else:
-            left_padding = mkpadding(self.left_padding, self._len)
+            left_padding = self._mkpadding(self.left_padding)
         if self.right_padding is None:
             right_padding = padding
         else:
-            right_padding = mkpadding(self.right_padding, self._len)
+            right_padding = self._mkpadding(self.right_padding)
 
         border = self.border and first_style(self.border, self.border_style)
 
@@ -347,26 +435,12 @@ class Cell:
             raise ValueError(f"negative column width: {width}")
         else:
             iwidth = width
-        if self.table.wrap_func is None:
-            def wrap_func(s: str) -> List[str]:
-                return carry_over_color(wrap(
-                    s, iwidth,
-                    len_func         = self.table._len,
-                    break_long_words = self.table.break_long_words,
-                    break_on_hyphens = self.table.break_on_hyphens,
-                ))
-        else:
-            wrap0 = self.table.wrap_func
-            def wrap_func(s: str) -> List[str]:
-                if self.table._len(s) <= iwidth:
-                    return [s]
-                return carry_over_color(
-                    [x.expandtabs() for x in wrap0(s, iwidth)]
-                )
         self.lines = [
-            wrapped for line in self.lines for wrapped in wrap_func(line)
+            wrapped for line in self.lines
+                    for wrapped in self.table._wrap(line, iwidth)
         ]
         self.width = max(map(self.table._len, self.lines))
+
 
 def join_cells(
     cells: List[Cell],
