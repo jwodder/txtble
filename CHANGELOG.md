@@ -1,5 +1,5 @@
-v0.12.0 (in development)
-------------------------
+v0.12.0 (2020-10-07)
+--------------------
 - Support Python 3.8
 - Drop support for Python 2, Python 3.4, and Python 3.5
 - Update wcwidth requirement to `~= 0.2.0`

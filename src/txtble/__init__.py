@@ -34,7 +34,7 @@ from .errors       import IndeterminateWidthError, NumericWidthOverflowError, \
                             UnterminatedColorError
 from .util         import with_color_stripped
 
-__version__      = '0.12.0.dev1'
+__version__      = '0.12.0'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'txtble@varonathe.org'
 __license__      = 'MIT'
