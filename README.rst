@@ -62,6 +62,7 @@ Features:
 - Pad cells on the left & right
 - Set column widths, with long lines wrapped to fit
 - Configure how `None` values are displayed
+- Type annotations
 
 
 Installation
