@@ -23,21 +23,6 @@ def to_lines(s: str) -> List[str]:
     one-element list and a trailing newline results in a trailing empty string
     (and all without re-implementing Python's changing line-splitting
     algorithm).
-
-    >>> to_lines('')
-    ['']
-    >>> to_lines('\\n')
-    ['', '']
-    >>> to_lines('foo')
-    ['foo']
-    >>> to_lines('foo\\n')
-    ['foo', '']
-    >>> to_lines('foo\\nbar')
-    ['foo', 'bar']
-    >>> to_lines('foo\\fbar')
-    ['foo', 'bar']
-    >>> to_lines('foo\\vbar')
-    ['foo', 'bar']
     """
     lines = s.splitlines(True)
     if not lines:
