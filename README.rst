@@ -78,294 +78,294 @@ Installation
 Examples
 ========
 
-Construct & show a basic table::
+Construct & show a basic table:
 
-    >>> from txtble import Txtble
-    >>> # Taken from /usr/share/misc/birthtoken.gz in Ubuntu Xenial's miscfiles package:
-    >>> HEADERS = ['Month', 'Birthstone', 'Birth Flower']
-    >>> DATA = [
-    ...     ['January',   'Garnet',     'Carnation'],
-    ...     ['February',  'Amethyst',   'Violet'],
-    ...     ['March',     'Aquamarine', 'Jonquil'],
-    ...     ['April',     'Diamond',    'Sweetpea'],
-    ...     ['May',       'Emerald',    'Lily Of The Valley'],
-    ...     ['June',      'Pearl',      'Rose'],
-    ...     ['July',      'Ruby',       'Larkspur'],
-    ...     ['August',    'Peridot',    'Gladiolus'],
-    ...     ['September', 'Sapphire',   'Aster'],
-    ...     ['October',   'Opal',       'Calendula'],
-    ...     ['November',  'Topaz',      'Chrysanthemum'],
-    ...     ['December',  'Turquoise',  'Narcissus'],
-    ... ]
-    >>> tbl = Txtble(DATA, headers=HEADERS)
-    >>> print(tbl)
-    +---------+----------+------------------+
-    |Month    |Birthstone|Birth Flower      |
-    +---------+----------+------------------+
-    |January  |Garnet    |Carnation         |
-    |February |Amethyst  |Violet            |
-    |March    |Aquamarine|Jonquil           |
-    |April    |Diamond   |Sweetpea          |
-    |May      |Emerald   |Lily Of The Valley|
-    |June     |Pearl     |Rose              |
-    |July     |Ruby      |Larkspur          |
-    |August   |Peridot   |Gladiolus         |
-    |September|Sapphire  |Aster             |
-    |October  |Opal      |Calendula         |
-    |November |Topaz     |Chrysanthemum     |
-    |December |Turquoise |Narcissus         |
-    +---------+----------+------------------+
+>>> from txtble import Txtble
+>>> # Taken from /usr/share/misc/birthtoken.gz in Ubuntu Xenial's miscfiles package:
+>>> HEADERS = ['Month', 'Birthstone', 'Birth Flower']
+>>> DATA = [
+...     ['January',   'Garnet',     'Carnation'],
+...     ['February',  'Amethyst',   'Violet'],
+...     ['March',     'Aquamarine', 'Jonquil'],
+...     ['April',     'Diamond',    'Sweetpea'],
+...     ['May',       'Emerald',    'Lily Of The Valley'],
+...     ['June',      'Pearl',      'Rose'],
+...     ['July',      'Ruby',       'Larkspur'],
+...     ['August',    'Peridot',    'Gladiolus'],
+...     ['September', 'Sapphire',   'Aster'],
+...     ['October',   'Opal',       'Calendula'],
+...     ['November',  'Topaz',      'Chrysanthemum'],
+...     ['December',  'Turquoise',  'Narcissus'],
+... ]
+>>> tbl = Txtble(DATA, headers=HEADERS)
+>>> print(tbl)
++---------+----------+------------------+
+|Month    |Birthstone|Birth Flower      |
++---------+----------+------------------+
+|January  |Garnet    |Carnation         |
+|February |Amethyst  |Violet            |
+|March    |Aquamarine|Jonquil           |
+|April    |Diamond   |Sweetpea          |
+|May      |Emerald   |Lily Of The Valley|
+|June     |Pearl     |Rose              |
+|July     |Ruby      |Larkspur          |
+|August   |Peridot   |Gladiolus         |
+|September|Sapphire  |Aster             |
+|October  |Opal      |Calendula         |
+|November |Topaz     |Chrysanthemum     |
+|December |Turquoise |Narcissus         |
++---------+----------+------------------+
 
-The table can also be constructed like this::
+The table can also be constructed like this:
 
-    >>> tbl = Txtble(headers=HEADERS)
-    >>> tbl.extend(DATA)
+>>> tbl = Txtble(headers=HEADERS)
+>>> tbl.extend(DATA)
 
-Or like this::
+Or like this:
 
-    >>> tbl = Txtble(headers=HEADERS)
-    >>> for row in DATA:
-    ...     tbl.append(row)
+>>> tbl = Txtble(headers=HEADERS)
+>>> for row in DATA:
+...     tbl.append(row)
 
-Or even like this::
+Or even like this:
 
-    >>> tbl = Txtble(DATA)
-    >>> tbl.headers = HEADERS
+>>> tbl = Txtble(DATA)
+>>> tbl.headers = HEADERS
 
 The rows of the table can be lists of values (as seen above) or `dict`\ s that
-map header names to values::
+map header names to values:
 
-    >>> tbl = Txtble(
-    ...     headers = ["Red", "Green", "Blue"],
-    ...     data    = [
-    ...         {"Red": "Ruby", "Green": "Emerald", "Blue": "Sapphire"},
-    ...         {"Red": "Fire", "Green": "Earth",   "Blue": "Water"},
-    ...     ],
-    ... )
-    >>> print(tbl)
-    +----+-------+--------+
-    |Red |Green  |Blue    |
-    +----+-------+--------+
-    |Ruby|Emerald|Sapphire|
-    |Fire|Earth  |Water   |
-    +----+-------+--------+
+>>> tbl = Txtble(
+...     headers = ["Red", "Green", "Blue"],
+...     data    = [
+...         {"Red": "Ruby", "Green": "Emerald", "Blue": "Sapphire"},
+...         {"Red": "Fire", "Green": "Earth",   "Blue": "Water"},
+...     ],
+... )
+>>> print(tbl)
++----+-------+--------+
+|Red |Green  |Blue    |
++----+-------+--------+
+|Ruby|Emerald|Sapphire|
+|Fire|Earth  |Water   |
++----+-------+--------+
 
 Missing `dict` keys can be filled in with the ``dict_fill`` option (Without it,
-you'd get a `KeyError` here)::
+you'd get a `KeyError` here):
 
-    >>> tbl = Txtble(
-    ...     headers = ["Red", "Green", "Blue"],
-    ...     data    = [
-    ...         {"Red": "Ruby", "Green": "Emerald", "Blue": "Sapphire"},
-    ...         {"Red": "Fire", "Green": "Earth",   "Blue": "Water"},
-    ...         {"Red": "Hot",                      "Blue": "Cold"},
-    ...     ],
-    ...     dict_fill = 'UNKNOWN',
-    ... )
-    >>> print(tbl)
-    +----+-------+--------+
-    |Red |Green  |Blue    |
-    +----+-------+--------+
-    |Ruby|Emerald|Sapphire|
-    |Fire|Earth  |Water   |
-    |Hot |UNKNOWN|Cold    |
-    +----+-------+--------+
+>>> tbl = Txtble(
+...     headers = ["Red", "Green", "Blue"],
+...     data    = [
+...         {"Red": "Ruby", "Green": "Emerald", "Blue": "Sapphire"},
+...         {"Red": "Fire", "Green": "Earth",   "Blue": "Water"},
+...         {"Red": "Hot",                      "Blue": "Cold"},
+...     ],
+...     dict_fill = 'UNKNOWN',
+... )
+>>> print(tbl)
++----+-------+--------+
+|Red |Green  |Blue    |
++----+-------+--------+
+|Ruby|Emerald|Sapphire|
+|Fire|Earth  |Water   |
+|Hot |UNKNOWN|Cold    |
++----+-------+--------+
 
-The number of columns is automatically set to the length of the longest row::
+The number of columns is automatically set to the length of the longest row:
 
-    >>> tbl = Txtble([
-    ...     ['1', '1'],
-    ...     ['Z_6', '1', 'x', 'x^2', 'x^3', 'x^4', 'x^5'],
-    ...     ['S_3', '1', 'a', 'b', 'aba', 'ba', 'ab'],
-    ...     ['Z_4', '1', 'x', 'x^2', 'x^3'],
-    ...     ['V_4', '1', 'a', 'b', 'ab'],
-    ... ])
-    >>> print(tbl)
-    +---+-+-+---+---+---+---+
-    |1  |1| |   |   |   |   |
-    |Z_6|1|x|x^2|x^3|x^4|x^5|
-    |S_3|1|a|b  |aba|ba |ab |
-    |Z_4|1|x|x^2|x^3|   |   |
-    |V_4|1|a|b  |ab |   |   |
-    +---+-+-+---+---+---+---+
+>>> tbl = Txtble([
+...     ['1', '1'],
+...     ['Z_6', '1', 'x', 'x^2', 'x^3', 'x^4', 'x^5'],
+...     ['S_3', '1', 'a', 'b', 'aba', 'ba', 'ab'],
+...     ['Z_4', '1', 'x', 'x^2', 'x^3'],
+...     ['V_4', '1', 'a', 'b', 'ab'],
+... ])
+>>> print(tbl)
++---+-+-+---+---+---+---+
+|1  |1| |   |   |   |   |
+|Z_6|1|x|x^2|x^3|x^4|x^5|
+|S_3|1|a|b  |aba|ba |ab |
+|Z_4|1|x|x^2|x^3|   |   |
+|V_4|1|a|b  |ab |   |   |
++---+-+-+---+---+---+---+
 
 ... unless you've specified a header row, which puts a limit on the number of
-columns::
+columns:
 
-    >>> tbl.headers = ['Group', 'Elements']
-    >>> print(tbl)
-    +-----+--------+
-    |Group|Elements|
-    +-----+--------+
-    |1    |1       |
-    |Z_6  |1       |
-    |S_3  |1       |
-    |Z_4  |1       |
-    |V_4  |1       |
-    +-----+--------+
+>>> tbl.headers = ['Group', 'Elements']
+>>> print(tbl)
++-----+--------+
+|Group|Elements|
++-----+--------+
+|1    |1       |
+|Z_6  |1       |
+|S_3  |1       |
+|Z_4  |1       |
+|V_4  |1       |
++-----+--------+
 
 ... unless you've *also* specified a ``header_fill`` to use as the header for
-extra columns::
+extra columns:
 
-    >>> tbl.header_fill = 'Extra!'
-    >>> print(tbl)
-    +-----+--------+------+------+------+------+------+
-    |Group|Elements|Extra!|Extra!|Extra!|Extra!|Extra!|
-    +-----+--------+------+------+------+------+------+
-    |1    |1       |      |      |      |      |      |
-    |Z_6  |1       |x     |x^2   |x^3   |x^4   |x^5   |
-    |S_3  |1       |a     |b     |aba   |ba    |ab    |
-    |Z_4  |1       |x     |x^2   |x^3   |      |      |
-    |V_4  |1       |a     |b     |ab    |      |      |
-    +-----+--------+------+------+------+------+------+
+>>> tbl.header_fill = 'Extra!'
+>>> print(tbl)
++-----+--------+------+------+------+------+------+
+|Group|Elements|Extra!|Extra!|Extra!|Extra!|Extra!|
++-----+--------+------+------+------+------+------+
+|1    |1       |      |      |      |      |      |
+|Z_6  |1       |x     |x^2   |x^3   |x^4   |x^5   |
+|S_3  |1       |a     |b     |aba   |ba    |ab    |
+|Z_4  |1       |x     |x^2   |x^3   |      |      |
+|V_4  |1       |a     |b     |ab    |      |      |
++-----+--------+------+------+------+------+------+
 
-You can set the widths of columns; long lines will be wrapped to fit::
+You can set the widths of columns; long lines will be wrapped to fit:
 
-    >>> tbl = Txtble(
-    ...     headers=['Short Text', 'Long Text'],
-    ...     data=[
-    ...         [
-    ...             'Hi there!',
-    ...             'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
-    ...         ]
-    ...     ],
-    ...     widths=[20, 20],
-    ... )
-    >>> print(tbl)
-    +--------------------+--------------------+
-    |Short Text          |Long Text           |
-    +--------------------+--------------------+
-    |Hi there!           |Lorem ipsum dolor   |
-    |                    |sit amet,           |
-    |                    |consectetur         |
-    |                    |adipisicing elit    |
-    +--------------------+--------------------+
+>>> tbl = Txtble(
+...     headers=['Short Text', 'Long Text'],
+...     data=[
+...         [
+...             'Hi there!',
+...             'Lorem ipsum dolor sit amet, consectetur adipisicing elit',
+...         ]
+...     ],
+...     widths=[20, 20],
+... )
+>>> print(tbl)
++--------------------+--------------------+
+|Short Text          |Long Text           |
++--------------------+--------------------+
+|Hi there!           |Lorem ipsum dolor   |
+|                    |sit amet,           |
+|                    |consectetur         |
+|                    |adipisicing elit    |
++--------------------+--------------------+
 
-You can align column text to the left, right, or center::
+You can align column text to the left, right, or center:
 
-    >>> tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', 'l'])
-    >>> print(tbl)
-    +---------+----------+------------------+
-    |    Month|Birthstone|Birth Flower      |
-    +---------+----------+------------------+
-    |  January|  Garnet  |Carnation         |
-    | February| Amethyst |Violet            |
-    |    March|Aquamarine|Jonquil           |
-    |    April| Diamond  |Sweetpea          |
-    |      May| Emerald  |Lily Of The Valley|
-    |     June|  Pearl   |Rose              |
-    |     July|   Ruby   |Larkspur          |
-    |   August| Peridot  |Gladiolus         |
-    |September| Sapphire |Aster             |
-    |  October|   Opal   |Calendula         |
-    | November|  Topaz   |Chrysanthemum     |
-    | December|Turquoise |Narcissus         |
-    +---------+----------+------------------+
+>>> tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', 'l'])
+>>> print(tbl)
++---------+----------+------------------+
+|    Month|Birthstone|Birth Flower      |
++---------+----------+------------------+
+|  January|  Garnet  |Carnation         |
+| February| Amethyst |Violet            |
+|    March|Aquamarine|Jonquil           |
+|    April| Diamond  |Sweetpea          |
+|      May| Emerald  |Lily Of The Valley|
+|     June|  Pearl   |Rose              |
+|     July|   Ruby   |Larkspur          |
+|   August| Peridot  |Gladiolus         |
+|September| Sapphire |Aster             |
+|  October|   Opal   |Calendula         |
+| November|  Topaz   |Chrysanthemum     |
+| December|Turquoise |Narcissus         |
++---------+----------+------------------+
 
 Numbers in the same column can be aligned on their decimal point with the
-``'n'`` alignment::
+``'n'`` alignment:
 
-    >>> tbl = Txtble(
-    ...     headers=['Thing', 'Value'],
-    ...     data=[
-    ...         ['Foo', 12345],
-    ...         ['Bar', 1234.5],
-    ...         ['Baz', 123.45],
-    ...         ['Quux', 12.345],
-    ...         ['Glarch', 1.2345],
-    ...         ['Gnusto', .12345],
-    ...     ],
-    ...     align=['l', 'n'],
-    ... )
-    >>> print(tbl)
-    +------+-----------+
-    |Thing |Value      |
-    +------+-----------+
-    |Foo   |12345      |
-    |Bar   | 1234.5    |
-    |Baz   |  123.45   |
-    |Quux  |   12.345  |
-    |Glarch|    1.2345 |
-    |Gnusto|    0.12345|
-    +------+-----------+
+>>> tbl = Txtble(
+...     headers=['Thing', 'Value'],
+...     data=[
+...         ['Foo', 12345],
+...         ['Bar', 1234.5],
+...         ['Baz', 123.45],
+...         ['Quux', 12.345],
+...         ['Glarch', 1.2345],
+...         ['Gnusto', .12345],
+...     ],
+...     align=['l', 'n'],
+... )
+>>> print(tbl)
++------+-----------+
+|Thing |Value      |
++------+-----------+
+|Foo   |12345      |
+|Bar   | 1234.5    |
+|Baz   |  123.45   |
+|Quux  |   12.345  |
+|Glarch|    1.2345 |
+|Gnusto|    0.12345|
++------+-----------+
 
-Unicode works too, even fullwidth characters and combining characters::
+Unicode works too, even fullwidth characters and combining characters:
 
-    >>> tbl = Txtble(
-    ...     headers=['Wide', 'Accented'],
-    ...     data=[
-    ...         [
-    ...             u'\uFF37\uFF49\uFF44\uFF45',
-    ...             u'A\u0301c\u0301c\u0301e\u0301n\u0301t\u0301e\u0301d\u0301',
-    ...         ]
-    ...     ]
-    ... )
-    >>> print(tbl)
-    +--------+--------+
-    |Wide    |Accented|
-    +--------+--------+
-    |Ｗｉｄｅ|Áććéńt́éd́|
-    +--------+--------+
+>>> tbl = Txtble(
+...     headers=['Wide', 'Accented'],
+...     data=[
+...         [
+...             u'\uFF37\uFF49\uFF44\uFF45',
+...             u'A\u0301c\u0301c\u0301e\u0301n\u0301t\u0301e\u0301d\u0301',
+...         ]
+...     ]
+... )
+>>> print(tbl)
++--------+--------+
+|Wide    |Accented|
++--------+--------+
+|Ｗｉｄｅ|Áććéńt́éd́|
++--------+--------+
 
-You can configure the borders and make them fancy::
+You can configure the borders and make them fancy:
 
-    >>> from txtble import ASCII_EQ_BORDERS
-    >>> tbl = Txtble(
-    ...     DATA,
-    ...     headers       = HEADERS,
-    ...     header_border = ASCII_EQ_BORDERS,
-    ...     row_border    = True,
-    ... )
-    >>> print(tbl)
-    +---------+----------+------------------+
-    |Month    |Birthstone|Birth Flower      |
-    +=========+==========+==================+
-    |January  |Garnet    |Carnation         |
-    +---------+----------+------------------+
-    |February |Amethyst  |Violet            |
-    +---------+----------+------------------+
-    |March    |Aquamarine|Jonquil           |
-    +---------+----------+------------------+
-    |April    |Diamond   |Sweetpea          |
-    +---------+----------+------------------+
-    |May      |Emerald   |Lily Of The Valley|
-    +---------+----------+------------------+
-    |June     |Pearl     |Rose              |
-    +---------+----------+------------------+
-    |July     |Ruby      |Larkspur          |
-    +---------+----------+------------------+
-    |August   |Peridot   |Gladiolus         |
-    +---------+----------+------------------+
-    |September|Sapphire  |Aster             |
-    +---------+----------+------------------+
-    |October  |Opal      |Calendula         |
-    +---------+----------+------------------+
-    |November |Topaz     |Chrysanthemum     |
-    +---------+----------+------------------+
-    |December |Turquoise |Narcissus         |
-    +---------+----------+------------------+
+>>> from txtble import ASCII_EQ_BORDERS
+>>> tbl = Txtble(
+...     DATA,
+...     headers       = HEADERS,
+...     header_border = ASCII_EQ_BORDERS,
+...     row_border    = True,
+... )
+>>> print(tbl)
++---------+----------+------------------+
+|Month    |Birthstone|Birth Flower      |
++=========+==========+==================+
+|January  |Garnet    |Carnation         |
++---------+----------+------------------+
+|February |Amethyst  |Violet            |
++---------+----------+------------------+
+|March    |Aquamarine|Jonquil           |
++---------+----------+------------------+
+|April    |Diamond   |Sweetpea          |
++---------+----------+------------------+
+|May      |Emerald   |Lily Of The Valley|
++---------+----------+------------------+
+|June     |Pearl     |Rose              |
++---------+----------+------------------+
+|July     |Ruby      |Larkspur          |
++---------+----------+------------------+
+|August   |Peridot   |Gladiolus         |
++---------+----------+------------------+
+|September|Sapphire  |Aster             |
++---------+----------+------------------+
+|October  |Opal      |Calendula         |
++---------+----------+------------------+
+|November |Topaz     |Chrysanthemum     |
++---------+----------+------------------+
+|December |Turquoise |Narcissus         |
++---------+----------+------------------+
 
-... or *very* fancy::
+... or *very* fancy:
 
-    >>> from txtble import DOUBLE_BORDERS
-    >>> tbl = Txtble(DATA, headers=HEADERS, border_style=DOUBLE_BORDERS)
-    >>> print(tbl)
-    ╔═════════╦══════════╦══════════════════╗
-    ║Month    ║Birthstone║Birth Flower      ║
-    ╠═════════╬══════════╬══════════════════╣
-    ║January  ║Garnet    ║Carnation         ║
-    ║February ║Amethyst  ║Violet            ║
-    ║March    ║Aquamarine║Jonquil           ║
-    ║April    ║Diamond   ║Sweetpea          ║
-    ║May      ║Emerald   ║Lily Of The Valley║
-    ║June     ║Pearl     ║Rose              ║
-    ║July     ║Ruby      ║Larkspur          ║
-    ║August   ║Peridot   ║Gladiolus         ║
-    ║September║Sapphire  ║Aster             ║
-    ║October  ║Opal      ║Calendula         ║
-    ║November ║Topaz     ║Chrysanthemum     ║
-    ║December ║Turquoise ║Narcissus         ║
-    ╚═════════╩══════════╩══════════════════╝
+>>> from txtble import DOUBLE_BORDERS
+>>> tbl = Txtble(DATA, headers=HEADERS, border_style=DOUBLE_BORDERS)
+>>> print(tbl)
+╔═════════╦══════════╦══════════════════╗
+║Month    ║Birthstone║Birth Flower      ║
+╠═════════╬══════════╬══════════════════╣
+║January  ║Garnet    ║Carnation         ║
+║February ║Amethyst  ║Violet            ║
+║March    ║Aquamarine║Jonquil           ║
+║April    ║Diamond   ║Sweetpea          ║
+║May      ║Emerald   ║Lily Of The Valley║
+║June     ║Pearl     ║Rose              ║
+║July     ║Ruby      ║Larkspur          ║
+║August   ║Peridot   ║Gladiolus         ║
+║September║Sapphire  ║Aster             ║
+║October  ║Opal      ║Calendula         ║
+║November ║Topaz     ║Chrysanthemum     ║
+║December ║Turquoise ║Narcissus         ║
+╚═════════╩══════════╩══════════════════╝
 
 See the following documentation for more information:
 
