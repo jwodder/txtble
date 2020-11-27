@@ -25,7 +25,7 @@ END_COLORS = [
 NOT_COLORS = [
     '\033[1[m',
     '\033;1m',
-    u'\033[\u0661m',
+    '\033[\u0661m',
 ]
 
 @pytest.mark.parametrize('s', BEGIN_COLORS)

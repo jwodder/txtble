@@ -6,7 +6,6 @@ class IndeterminateWidthError(ValueError):
     def __init__(self, string: str):
         #: The string in question
         self.string: str = string
-        super(IndeterminateWidthError, self).__init__(string)
 
     def __str__(self) -> str:
         return f'{self.string!r}: string has indeterminate width'
@@ -20,7 +19,6 @@ class UnterminatedColorError(ValueError):
     def __init__(self, string: str):
         #: The string in question
         self.string: str = string
-        super(UnterminatedColorError, self).__init__(string)
 
     def __str__(self) -> str:
         return f'{self.string!r}: ANSI color sequence not reset'

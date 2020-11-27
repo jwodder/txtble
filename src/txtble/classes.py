@@ -414,8 +414,7 @@ class Cell:
         elif valign == 'b':
             return vspace + lines
         else:
-            raise ValueError('{!r}: invalid vertical alignment specifier'
-                             .format(valign))
+            raise ValueError(f'{valign!r}: invalid vertical alignment specifier')
 
     def afill(self, s: str, width: int, align: str) -> str:
         spaces = width - self.table._len(s)
@@ -426,7 +425,7 @@ class Cell:
         elif align in ('r', 'nr', 'rn'):
             return ' ' * spaces + s
         else:
-            raise ValueError('{!r}: invalid alignment specifier'.format(align))
+            raise ValueError(f'{align!r}: invalid alignment specifier')
 
     def wrap(self, width: Optional[int]) -> None:
         if width is None:

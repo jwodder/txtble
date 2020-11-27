@@ -193,7 +193,7 @@ def test_left_padding_right_padding_no_border_no_rstrip():
     )
 
 @pytest.mark.parametrize('padding', [
-    'x\ny', 'x\ry', 'x\fy', 'x\vy', u'x\x85y', u'x\u2028y', u'x\u2029y',
+    'x\ny', 'x\ry', 'x\fy', 'x\vy', 'x\x85y', 'x\u2028y', 'x\u2029y',
 ])
 def test_multiline_padding(padding):
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)

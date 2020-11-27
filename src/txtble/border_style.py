@@ -61,10 +61,10 @@ class BorderStyle(NamedTuple):
 
 ASCII_BORDERS    = BorderStyle(*'-|+++++++++')
 ASCII_EQ_BORDERS = BorderStyle(*'=|+++++++++')
-LIGHT_BORDERS    = BorderStyle(*u'─│┌┐└┘├┤┬┴┼')
-HEAVY_BORDERS    = BorderStyle(*u'━┃┏┓┗┛┣┫┳┻╋')
-DOUBLE_BORDERS   = BorderStyle(*u'═║╔╗╚╝╠╣╦╩╬')
-DOT_BORDERS      = BorderStyle(*u'⋯⋮·········')
+LIGHT_BORDERS    = BorderStyle(*'─│┌┐└┘├┤┬┴┼')
+HEAVY_BORDERS    = BorderStyle(*'━┃┏┓┗┛┣┫┳┻╋')
+DOUBLE_BORDERS   = BorderStyle(*'═║╔╗╚╝╠╣╦╩╬')
+DOT_BORDERS      = BorderStyle(*'⋯⋮·········')
 
 def rule(widths: Iterable[int], char: str, left_cap: str, right_cap: str, sep: str) -> str:
     return left_cap + sep.join(char * w for w in widths) + right_cap
