@@ -58,7 +58,7 @@ class Txtble:
     wrap_func: Optional[Callable[[str, int], Iterable[str]]] = None
 
     @row_fill.validator
-    def _row_fill_validator(self, attrib: attr.Attribute, value: Any) \
+    def _row_fill_validator(self, _attrib: attr.Attribute, value: Any) \
             -> None:
         if value is None:
             # Reserved to mean something in a later version
@@ -67,7 +67,7 @@ class Txtble:
     @columns.validator
     def _columns_validator(
         self,
-        attrib: attr.Attribute,
+        _attrib: attr.Attribute,
         value: Optional[int],
     ) -> None:
         if value is not None and value < 1:
