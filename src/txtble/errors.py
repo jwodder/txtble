@@ -8,7 +8,7 @@ class IndeterminateWidthError(ValueError):
         self.string: str = string
 
     def __str__(self) -> str:
-        return f'{self.string!r}: string has indeterminate width'
+        return f"{self.string!r}: string has indeterminate width"
 
 
 class UnterminatedColorError(ValueError):
@@ -21,7 +21,7 @@ class UnterminatedColorError(ValueError):
         self.string: str = string
 
     def __str__(self) -> str:
-        return f'{self.string!r}: ANSI color sequence not reset'
+        return f"{self.string!r}: ANSI color sequence not reset"
 
 
 class NumericWidthOverflowError(ValueError):
@@ -31,4 +31,4 @@ class NumericWidthOverflowError(ValueError):
     """
 
     def __str__(self) -> str:
-        return 'Numeric alignment overflows column width'
+        return "Numeric alignment overflows column width"

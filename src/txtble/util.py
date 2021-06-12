@@ -1,21 +1,23 @@
-from   functools     import wraps
-from   itertools     import cycle
+from functools import wraps
+from itertools import cycle
 import re
-from   typing        import Any, Callable, Iterable, List, TypeVar
-from   unicodedata   import category
-from   wcwidth       import wcswidth
-from   .border_style import BorderStyle
-from   .errors       import UnterminatedColorError
+from typing import Any, Callable, Iterable, List, TypeVar
+from unicodedata import category
+from wcwidth import wcswidth
+from .border_style import BorderStyle
+from .errors import UnterminatedColorError
 
 LenFunc = Callable[[str], int]
 
 T = TypeVar("T")
 
-COLOR_BEGIN_RGX = r'\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m'
-COLOR_END_RGX   = r'\033\[(?:[0-9;]*;)?0*m'
+COLOR_BEGIN_RGX = r"\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m"
+COLOR_END_RGX = r"\033\[(?:[0-9;]*;)?0*m"
+
 
 def to_len(xs: List[T], length: int, fill: T) -> List[T]:
     return (xs + [fill] * length)[:length]
+
 
 def to_lines(s: str) -> List[str]:
     """
@@ -26,23 +28,25 @@ def to_lines(s: str) -> List[str]:
     """
     lines = s.splitlines(True)
     if not lines:
-        return ['']
+        return [""]
     if lines[-1].splitlines() != [lines[-1]]:
-        lines.append('')
-    for i,ln in enumerate(lines):
+        lines.append("")
+    for i, ln in enumerate(lines):
         l2 = ln.splitlines()
-        assert len(l2) in (0,1)
-        lines[i] = l2[0] if l2 else ''
+        assert len(l2) in (0, 1)
+        lines[i] = l2[0] if l2 else ""
     return lines
+
 
 def strify(s: Any) -> str:
     if not isinstance(s, str):
         s2 = str(s)
     else:
         s2 = s
-    if s2 and category(s2[0]).startswith('M'):
-        s2 = ' ' + s2
+    if s2 and category(s2[0]).startswith("M"):
+        s2 = " " + s2
     return s2.expandtabs()
+
 
 def with_color_stripped(f: Callable[[str], T]) -> Callable[[str], T]:
     """
@@ -51,19 +55,23 @@ def with_color_stripped(f: Callable[[str], T]) -> Callable[[str], T]:
     sequences are not followed by a reset sequence, an `UnterminatedColorError`
     is raised.
     """
+
     @wraps(f)
     def colored_len(s: str) -> T:
         s2 = re.sub(
-            COLOR_BEGIN_RGX + '(.*?)' + COLOR_END_RGX,
-            lambda m: re.sub(COLOR_BEGIN_RGX, '', m.group(1)),
+            COLOR_BEGIN_RGX + "(.*?)" + COLOR_END_RGX,
+            lambda m: re.sub(COLOR_BEGIN_RGX, "", m.group(1)),
             s,
         )
         if re.search(COLOR_BEGIN_RGX, s2):
             raise UnterminatedColorError(s)
-        return f(re.sub(COLOR_END_RGX, '', s2))
+        return f(re.sub(COLOR_END_RGX, "", s2))
+
     return colored_len
 
+
 strwidth: LenFunc = with_color_stripped(wcswidth)
+
 
 def carry_over_color(lines: Iterable[str]) -> List[str]:
     """
@@ -72,16 +80,17 @@ def carry_over_color(lines: Iterable[str]) -> List[str]:
     colors in effect at the end of it to the beginning of the next line.
     """
     lines2 = []
-    in_effect = ''
+    in_effect = ""
     for s in lines:
         s = in_effect + s
-        in_effect = ''
-        m = re.search(COLOR_BEGIN_RGX + '(?:(?!' + COLOR_END_RGX + ').)*$', s)
+        in_effect = ""
+        m = re.search(COLOR_BEGIN_RGX + "(?:(?!" + COLOR_END_RGX + ").)*$", s)
         if m:
-            s += '\033[m'
-            in_effect = ''.join(re.findall(COLOR_BEGIN_RGX, m.group(0)))
+            s += "\033[m"
+            in_effect = "".join(re.findall(COLOR_BEGIN_RGX, m.group(0)))
         lines2.append(s)
     return lines2
+
 
 def breakable_units(s: str) -> List[str]:
     """
@@ -91,7 +100,7 @@ def breakable_units(s: str) -> List[str]:
     """
     units = []
     for run, color in zip(
-        re.split('(' + COLOR_BEGIN_RGX + '|' + COLOR_END_RGX + ')', s),
+        re.split("(" + COLOR_BEGIN_RGX + "|" + COLOR_END_RGX + ")", s),
         cycle([False, True]),
     ):
         if color:
@@ -101,8 +110,9 @@ def breakable_units(s: str) -> List[str]:
             units.extend(run)
     return units
 
+
 def first_style(*args: Any) -> BorderStyle:
     for a in args:
         if isinstance(a, BorderStyle):
             return a
-    raise TypeError('border_style must be a BorderStyle instance')
+    raise TypeError("border_style must be a BorderStyle instance")

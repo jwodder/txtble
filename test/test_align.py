@@ -1,209 +1,221 @@
 import pytest
-from   test_data import DATA, HEADERS, TABLE
-from   txtble    import Txtble
+from test_data import DATA, HEADERS, TABLE
+from txtble import Txtble
+
 
 def test_align_lll():
-    tbl = Txtble(DATA, headers=HEADERS, align=['l', 'l', 'l'])
+    tbl = Txtble(DATA, headers=HEADERS, align=["l", "l", "l"])
     assert str(tbl) == TABLE
 
+
 def test_align_ccc():
-    tbl = Txtble(DATA, headers=HEADERS, align=['c', 'c', 'c'])
+    tbl = Txtble(DATA, headers=HEADERS, align=["c", "c", "c"])
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|  Month  |Birthstone|   Birth Flower   |\n'
-        '+---------+----------+------------------+\n'
-        '| January |  Garnet  |    Carnation     |\n'
-        '|February | Amethyst |      Violet      |\n'
-        '|  March  |Aquamarine|     Jonquil      |\n'
-        '|  April  | Diamond  |     Sweetpea     |\n'
-        '|   May   | Emerald  |Lily Of The Valley|\n'
-        '|  June   |  Pearl   |       Rose       |\n'
-        '|  July   |   Ruby   |     Larkspur     |\n'
-        '| August  | Peridot  |    Gladiolus     |\n'
-        '|September| Sapphire |      Aster       |\n'
-        '| October |   Opal   |    Calendula     |\n'
-        '|November |  Topaz   |  Chrysanthemum   |\n'
-        '|December |Turquoise |    Narcissus     |\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|  Month  |Birthstone|   Birth Flower   |\n"
+        "+---------+----------+------------------+\n"
+        "| January |  Garnet  |    Carnation     |\n"
+        "|February | Amethyst |      Violet      |\n"
+        "|  March  |Aquamarine|     Jonquil      |\n"
+        "|  April  | Diamond  |     Sweetpea     |\n"
+        "|   May   | Emerald  |Lily Of The Valley|\n"
+        "|  June   |  Pearl   |       Rose       |\n"
+        "|  July   |   Ruby   |     Larkspur     |\n"
+        "| August  | Peridot  |    Gladiolus     |\n"
+        "|September| Sapphire |      Aster       |\n"
+        "| October |   Opal   |    Calendula     |\n"
+        "|November |  Topaz   |  Chrysanthemum   |\n"
+        "|December |Turquoise |    Narcissus     |\n"
+        "+---------+----------+------------------+"
     )
+
 
 def test_align_rrr():
-    tbl = Txtble(DATA, headers=HEADERS, align=['r', 'r', 'r'])
+    tbl = Txtble(DATA, headers=HEADERS, align=["r", "r", "r"])
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|    Month|Birthstone|      Birth Flower|\n'
-        '+---------+----------+------------------+\n'
-        '|  January|    Garnet|         Carnation|\n'
-        '| February|  Amethyst|            Violet|\n'
-        '|    March|Aquamarine|           Jonquil|\n'
-        '|    April|   Diamond|          Sweetpea|\n'
-        '|      May|   Emerald|Lily Of The Valley|\n'
-        '|     June|     Pearl|              Rose|\n'
-        '|     July|      Ruby|          Larkspur|\n'
-        '|   August|   Peridot|         Gladiolus|\n'
-        '|September|  Sapphire|             Aster|\n'
-        '|  October|      Opal|         Calendula|\n'
-        '| November|     Topaz|     Chrysanthemum|\n'
-        '| December| Turquoise|         Narcissus|\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|    Month|Birthstone|      Birth Flower|\n"
+        "+---------+----------+------------------+\n"
+        "|  January|    Garnet|         Carnation|\n"
+        "| February|  Amethyst|            Violet|\n"
+        "|    March|Aquamarine|           Jonquil|\n"
+        "|    April|   Diamond|          Sweetpea|\n"
+        "|      May|   Emerald|Lily Of The Valley|\n"
+        "|     June|     Pearl|              Rose|\n"
+        "|     July|      Ruby|          Larkspur|\n"
+        "|   August|   Peridot|         Gladiolus|\n"
+        "|September|  Sapphire|             Aster|\n"
+        "|  October|      Opal|         Calendula|\n"
+        "| November|     Topaz|     Chrysanthemum|\n"
+        "| December| Turquoise|         Narcissus|\n"
+        "+---------+----------+------------------+"
     )
+
 
 def test_align_rcl():
-    tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', 'l'])
+    tbl = Txtble(DATA, headers=HEADERS, align=["r", "c", "l"])
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|    Month|Birthstone|Birth Flower      |\n'
-        '+---------+----------+------------------+\n'
-        '|  January|  Garnet  |Carnation         |\n'
-        '| February| Amethyst |Violet            |\n'
-        '|    March|Aquamarine|Jonquil           |\n'
-        '|    April| Diamond  |Sweetpea          |\n'
-        '|      May| Emerald  |Lily Of The Valley|\n'
-        '|     June|  Pearl   |Rose              |\n'
-        '|     July|   Ruby   |Larkspur          |\n'
-        '|   August| Peridot  |Gladiolus         |\n'
-        '|September| Sapphire |Aster             |\n'
-        '|  October|   Opal   |Calendula         |\n'
-        '| November|  Topaz   |Chrysanthemum     |\n'
-        '| December|Turquoise |Narcissus         |\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|    Month|Birthstone|Birth Flower      |\n"
+        "+---------+----------+------------------+\n"
+        "|  January|  Garnet  |Carnation         |\n"
+        "| February| Amethyst |Violet            |\n"
+        "|    March|Aquamarine|Jonquil           |\n"
+        "|    April| Diamond  |Sweetpea          |\n"
+        "|      May| Emerald  |Lily Of The Valley|\n"
+        "|     June|  Pearl   |Rose              |\n"
+        "|     July|   Ruby   |Larkspur          |\n"
+        "|   August| Peridot  |Gladiolus         |\n"
+        "|September| Sapphire |Aster             |\n"
+        "|  October|   Opal   |Calendula         |\n"
+        "| November|  Topaz   |Chrysanthemum     |\n"
+        "| December|Turquoise |Narcissus         |\n"
+        "+---------+----------+------------------+"
     )
+
 
 def test_align_ccc_right_padding():
-    tbl = Txtble(DATA, headers=HEADERS, align=['c', 'c', 'c'], right_padding=2)
+    tbl = Txtble(DATA, headers=HEADERS, align=["c", "c", "c"], right_padding=2)
     assert str(tbl) == (
-        '+-----------+------------+--------------------+\n'
-        '|  Month    |Birthstone  |   Birth Flower     |\n'
-        '+-----------+------------+--------------------+\n'
-        '| January   |  Garnet    |    Carnation       |\n'
-        '|February   | Amethyst   |      Violet        |\n'
-        '|  March    |Aquamarine  |     Jonquil        |\n'
-        '|  April    | Diamond    |     Sweetpea       |\n'
-        '|   May     | Emerald    |Lily Of The Valley  |\n'
-        '|  June     |  Pearl     |       Rose         |\n'
-        '|  July     |   Ruby     |     Larkspur       |\n'
-        '| August    | Peridot    |    Gladiolus       |\n'
-        '|September  | Sapphire   |      Aster         |\n'
-        '| October   |   Opal     |    Calendula       |\n'
-        '|November   |  Topaz     |  Chrysanthemum     |\n'
-        '|December   |Turquoise   |    Narcissus       |\n'
-        '+-----------+------------+--------------------+'
+        "+-----------+------------+--------------------+\n"
+        "|  Month    |Birthstone  |   Birth Flower     |\n"
+        "+-----------+------------+--------------------+\n"
+        "| January   |  Garnet    |    Carnation       |\n"
+        "|February   | Amethyst   |      Violet        |\n"
+        "|  March    |Aquamarine  |     Jonquil        |\n"
+        "|  April    | Diamond    |     Sweetpea       |\n"
+        "|   May     | Emerald    |Lily Of The Valley  |\n"
+        "|  June     |  Pearl     |       Rose         |\n"
+        "|  July     |   Ruby     |     Larkspur       |\n"
+        "| August    | Peridot    |    Gladiolus       |\n"
+        "|September  | Sapphire   |      Aster         |\n"
+        "| October   |   Opal     |    Calendula       |\n"
+        "|November   |  Topaz     |  Chrysanthemum     |\n"
+        "|December   |Turquoise   |    Narcissus       |\n"
+        "+-----------+------------+--------------------+"
     )
+
 
 def test_align_extra_columns():
-    tbl = Txtble(DATA, headers=HEADERS, align=['c', 'c'])
+    tbl = Txtble(DATA, headers=HEADERS, align=["c", "c"])
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|  Month  |Birthstone|Birth Flower      |\n'
-        '+---------+----------+------------------+\n'
-        '| January |  Garnet  |Carnation         |\n'
-        '|February | Amethyst |Violet            |\n'
-        '|  March  |Aquamarine|Jonquil           |\n'
-        '|  April  | Diamond  |Sweetpea          |\n'
-        '|   May   | Emerald  |Lily Of The Valley|\n'
-        '|  June   |  Pearl   |Rose              |\n'
-        '|  July   |   Ruby   |Larkspur          |\n'
-        '| August  | Peridot  |Gladiolus         |\n'
-        '|September| Sapphire |Aster             |\n'
-        '| October |   Opal   |Calendula         |\n'
-        '|November |  Topaz   |Chrysanthemum     |\n'
-        '|December |Turquoise |Narcissus         |\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|  Month  |Birthstone|Birth Flower      |\n"
+        "+---------+----------+------------------+\n"
+        "| January |  Garnet  |Carnation         |\n"
+        "|February | Amethyst |Violet            |\n"
+        "|  March  |Aquamarine|Jonquil           |\n"
+        "|  April  | Diamond  |Sweetpea          |\n"
+        "|   May   | Emerald  |Lily Of The Valley|\n"
+        "|  June   |  Pearl   |Rose              |\n"
+        "|  July   |   Ruby   |Larkspur          |\n"
+        "| August  | Peridot  |Gladiolus         |\n"
+        "|September| Sapphire |Aster             |\n"
+        "| October |   Opal   |Calendula         |\n"
+        "|November |  Topaz   |Chrysanthemum     |\n"
+        "|December |Turquoise |Narcissus         |\n"
+        "+---------+----------+------------------+"
     )
+
 
 def test_align_extra_columns_align_fill():
-    tbl = Txtble(DATA, headers=HEADERS, align=['c', 'c'], align_fill='r')
+    tbl = Txtble(DATA, headers=HEADERS, align=["c", "c"], align_fill="r")
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|  Month  |Birthstone|      Birth Flower|\n'
-        '+---------+----------+------------------+\n'
-        '| January |  Garnet  |         Carnation|\n'
-        '|February | Amethyst |            Violet|\n'
-        '|  March  |Aquamarine|           Jonquil|\n'
-        '|  April  | Diamond  |          Sweetpea|\n'
-        '|   May   | Emerald  |Lily Of The Valley|\n'
-        '|  June   |  Pearl   |              Rose|\n'
-        '|  July   |   Ruby   |          Larkspur|\n'
-        '| August  | Peridot  |         Gladiolus|\n'
-        '|September| Sapphire |             Aster|\n'
-        '| October |   Opal   |         Calendula|\n'
-        '|November |  Topaz   |     Chrysanthemum|\n'
-        '|December |Turquoise |         Narcissus|\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|  Month  |Birthstone|      Birth Flower|\n"
+        "+---------+----------+------------------+\n"
+        "| January |  Garnet  |         Carnation|\n"
+        "|February | Amethyst |            Violet|\n"
+        "|  March  |Aquamarine|           Jonquil|\n"
+        "|  April  | Diamond  |          Sweetpea|\n"
+        "|   May   | Emerald  |Lily Of The Valley|\n"
+        "|  June   |  Pearl   |              Rose|\n"
+        "|  July   |   Ruby   |          Larkspur|\n"
+        "| August  | Peridot  |         Gladiolus|\n"
+        "|September| Sapphire |             Aster|\n"
+        "| October |   Opal   |         Calendula|\n"
+        "|November |  Topaz   |     Chrysanthemum|\n"
+        "|December |Turquoise |         Narcissus|\n"
+        "+---------+----------+------------------+"
     )
+
 
 def test_align_extra_aligns():
-    tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', 'l', 'c', 'r'])
+    tbl = Txtble(DATA, headers=HEADERS, align=["r", "c", "l", "c", "r"])
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|    Month|Birthstone|Birth Flower      |\n'
-        '+---------+----------+------------------+\n'
-        '|  January|  Garnet  |Carnation         |\n'
-        '| February| Amethyst |Violet            |\n'
-        '|    March|Aquamarine|Jonquil           |\n'
-        '|    April| Diamond  |Sweetpea          |\n'
-        '|      May| Emerald  |Lily Of The Valley|\n'
-        '|     June|  Pearl   |Rose              |\n'
-        '|     July|   Ruby   |Larkspur          |\n'
-        '|   August| Peridot  |Gladiolus         |\n'
-        '|September| Sapphire |Aster             |\n'
-        '|  October|   Opal   |Calendula         |\n'
-        '| November|  Topaz   |Chrysanthemum     |\n'
-        '| December|Turquoise |Narcissus         |\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|    Month|Birthstone|Birth Flower      |\n"
+        "+---------+----------+------------------+\n"
+        "|  January|  Garnet  |Carnation         |\n"
+        "| February| Amethyst |Violet            |\n"
+        "|    March|Aquamarine|Jonquil           |\n"
+        "|    April| Diamond  |Sweetpea          |\n"
+        "|      May| Emerald  |Lily Of The Valley|\n"
+        "|     June|  Pearl   |Rose              |\n"
+        "|     July|   Ruby   |Larkspur          |\n"
+        "|   August| Peridot  |Gladiolus         |\n"
+        "|September| Sapphire |Aster             |\n"
+        "|  October|   Opal   |Calendula         |\n"
+        "| November|  Topaz   |Chrysanthemum     |\n"
+        "| December|Turquoise |Narcissus         |\n"
+        "+---------+----------+------------------+"
     )
 
-@pytest.mark.parametrize('align', ['q', 'L', 'left', '<'])
+
+@pytest.mark.parametrize("align", ["q", "L", "left", "<"])
 def test_bad_align(align):
-    tbl = Txtble(DATA, headers=HEADERS, align=['r', 'c', align])
-    with pytest.raises(ValueError, match='invalid alignment specifier'):
+    tbl = Txtble(DATA, headers=HEADERS, align=["r", "c", align])
+    with pytest.raises(ValueError, match="invalid alignment specifier"):
         str(tbl)
 
-@pytest.mark.parametrize('align', ['q', 'L', 'left', '<'])
+
+@pytest.mark.parametrize("align", ["q", "L", "left", "<"])
 def test_bad_align_fill(align):
-    tbl = Txtble(DATA, headers=HEADERS, align=['c', 'c'], align_fill=align)
-    with pytest.raises(ValueError, match='invalid alignment specifier'):
+    tbl = Txtble(DATA, headers=HEADERS, align=["c", "c"], align_fill=align)
+    with pytest.raises(ValueError, match="invalid alignment specifier"):
         str(tbl)
 
-@pytest.mark.parametrize('align_fill', [None, 'l'])
+
+@pytest.mark.parametrize("align_fill", [None, "l"])
 def test_align_all_c(align_fill):
-    tbl = Txtble(DATA, headers=HEADERS, align='c', align_fill=align_fill)
+    tbl = Txtble(DATA, headers=HEADERS, align="c", align_fill=align_fill)
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|  Month  |Birthstone|   Birth Flower   |\n'
-        '+---------+----------+------------------+\n'
-        '| January |  Garnet  |    Carnation     |\n'
-        '|February | Amethyst |      Violet      |\n'
-        '|  March  |Aquamarine|     Jonquil      |\n'
-        '|  April  | Diamond  |     Sweetpea     |\n'
-        '|   May   | Emerald  |Lily Of The Valley|\n'
-        '|  June   |  Pearl   |       Rose       |\n'
-        '|  July   |   Ruby   |     Larkspur     |\n'
-        '| August  | Peridot  |    Gladiolus     |\n'
-        '|September| Sapphire |      Aster       |\n'
-        '| October |   Opal   |    Calendula     |\n'
-        '|November |  Topaz   |  Chrysanthemum   |\n'
-        '|December |Turquoise |    Narcissus     |\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|  Month  |Birthstone|   Birth Flower   |\n"
+        "+---------+----------+------------------+\n"
+        "| January |  Garnet  |    Carnation     |\n"
+        "|February | Amethyst |      Violet      |\n"
+        "|  March  |Aquamarine|     Jonquil      |\n"
+        "|  April  | Diamond  |     Sweetpea     |\n"
+        "|   May   | Emerald  |Lily Of The Valley|\n"
+        "|  June   |  Pearl   |       Rose       |\n"
+        "|  July   |   Ruby   |     Larkspur     |\n"
+        "| August  | Peridot  |    Gladiolus     |\n"
+        "|September| Sapphire |      Aster       |\n"
+        "| October |   Opal   |    Calendula     |\n"
+        "|November |  Topaz   |  Chrysanthemum   |\n"
+        "|December |Turquoise |    Narcissus     |\n"
+        "+---------+----------+------------------+"
     )
+
 
 def test_align_fill_c():
-    tbl = Txtble(DATA, headers=HEADERS, align_fill='c')
+    tbl = Txtble(DATA, headers=HEADERS, align_fill="c")
     assert str(tbl) == (
-        '+---------+----------+------------------+\n'
-        '|  Month  |Birthstone|   Birth Flower   |\n'
-        '+---------+----------+------------------+\n'
-        '| January |  Garnet  |    Carnation     |\n'
-        '|February | Amethyst |      Violet      |\n'
-        '|  March  |Aquamarine|     Jonquil      |\n'
-        '|  April  | Diamond  |     Sweetpea     |\n'
-        '|   May   | Emerald  |Lily Of The Valley|\n'
-        '|  June   |  Pearl   |       Rose       |\n'
-        '|  July   |   Ruby   |     Larkspur     |\n'
-        '| August  | Peridot  |    Gladiolus     |\n'
-        '|September| Sapphire |      Aster       |\n'
-        '| October |   Opal   |    Calendula     |\n'
-        '|November |  Topaz   |  Chrysanthemum   |\n'
-        '|December |Turquoise |    Narcissus     |\n'
-        '+---------+----------+------------------+'
+        "+---------+----------+------------------+\n"
+        "|  Month  |Birthstone|   Birth Flower   |\n"
+        "+---------+----------+------------------+\n"
+        "| January |  Garnet  |    Carnation     |\n"
+        "|February | Amethyst |      Violet      |\n"
+        "|  March  |Aquamarine|     Jonquil      |\n"
+        "|  April  | Diamond  |     Sweetpea     |\n"
+        "|   May   | Emerald  |Lily Of The Valley|\n"
+        "|  June   |  Pearl   |       Rose       |\n"
+        "|  July   |   Ruby   |     Larkspur     |\n"
+        "| August  | Peridot  |    Gladiolus     |\n"
+        "|September| Sapphire |      Aster       |\n"
+        "| October |   Opal   |    Calendula     |\n"
+        "|November |  Topaz   |  Chrysanthemum   |\n"
+        "|December |Turquoise |    Narcissus     |\n"
+        "+---------+----------+------------------+"
     )

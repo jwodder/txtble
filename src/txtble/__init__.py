@@ -26,31 +26,39 @@ Visit <https://github.com/jwodder/txtble> for more information.
 """
 
 from .border_style import (
-    ASCII_BORDERS, ASCII_EQ_BORDERS, BorderStyle, DOT_BORDERS, DOUBLE_BORDERS,
-    HEAVY_BORDERS, LIGHT_BORDERS,
+    ASCII_BORDERS,
+    ASCII_EQ_BORDERS,
+    BorderStyle,
+    DOT_BORDERS,
+    DOUBLE_BORDERS,
+    HEAVY_BORDERS,
+    LIGHT_BORDERS,
 )
-from .classes      import Txtble
-from .errors       import IndeterminateWidthError, NumericWidthOverflowError, \
-                            UnterminatedColorError
-from .util         import with_color_stripped
+from .classes import Txtble
+from .errors import (
+    IndeterminateWidthError,
+    NumericWidthOverflowError,
+    UnterminatedColorError,
+)
+from .util import with_color_stripped
 
-__version__      = '0.13.0.dev1'
-__author__       = 'John Thorvald Wodder II'
-__author_email__ = 'txtble@varonathe.org'
-__license__      = 'MIT'
-__url__          = 'https://github.com/jwodder/txtble'
+__version__ = "0.13.0.dev1"
+__author__ = "John Thorvald Wodder II"
+__author_email__ = "txtble@varonathe.org"
+__license__ = "MIT"
+__url__ = "https://github.com/jwodder/txtble"
 
 __all__ = [
-    'ASCII_BORDERS',
-    'ASCII_EQ_BORDERS',
-    'BorderStyle',
-    'DOT_BORDERS',
-    'DOUBLE_BORDERS',
-    'HEAVY_BORDERS',
-    'IndeterminateWidthError',
-    'LIGHT_BORDERS',
-    'NumericWidthOverflowError',
-    'Txtble',
-    'UnterminatedColorError',
-    'with_color_stripped',
+    "ASCII_BORDERS",
+    "ASCII_EQ_BORDERS",
+    "BorderStyle",
+    "DOT_BORDERS",
+    "DOUBLE_BORDERS",
+    "HEAVY_BORDERS",
+    "IndeterminateWidthError",
+    "LIGHT_BORDERS",
+    "NumericWidthOverflowError",
+    "Txtble",
+    "UnterminatedColorError",
+    "with_color_stripped",
 ]
