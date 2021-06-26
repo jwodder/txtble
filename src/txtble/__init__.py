@@ -28,11 +28,11 @@ Visit <https://github.com/jwodder/txtble> for more information.
 from .border_style import (
     ASCII_BORDERS,
     ASCII_EQ_BORDERS,
-    BorderStyle,
     DOT_BORDERS,
     DOUBLE_BORDERS,
     HEAVY_BORDERS,
     LIGHT_BORDERS,
+    BorderStyle,
 )
 from .classes import Txtble
 from .errors import (

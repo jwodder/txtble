@@ -68,3 +68,6 @@ Features to Add
   column until it has no common character-column of filler whitespace (i.e.,
   reducing the width as much as possible without causing re-wrapping)
 - table footers?
+- Support setting/reducing the total width of a table, with columns
+  automatically resized to fit?
+    - Look into how `rich` does this
