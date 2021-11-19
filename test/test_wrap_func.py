@@ -44,7 +44,7 @@ def test_wrap_func_multiline(mocker):
 
 
 def test_split_wrap_func():
-    tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda s, w: s.split())
+    tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda s, _w: s.split())
     assert str(tbl) == (
         "+--------------------+\n"
         "|Lorem               |\n"
@@ -67,7 +67,7 @@ def test_nonbreaking_wrap_func(break_long, hyph_break):
         break_long_words=break_long,
         break_on_hyphens=hyph_break,
         widths=[20],
-        wrap_func=lambda s, w: [s],
+        wrap_func=lambda s, _w: [s],
     )
     assert str(tbl) == (
         "+--------------------------------------------------------+\n"
@@ -84,7 +84,7 @@ def test_nonbreaking_wrap_func_hyphenated(break_long, hyph_break):
         break_long_words=break_long,
         break_on_hyphens=hyph_break,
         widths=[20],
-        wrap_func=lambda s, w: [s],
+        wrap_func=lambda s, _w: [s],
     )
     assert str(tbl) == (
         "+--------------------------------------------------------+\n"
@@ -111,7 +111,7 @@ def test_nonbreaking_wrap_func_hyphenated(break_long, hyph_break):
     ],
 )
 def test_indeterminate_width_wrap_func(wrapped):
-    tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda s, w: [wrapped])
+    tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda _s, _w: [wrapped])
     with pytest.raises(IndeterminateWidthError):
         str(tbl)
 
@@ -136,7 +136,7 @@ def test_tabbing_wrap_func():
     tbl = Txtble(
         [["Lorem ipsum dolor sit amet"]],
         widths=[20],
-        wrap_func=lambda s, w: [s.replace(" ", "\t")],
+        wrap_func=lambda s, _w: [s.replace(" ", "\t")],
     )
     assert str(tbl) == (
         "+------------------------------------+\n"
@@ -171,7 +171,7 @@ def test_split_running_color():
             ]
         ],
         widths=[20],
-        wrap_func=lambda s, w: s.split(),
+        wrap_func=lambda s, _w: s.split(),
     )
     assert str(tbl) == (
         "+--------------------+\n"
