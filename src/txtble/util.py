@@ -1,13 +1,16 @@
+from __future__ import annotations
+from collections.abc import Callable, Iterable
 from functools import wraps
 from itertools import cycle
 import re
-from typing import Any, Callable, Iterable, List, TypeVar
+import typing as ty
+from typing import Any, TypeVar
 from unicodedata import category
 from wcwidth import wcswidth
 from .border_style import BorderStyle
 from .errors import UnterminatedColorError
 
-LenFunc = Callable[[str], int]
+LenFunc = ty.Callable[[str], int]
 
 T = TypeVar("T")
 
@@ -15,11 +18,11 @@ COLOR_BEGIN_RGX = r"\033\[(?:[0-9;]*;)?[0-9]*[1-9][0-9]*m"
 COLOR_END_RGX = r"\033\[(?:[0-9;]*;)?0*m"
 
 
-def to_len(xs: List[T], length: int, fill: T) -> List[T]:
+def to_len(xs: list[T], length: int, fill: T) -> list[T]:
     return (xs + [fill] * length)[:length]
 
 
-def to_lines(s: str) -> List[str]:
+def to_lines(s: str) -> list[str]:
     """
     Like `str.splitlines()`, except that an empty string results in a
     one-element list and a trailing newline results in a trailing empty string
@@ -73,7 +76,7 @@ def with_color_stripped(f: Callable[[str], T]) -> Callable[[str], T]:
 strwidth: LenFunc = with_color_stripped(wcswidth)
 
 
-def carry_over_color(lines: Iterable[str]) -> List[str]:
+def carry_over_color(lines: Iterable[str]) -> list[str]:
     """
     Given a sequence of lines, for each line that contains a ANSI color escape
     sequence without a reset, add a reset to the end of that line and copy all
@@ -92,7 +95,7 @@ def carry_over_color(lines: Iterable[str]) -> List[str]:
     return lines2
 
 
-def breakable_units(s: str) -> List[str]:
+def breakable_units(s: str) -> list[str]:
     """
     Break a string into a list of substrings, breaking at each point that it is
     permissible for `Txtble.wrap(..., break_long_words=True)` to break; i.e.,
