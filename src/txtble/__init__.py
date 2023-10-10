@@ -42,7 +42,7 @@ from .errors import (
 )
 from .util import with_color_stripped
 
-__version__ = "0.12.1.dev1"
+__version__ = "0.12.1"
 __author__ = "John Thorvald Wodder II"
 __author_email__ = "txtble@varonathe.org"
 __license__ = "MIT"

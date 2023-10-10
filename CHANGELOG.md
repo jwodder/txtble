@@ -1,5 +1,5 @@
-v0.12.1 (in development)
-------------------------
+v0.12.1 (2023-10-10)
+--------------------
 - Support Python 3.9 through 3.12
 - Drop support for Python 3.6
 - Add type annotations to tests
