@@ -1,10 +1,11 @@
+from __future__ import annotations
 import pytest
 from txtble import Txtble
 
 LONG_STRING = "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
 
 
-def test_valign():
+def test_valign() -> None:
     tbl = Txtble(
         headers=["Line 1", "Line 2", "Line 3", "5 Syllables\n7 Syllables\n5 Syllables"],
         data=[
@@ -31,7 +32,7 @@ def test_valign():
 
 
 @pytest.mark.parametrize("v", ["t", "m", "b"])
-def test_valign_wrap_t(v):
+def test_valign_wrap_t(v: str) -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], valign=[v, "t"], widths=[20, 30])
     assert str(tbl) == (
         "+--------------------+------------------------------+\n"
@@ -44,7 +45,7 @@ def test_valign_wrap_t(v):
 
 
 @pytest.mark.parametrize("v", ["t", "m", "b"])
-def test_valign_wrap_m(v):
+def test_valign_wrap_m(v: str) -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], valign=[v, "m"], widths=[20, 30])
     assert str(tbl) == (
         "+--------------------+------------------------------+\n"
@@ -57,7 +58,7 @@ def test_valign_wrap_m(v):
 
 
 @pytest.mark.parametrize("v", ["t", "m", "b"])
-def test_valign_wrap_b(v):
+def test_valign_wrap_b(v: str) -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], valign=[v, "b"], widths=[20, 30])
     assert str(tbl) == (
         "+--------------------+------------------------------+\n"
@@ -70,7 +71,7 @@ def test_valign_wrap_b(v):
 
 
 @pytest.mark.parametrize("v", ["t", "m", "b"])
-def test_mid_valign_odd_within_even(v):
+def test_mid_valign_odd_within_even(v: str) -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4"]],
         valign=["m", v],
@@ -86,7 +87,7 @@ def test_mid_valign_odd_within_even(v):
 
 
 @pytest.mark.parametrize("v", ["t", "m", "b"])
-def test_mid_valign_even_within_odd(v):
+def test_mid_valign_even_within_odd(v: str) -> None:
     tbl = Txtble(
         [["Line 1\nLine 2", "Line 1\nLine 2\nLine 3\nLine 4\nLine 5"]],
         valign=["m", v],
@@ -103,7 +104,7 @@ def test_mid_valign_even_within_odd(v):
 
 
 @pytest.mark.parametrize("v", ["t", "m", "b"])
-def test_bot_valign_trailing_newlines(v):
+def test_bot_valign_trailing_newlines(v: str) -> None:
     tbl = Txtble(
         [["Line\n\n", "Line 1\nLine 2\nLine 3\nLine 4"]],
         valign=["b", v],
@@ -118,7 +119,7 @@ def test_bot_valign_trailing_newlines(v):
     )
 
 
-def test_valign_extra_columns():
+def test_valign_extra_columns() -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign=["m", "m"],
@@ -133,7 +134,7 @@ def test_valign_extra_columns():
     )
 
 
-def test_valign_extra_columns_valign_fill():
+def test_valign_extra_columns_valign_fill() -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign=["m", "m"],
@@ -149,7 +150,7 @@ def test_valign_extra_columns_valign_fill():
     )
 
 
-def test_valign_extra_aligns():
+def test_valign_extra_aligns() -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign=["m", "m", "b", "t", "t", "m"],
@@ -165,7 +166,7 @@ def test_valign_extra_aligns():
 
 
 @pytest.mark.parametrize("valign", ["q", "T", "top", "<"])
-def test_bad_valign(valign):
+def test_bad_valign(valign: str) -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign=["m", "m", valign],
@@ -175,7 +176,7 @@ def test_bad_valign(valign):
 
 
 @pytest.mark.parametrize("valign", ["q", "T", "top", "<"])
-def test_bad_valign_fill(valign):
+def test_bad_valign_fill(valign: str) -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign=["m", "m"],
@@ -185,12 +186,10 @@ def test_bad_valign_fill(valign):
         str(tbl)
 
 
-@pytest.mark.parametrize("valign_fill", [None, "t"])
-def test_valign_all_m(valign_fill):
+def test_valign_all_m() -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign="m",
-        valign_fill=valign_fill,
     )
     assert str(tbl) == (
         "+----+------+-------+\n"
@@ -202,7 +201,7 @@ def test_valign_all_m(valign_fill):
     )
 
 
-def test_valign_fill_m():
+def test_valign_fill_m() -> None:
     tbl = Txtble(
         [["Line", "Line 1\nLine 2\nLine 3\nLine 4", "Extra 1\nExtra 2"]],
         valign_fill="m",

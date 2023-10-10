@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from test_data import DATA, HEADERS
 from txtble import IndeterminateWidthError, Txtble
@@ -5,7 +6,7 @@ from txtble import IndeterminateWidthError, Txtble
 LONG_STRING = "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
 
 
-def test_wrap():
+def test_wrap() -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], widths=[20, 30])
     assert str(tbl) == (
         "+--------------------+------------------------------+\n"
@@ -18,7 +19,7 @@ def test_wrap():
 
 
 @pytest.mark.parametrize("widths", [[20], [20, None], [20, None, 30]])
-def test_wrap_no_wrap(widths):
+def test_wrap_no_wrap(widths: list[int | None]) -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], widths=widths)
     assert str(tbl) == (
         "+--------------------+--------------------------------------------------------+\n"
@@ -30,7 +31,7 @@ def test_wrap_no_wrap(widths):
     )
 
 
-def test_no_wrap_wrap():
+def test_no_wrap_wrap() -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], widths=[None, 30])
     assert str(tbl) == (
         "+--------------------------------------------------------+------------------------------+\n"
@@ -40,7 +41,7 @@ def test_no_wrap_wrap():
     )
 
 
-def test_wrap_long_word():
+def test_wrap_long_word() -> None:
     tbl = Txtble(
         [[LONG_STRING], ["antidisestablishmentarianism"]],
         row_border=True,
@@ -59,7 +60,7 @@ def test_wrap_long_word():
     )
 
 
-def test_wrap_colored_long_word():
+def test_wrap_colored_long_word() -> None:
     tbl = Txtble(
         [[LONG_STRING], ["\033[31mantidisestablishmentarianism\033[m"]],
         row_border=True,
@@ -78,7 +79,7 @@ def test_wrap_colored_long_word():
     )
 
 
-def test_wrap_long_word_no_break_long_words():
+def test_wrap_long_word_no_break_long_words() -> None:
     tbl = Txtble(
         [[LONG_STRING], ["antidisestablishmentarianism"]],
         break_long_words=False,
@@ -98,7 +99,7 @@ def test_wrap_long_word_no_break_long_words():
 
 
 @pytest.mark.parametrize("break_long", [True, False])
-def test_wrap_long_hyphenated_word(break_long):
+def test_wrap_long_hyphenated_word(break_long: bool) -> None:
     tbl = Txtble(
         [[LONG_STRING], ["anti-dis-establish-ment-ari-an-ism"]],
         break_long_words=break_long,
@@ -119,7 +120,7 @@ def test_wrap_long_hyphenated_word(break_long):
 
 
 @pytest.mark.parametrize("break_long", [True, False])
-def test_wrap_long_multi_hyphenated_word(break_long):
+def test_wrap_long_multi_hyphenated_word(break_long: bool) -> None:
     ### XXX: textwrap.wrap would insert a break before the '---'; should txtble
     ### do likewise?
     tbl = Txtble(
@@ -141,7 +142,7 @@ def test_wrap_long_multi_hyphenated_word(break_long):
     )
 
 
-def test_wrap_long_hyphenated_word_no_break_on_hyphens():
+def test_wrap_long_hyphenated_word_no_break_on_hyphens() -> None:
     tbl = Txtble(
         [[LONG_STRING], ["anti-dis-establish-ment-ari-an-ism"]],
         break_on_hyphens=False,
@@ -162,7 +163,7 @@ def test_wrap_long_hyphenated_word_no_break_on_hyphens():
 
 
 @pytest.mark.parametrize("hyph_break", [True, False])
-def test_wrap_long_soft_hyphenated_word(hyph_break):
+def test_wrap_long_soft_hyphenated_word(hyph_break: bool) -> None:
     # textwrap doesn't break on soft hyphens, so txtble shouldn't either.
     tbl = Txtble(
         [
@@ -186,7 +187,7 @@ def test_wrap_long_soft_hyphenated_word(hyph_break):
     )
 
 
-def test_wrap_some_cells():
+def test_wrap_some_cells() -> None:
     tbl = Txtble(
         [[LONG_STRING], ["antidisestablishmentarianism"]],
         row_border=True,
@@ -202,7 +203,7 @@ def test_wrap_some_cells():
     )
 
 
-def test_wrap_shorter_than_width():
+def test_wrap_shorter_than_width() -> None:
     tbl = Txtble(DATA, headers=HEADERS, widths=20)
     assert str(tbl) == (
         "+--------------------+--------------------+--------------------+\n"
@@ -224,7 +225,7 @@ def test_wrap_shorter_than_width():
     )
 
 
-def test_wrap_color():
+def test_wrap_color() -> None:
     tbl = Txtble(
         [
             [
@@ -249,7 +250,7 @@ def test_wrap_color():
     )
 
 
-def test_wrap_running_color():
+def test_wrap_running_color() -> None:
     tbl = Txtble(
         [
             [
@@ -274,7 +275,7 @@ def test_wrap_running_color():
     )
 
 
-def test_wrap_long_color():
+def test_wrap_long_color() -> None:
     tbl = Txtble([["\033[31m" + LONG_STRING + "\033[0m"]], widths=[20])
     assert str(tbl) == (
         "+--------------------+\n"
@@ -286,7 +287,7 @@ def test_wrap_long_color():
     )
 
 
-def test_width_fill():
+def test_width_fill() -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], widths=[20], width_fill=30)
     assert str(tbl) == (
         "+--------------------+------------------------------+\n"
@@ -298,7 +299,7 @@ def test_width_fill():
     )
 
 
-def test_width_fill_all():
+def test_width_fill_all() -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], width_fill=20)
     assert str(tbl) == (
         "+--------------------+--------------------+\n"
@@ -311,7 +312,7 @@ def test_width_fill_all():
 
 
 @pytest.mark.parametrize("width_fill", [None, 30])
-def test_widths_all(width_fill):
+def test_widths_all(width_fill: int | None) -> None:
     tbl = Txtble([[LONG_STRING, LONG_STRING]], widths=20, width_fill=width_fill)
     assert str(tbl) == (
         "+--------------------+--------------------+\n"
@@ -324,7 +325,7 @@ def test_widths_all(width_fill):
 
 
 @pytest.mark.parametrize("width_fill", [None, 30])
-def test_widths_all_none(width_fill):
+def test_widths_all_none(width_fill: int | None) -> None:
     tbl = Txtble(
         [[LONG_STRING, LONG_STRING]],
         width_fill=width_fill,
@@ -340,7 +341,7 @@ def test_widths_all_none(width_fill):
     )
 
 
-def test_wrap_multiline():
+def test_wrap_multiline() -> None:
     tbl = Txtble([["Lorem ipsum\n" + LONG_STRING]], widths=[20])
     assert str(tbl) == (
         "+--------------------+\n"
@@ -353,7 +354,7 @@ def test_wrap_multiline():
     )
 
 
-def test_wrap_fullwidth():
+def test_wrap_fullwidth() -> None:
     tbl = Txtble(
         [["Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ"]],
         widths=[30],
@@ -366,7 +367,7 @@ def test_wrap_fullwidth():
     )
 
 
-def test_wrap_fullwidth_long_word():
+def test_wrap_fullwidth_long_word() -> None:
     tbl = Txtble(
         [["ａｎｔｉｄｉｓｅｓｔａｂｌｉｓｈｍｅｎｔａｒｉａｎｉｓｍ"]],
         widths=[30],
@@ -379,7 +380,7 @@ def test_wrap_fullwidth_long_word():
     )
 
 
-def test_wrap_combining():
+def test_wrap_combining() -> None:
     tbl = Txtble(
         [
             [
@@ -403,7 +404,7 @@ def test_wrap_combining():
     )
 
 
-def test_wrap_fullwidth_builtin_len():
+def test_wrap_fullwidth_builtin_len() -> None:
     tbl = Txtble(
         [["Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ"]],
         len_func=len,
@@ -416,7 +417,7 @@ def test_wrap_fullwidth_builtin_len():
     )
 
 
-def test_wrap_combining_builtin_len():
+def test_wrap_combining_builtin_len() -> None:
     tbl = Txtble(
         [
             [
@@ -438,7 +439,7 @@ def test_wrap_combining_builtin_len():
     )
 
 
-def test_wrap_padding():
+def test_wrap_padding() -> None:
     tbl = Txtble([[LONG_STRING]], padding=2, widths=[30])
     assert str(tbl) == (
         "+----------------------------------+\n"
@@ -450,13 +451,13 @@ def test_wrap_padding():
 
 @pytest.mark.parametrize("s", [LONG_STRING, ""])
 @pytest.mark.parametrize("width", [-42, 0, "", "q"])
-def test_invalid_width(s, width):
-    tbl = Txtble([[s]], widths=[width])
+def test_invalid_width(s: str, width: int | str) -> None:
+    tbl = Txtble([[s]], widths=[width])  # type: ignore[list-item]
     with pytest.raises((TypeError, ValueError)):
         str(tbl)
 
 
-def test_wrap_header():
+def test_wrap_header() -> None:
     tbl = Txtble([[LONG_STRING]], headers=[LONG_STRING], widths=[20])
     assert str(tbl) == (
         "+--------------------+\n"
@@ -473,7 +474,7 @@ def test_wrap_header():
     )
 
 
-def test_wrap_none_str():
+def test_wrap_none_str() -> None:
     tbl = Txtble([[None]], none_str=LONG_STRING, widths=[20])
     assert str(tbl) == (
         "+--------------------+\n"
@@ -485,7 +486,7 @@ def test_wrap_none_str():
     )
 
 
-def test_wrap_header_fill_row_fill():
+def test_wrap_header_fill_row_fill() -> None:
     tbl = Txtble(
         [["foo"], ["bar", "baz"]],
         header_fill=LONG_STRING,
@@ -509,14 +510,15 @@ def test_wrap_header_fill_row_fill():
     )
 
 
-def test_wrap_empty():
+def test_wrap_empty() -> None:
     tbl = Txtble([[""]], widths=[20])
-    assert str(tbl) == (
-        "+--------------------+\n" "|                    |\n" "+--------------------+"
+    assert (
+        str(tbl)
+        == "+--------------------+\n|                    |\n+--------------------+"
     )
 
 
-def test_wrap_long_word_short_words():
+def test_wrap_long_word_short_words() -> None:
     tbl = Txtble(
         [['"Antidisestablishmentarianism" is not that hard to spell.']],
         widths=[20],
@@ -530,7 +532,7 @@ def test_wrap_long_word_short_words():
     )
 
 
-def test_wrap_long_word_short_words_no_break_long_words():
+def test_wrap_long_word_short_words_no_break_long_words() -> None:
     tbl = Txtble(
         [['"Antidisestablishmentarianism" is not that hard to spell.']],
         break_long_words=False,
@@ -546,7 +548,7 @@ def test_wrap_long_word_short_words_no_break_long_words():
 
 
 @pytest.mark.parametrize("hyph_break", [True, False])
-def test_wrap_hyphen_after_width(hyph_break):
+def test_wrap_hyphen_after_width(hyph_break: bool) -> None:
     tbl = Txtble(
         [["Antidisestablishmentarianism-length words are hard to wrap."]],
         break_on_hyphens=hyph_break,
@@ -562,7 +564,7 @@ def test_wrap_hyphen_after_width(hyph_break):
     )
 
 
-def test_wrap_hyphen_after_width_no_break_long_words():
+def test_wrap_hyphen_after_width_no_break_long_words() -> None:
     tbl = Txtble(
         [["Antidisestablishmentarianism-length words are hard to wrap."]],
         break_long_words=False,
@@ -577,7 +579,7 @@ def test_wrap_hyphen_after_width_no_break_long_words():
     )
 
 
-def test_wrap_even_multiple():
+def test_wrap_even_multiple() -> None:
     tbl = Txtble(
         [['"The time has come," the Walrus said, "To talk of many things"']],
         widths=[20],
@@ -591,7 +593,7 @@ def test_wrap_even_multiple():
     )
 
 
-def test_wrap_before_trailing_space():
+def test_wrap_before_trailing_space() -> None:
     tbl = Txtble([['"The time has come." ']], widths=[20])
     assert str(tbl) == (
         "+--------------------+\n"
@@ -601,10 +603,10 @@ def test_wrap_before_trailing_space():
     )
 
 
-def test_wrap_bad_len_func():
+def test_wrap_bad_len_func() -> None:
     width = 20
 
-    def len_func(s):
+    def len_func(s: str) -> int:
         return -1 if 0 < len(s) <= width else len(s)
 
     tbl = Txtble([[LONG_STRING]], len_func=len_func, widths=[width])
@@ -612,7 +614,7 @@ def test_wrap_bad_len_func():
         str(tbl)
 
 
-def test_wrap_implementation_bsearch_boundary():
+def test_wrap_implementation_bsearch_boundary() -> None:
     """
     Test a boundary condition in the implementation of the long-word-splitting
     algorithm

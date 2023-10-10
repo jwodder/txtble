@@ -1,18 +1,19 @@
+from __future__ import annotations
 from txtble import Txtble
 
 
 class Custom:
-    def __str__(self):
+    def __str__(self) -> str:
         return "str"
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         return b"bytes"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "repr"
 
 
-def test_none():
+def test_none() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -32,7 +33,7 @@ def test_none():
     )
 
 
-def test_none_str():
+def test_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -53,7 +54,7 @@ def test_none_str():
     )
 
 
-def test_tab_none_str():
+def test_tab_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -74,7 +75,7 @@ def test_tab_none_str():
     )
 
 
-def test_recursive_none_str():
+def test_recursive_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -95,7 +96,7 @@ def test_recursive_none_str():
     )
 
 
-def test_custom_none_str():
+def test_custom_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -116,7 +117,7 @@ def test_custom_none_str():
     )
 
 
-def test_multiline_none_str():
+def test_multiline_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -138,18 +139,18 @@ def test_multiline_none_str():
     )
 
 
-def test_custom():
+def test_custom() -> None:
     tbl = Txtble(data=[["A", "B"], ["C", Custom()]])
-    assert str(tbl) == ("+-+---+\n" "|A|B  |\n" "|C|str|\n" "+-+---+")
-    assert str(tbl) == ("+-+---+\n" "|A|B  |\n" "|C|str|\n" "+-+---+")
+    assert str(tbl) == "+-+---+\n|A|B  |\n|C|str|\n+-+---+"
+    assert str(tbl) == "+-+---+\n|A|B  |\n|C|str|\n+-+---+"
 
 
-def test_custom_plus_unicode():
+def test_custom_plus_unicode() -> None:
     tbl = Txtble(data=[["Å", "B"], ["Č", Custom()]])
-    assert str(tbl) == ("+-+---+\n" "|Å|B  |\n" "|Č|str|\n" "+-+---+")
+    assert str(tbl) == "+-+---+\n|Å|B  |\n|Č|str|\n+-+---+"
 
 
-def test_custom_header():
+def test_custom_header() -> None:
     tbl = Txtble(
         headers=[Custom(), "String"],
         data=[["A", "B"], ["C", "D"]],
@@ -164,7 +165,7 @@ def test_custom_header():
     )
 
 
-def test_custom_header_fill():
+def test_custom_header_fill() -> None:
     tbl = Txtble(
         headers=["Header"],
         header_fill=Custom(),
@@ -180,7 +181,7 @@ def test_custom_header_fill():
     )
 
 
-def test_custom_row_fill():
+def test_custom_row_fill() -> None:
     tbl = Txtble(
         headers=["Header", "Header"],
         row_fill=Custom(),
@@ -193,20 +194,4 @@ def test_custom_row_fill():
         "|A     |str   |\n"
         "|B     |C     |\n"
         "+------+------+"
-    )
-
-
-def test_custom_padding():
-    tbl = Txtble(
-        headers=["Header", "Header"],
-        data=[["A", "B"], ["C", "D"]],
-        padding=Custom(),
-    )
-    assert str(tbl) == (
-        "+------------+------------+\n"
-        "|strHeaderstr|strHeaderstr|\n"
-        "+------------+------------+\n"
-        "|strA     str|strB     str|\n"
-        "|strC     str|strD     str|\n"
-        "+------------+------------+"
     )

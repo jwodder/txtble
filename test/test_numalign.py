@@ -1,9 +1,10 @@
+from __future__ import annotations
 import pytest
 from txtble import NumericWidthOverflowError, Txtble
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_align_n(align):
+def test_align_n(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -31,7 +32,7 @@ def test_align_n(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_align_nc(align):
+def test_align_nc(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -59,7 +60,7 @@ def test_align_nc(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_align_nr(align):
+def test_align_nr(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -87,7 +88,7 @@ def test_align_nr(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl", "cn", "nc", "rn", "nr"])
-def test_align_n_integers(align):
+def test_align_n_integers(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -115,7 +116,7 @@ def test_align_n_integers(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_align_n_mixed(align):
+def test_align_n_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -143,7 +144,7 @@ def test_align_n_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_align_nc_mixed(align):
+def test_align_nc_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -171,7 +172,7 @@ def test_align_nc_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_align_nr_mixed(align):
+def test_align_nr_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -199,7 +200,7 @@ def test_align_nr_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_align_n_long_mixed(align):
+def test_align_n_long_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -227,7 +228,7 @@ def test_align_n_long_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_align_nc_long_mixed(align):
+def test_align_nc_long_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -255,7 +256,7 @@ def test_align_nc_long_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_align_nr_long_mixed(align):
+def test_align_nr_long_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -283,7 +284,7 @@ def test_align_nr_long_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_align_n_long_width_mixed(align):
+def test_align_n_long_width_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -313,7 +314,7 @@ def test_align_n_long_width_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_align_nc_long_width_mixed(align):
+def test_align_nc_long_width_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -343,7 +344,7 @@ def test_align_nc_long_width_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_align_nr_long_width_mixed(align):
+def test_align_nr_long_width_mixed(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -373,7 +374,7 @@ def test_align_nr_long_width_mixed(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_align_n_mixed_numstr(align):
+def test_align_n_mixed_numstr(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -395,7 +396,7 @@ def test_align_n_mixed_numstr(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_align_nc_mixed_numstr(align):
+def test_align_nc_mixed_numstr(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -417,7 +418,7 @@ def test_align_nc_mixed_numstr(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_align_nr_mixed_numstr(align):
+def test_align_nr_mixed_numstr(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -439,7 +440,7 @@ def test_align_nr_mixed_numstr(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_align_n_long_header(align):
+def test_align_n_long_header(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Numeric Value"],
         data=[
@@ -461,7 +462,7 @@ def test_align_n_long_header(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_align_nc_long_header(align):
+def test_align_nc_long_header(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Numeric Value"],
         data=[
@@ -483,7 +484,7 @@ def test_align_nc_long_header(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_align_nr_long_header(align):
+def test_align_nr_long_header(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Numeric Value"],
         data=[
@@ -504,7 +505,7 @@ def test_align_nr_long_header(align):
     )
 
 
-def test_align_n_no_border():
+def test_align_n_no_border() -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -530,7 +531,7 @@ def test_align_n_no_border():
     )
 
 
-def test_align_n_header_number():
+def test_align_n_header_number() -> None:
     tbl = Txtble(
         headers=["Thing", 12.345],
         data=[
@@ -557,7 +558,7 @@ def test_align_n_header_number():
     )
 
 
-def test_align_n_long_header_number():
+def test_align_n_long_header_number() -> None:
     tbl = Txtble(
         headers=["Thing", 123456.654321],
         data=[
@@ -584,7 +585,7 @@ def test_align_n_long_header_number():
     )
 
 
-def test_align_n_numeric_row_fill():
+def test_align_n_numeric_row_fill() -> None:
     tbl = Txtble(
         [
             ["Foo", 12345],
@@ -603,7 +604,7 @@ def test_align_n_numeric_row_fill():
     )
 
 
-def test_align_n_numeric_none_str():
+def test_align_n_numeric_none_str() -> None:
     tbl = Txtble(
         [
             ["Foo", 12345, None],
@@ -622,7 +623,7 @@ def test_align_n_numeric_none_str():
     )
 
 
-def test_align_n_numeric_dict_fill():
+def test_align_n_numeric_dict_fill() -> None:
     tbl = Txtble(
         headers=["A", "B", "C"],
         data=[
@@ -644,7 +645,7 @@ def test_align_n_numeric_dict_fill():
     )
 
 
-def test_align_n_numeric_header_fill():
+def test_align_n_numeric_header_fill() -> None:
     tbl = Txtble(
         [
             ["Foo", 12345, 1.2],
@@ -667,7 +668,7 @@ def test_align_n_numeric_header_fill():
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl", "cn", "nc", "rn", "nr"])
-def test_numalign_exact_width(align):
+def test_numalign_exact_width(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -694,7 +695,7 @@ def test_numalign_exact_width(align):
 
 
 @pytest.mark.parametrize("align", ["n", "ln", "nl"])
-def test_numalign_extra_width_left(align):
+def test_numalign_extra_width_left(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -721,7 +722,7 @@ def test_numalign_extra_width_left(align):
 
 
 @pytest.mark.parametrize("align", ["cn", "nc"])
-def test_numalign_extra_width_center(align):
+def test_numalign_extra_width_center(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -748,7 +749,7 @@ def test_numalign_extra_width_center(align):
 
 
 @pytest.mark.parametrize("align", ["rn", "nr"])
-def test_numalign_extra_width_right(align):
+def test_numalign_extra_width_right(align: str) -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -774,7 +775,7 @@ def test_numalign_extra_width_right(align):
     )
 
 
-def test_numalign_short_width():
+def test_numalign_short_width() -> None:
     """
     Test handling of numbers that are small enough to fit in the width before
     numeric alignment is applied but not after
@@ -796,7 +797,7 @@ def test_numalign_short_width():
     assert str(excinfo.value) == "Numeric alignment overflows column width"
 
 
-def test_numalign_very_short_width():
+def test_numalign_very_short_width() -> None:
     tbl = Txtble(
         headers=["Thing", "Value"],
         data=[
@@ -815,7 +816,7 @@ def test_numalign_very_short_width():
     assert str(excinfo.value) == "Numeric alignment overflows column width"
 
 
-def test_numalign_long_numeric_header():
+def test_numalign_long_numeric_header() -> None:
     tbl = Txtble(
         headers=["Thing", 123456],
         data=[

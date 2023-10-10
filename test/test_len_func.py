@@ -1,15 +1,17 @@
+from __future__ import annotations
+from pytest_mock import MockerFixture
 from test_data import DATA, HEADERS, TABLE
 from txtble import Txtble, with_color_stripped
 
 
-def test_custom_len_func_old_not_called(mocker):
+def test_custom_len_func_old_not_called(mocker: MockerFixture) -> None:
     strwidth = mocker.patch("txtble.classes.strwidth")
     tbl = Txtble(DATA, headers=HEADERS, len_func=len)
     assert str(tbl) == TABLE
     assert not strwidth.called
 
 
-def test_null_defaulting_len_func(mocker):
+def test_null_defaulting_len_func(mocker: MockerFixture) -> None:
     import txtble.classes
 
     spy = mocker.spy(txtble.classes, "strwidth")
@@ -21,7 +23,7 @@ def test_null_defaulting_len_func(mocker):
     )
 
 
-def test_constant_len_func():
+def test_constant_len_func() -> None:
     tbl = Txtble(DATA, headers=HEADERS, len_func=lambda s: 5 if s else 0)
     # The `if s` check prevents the left & right padding from adding to the
     # hrule width, which would just make for a confusing test.
@@ -45,22 +47,23 @@ def test_constant_len_func():
     )
 
 
-def test_builtin_len_func_ansi():
+def test_builtin_len_func_ansi() -> None:
     tbl = Txtble([["\033[31mRed\033[0m"], ["Red"]], len_func=len)
-    assert str(tbl) == (
-        "+------------+\n" "|\033[31mRed\033[0m|\n" "|Red         |\n" "+------------+"
+    assert (
+        str(tbl)
+        == "+------------+\n|\033[31mRed\033[0m|\n|Red         |\n+------------+"
     )
 
 
-def test_color_aware_len_func_ansi():
+def test_color_aware_len_func_ansi() -> None:
     tbl = Txtble(
         [["\033[31mRed\033[0m"], ["Red"]],
         len_func=with_color_stripped(len),
     )
-    assert str(tbl) == ("+---+\n" "|\033[31mRed\033[0m|\n" "|Red|\n" "+---+")
+    assert str(tbl) == "+---+\n|\033[31mRed\033[0m|\n|Red|\n+---+"
 
 
-def test_fullwidth_builtin_len_func():
+def test_fullwidth_builtin_len_func() -> None:
     tbl = Txtble(
         [
             ["Ｌｏｒｅｍ ｉｐｓｕｍ ｄｏｌｏｒ ｓｉｔ ａｍｅｔ"],
@@ -76,7 +79,7 @@ def test_fullwidth_builtin_len_func():
     )
 
 
-def test_combining_builtin_len_func():
+def test_combining_builtin_len_func() -> None:
     s = (
         "L\u0301o\u0301r\u0301e\u0301m\u0301"
         " i\u0301p\u0301s\u0301u\u0301m\u0301"

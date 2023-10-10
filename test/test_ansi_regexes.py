@@ -1,3 +1,4 @@
+from __future__ import annotations
 import re
 import pytest
 from txtble.util import COLOR_BEGIN_RGX, COLOR_END_RGX
@@ -30,20 +31,20 @@ NOT_COLORS = [
 
 
 @pytest.mark.parametrize("s", BEGIN_COLORS)
-def test_color_begin_rgx(s):
+def test_color_begin_rgx(s: str) -> None:
     assert bool(re.match("^" + COLOR_BEGIN_RGX + "$", s))
 
 
 @pytest.mark.parametrize("s", END_COLORS)
-def test_color_end_rgx(s):
+def test_color_end_rgx(s: str) -> None:
     assert bool(re.match("^" + COLOR_END_RGX + "$", s))
 
 
 @pytest.mark.parametrize("s", NOT_COLORS + END_COLORS)
-def test_bad_color_begin_rgx(s):
+def test_bad_color_begin_rgx(s: str) -> None:
     assert re.match("^" + COLOR_BEGIN_RGX + "$", s) is None
 
 
 @pytest.mark.parametrize("s", NOT_COLORS + BEGIN_COLORS)
-def test_bad_color_end_rgx(s):
+def test_bad_color_end_rgx(s: str) -> None:
     assert re.match("^" + COLOR_END_RGX + "$", s) is None

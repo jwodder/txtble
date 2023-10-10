@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from txtble.util import to_lines
 
@@ -14,5 +15,5 @@ from txtble.util import to_lines
         ("foo\vbar", ["foo", "bar"]),
     ],
 )
-def test_to_lines(s, lines):
+def test_to_lines(s: str, lines: list[str]) -> None:
     assert to_lines(s) == lines

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from test_data import DATA, HEADERS, TABLE
 from txtble import (
@@ -11,12 +12,12 @@ from txtble import (
 )
 
 
-def test_ascii_border_style():
+def test_ascii_border_style() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border_style=ASCII_BORDERS)
     assert str(tbl) == TABLE
 
 
-def test_ascii_eq_border_style():
+def test_ascii_eq_border_style() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border_style=ASCII_EQ_BORDERS)
     assert str(tbl) == (
         "+=========+==========+==================+\n"
@@ -38,7 +39,7 @@ def test_ascii_eq_border_style():
     )
 
 
-def test_light_border_style():
+def test_light_border_style() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border_style=LIGHT_BORDERS)
     assert str(tbl) == (
         "┌─────────┬──────────┬──────────────────┐\n"
@@ -60,7 +61,7 @@ def test_light_border_style():
     )
 
 
-def test_heavy_border_style():
+def test_heavy_border_style() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border_style=HEAVY_BORDERS)
     assert str(tbl) == (
         "┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓\n"
@@ -82,7 +83,7 @@ def test_heavy_border_style():
     )
 
 
-def test_double_border_style():
+def test_double_border_style() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border_style=DOUBLE_BORDERS)
     assert str(tbl) == (
         "╔═════════╦══════════╦══════════════════╗\n"
@@ -104,7 +105,7 @@ def test_double_border_style():
     )
 
 
-def test_dot_border_style():
+def test_dot_border_style() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border_style=DOT_BORDERS)
     assert str(tbl) == (
         "·⋯⋯⋯⋯⋯⋯⋯⋯⋯·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯·\n"
@@ -126,7 +127,7 @@ def test_dot_border_style():
     )
 
 
-def test_ascii_eq_header_border_row_border():
+def test_ascii_eq_header_border_row_border() -> None:
     tbl = Txtble(
         DATA,
         header_border=ASCII_EQ_BORDERS,
@@ -164,7 +165,7 @@ def test_ascii_eq_header_border_row_border():
     )
 
 
-def test_every_border_different():
+def test_every_border_different() -> None:
     tbl = Txtble(
         DATA,
         border=ASCII_BORDERS,
@@ -204,7 +205,7 @@ def test_every_border_different():
     )
 
 
-def test_every_inner_border_different():
+def test_every_inner_border_different() -> None:
     tbl = Txtble(
         DATA,
         border=False,
@@ -242,7 +243,7 @@ def test_every_inner_border_different():
     )
 
 
-def test_border_style_overridden():
+def test_border_style_overridden() -> None:
     tbl = Txtble(
         DATA,
         border=LIGHT_BORDERS,
@@ -271,7 +272,7 @@ def test_border_style_overridden():
     )
 
 
-def test_border_style_mixed_overrides():
+def test_border_style_mixed_overrides() -> None:
     tbl = Txtble(
         DATA,
         border_style=DOT_BORDERS,
@@ -320,8 +321,8 @@ def test_border_style_mixed_overrides():
         tuple("-|+++++++++"),
     ],
 )
-def test_bad_border_style(border_style):
-    tbl = Txtble(DATA, border_style=border_style)
+def test_bad_border_style(border_style: bool | tuple[str] | None) -> None:
+    tbl = Txtble(DATA, border_style=border_style)  # type: ignore[arg-type]
     with pytest.raises(
         TypeError,
         match="border_style must be a BorderStyle instance",
@@ -329,7 +330,7 @@ def test_bad_border_style(border_style):
         str(tbl)
 
 
-def test_border_vs_header_border_style():
+def test_border_vs_header_border_style() -> None:
     tbl = Txtble(DATA, border=HEAVY_BORDERS, header_border=DOUBLE_BORDERS)
     assert str(tbl) == (
         "┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓\n"
@@ -349,7 +350,7 @@ def test_border_vs_header_border_style():
     )
 
 
-def test_top_border_vs_header_border_style():
+def test_top_border_vs_header_border_style() -> None:
     tbl = Txtble(DATA, top_border=HEAVY_BORDERS, header_border=DOUBLE_BORDERS)
     assert str(tbl) == (
         "┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓\n"
@@ -369,7 +370,7 @@ def test_top_border_vs_header_border_style():
     )
 
 
-def test_no_border_header_border_style():
+def test_no_border_header_border_style() -> None:
     tbl = Txtble(DATA, border=False, header_border=DOUBLE_BORDERS)
     assert str(tbl) == (
         "═════════╦══════════╦══════════════════\n"
@@ -388,7 +389,7 @@ def test_no_border_header_border_style():
     )
 
 
-def test_no_top_border_header_border_style():
+def test_no_top_border_header_border_style() -> None:
     tbl = Txtble(DATA, top_border=False, header_border=DOUBLE_BORDERS)
     assert str(tbl) == (
         "╔═════════╦══════════╦══════════════════╗\n"

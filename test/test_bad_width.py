@@ -1,8 +1,9 @@
+from __future__ import annotations
 import pytest
 from txtble import IndeterminateWidthError, Txtble
 
 BAD_STRING = "\x01"
-ERRMSG = repr(BAD_STRING) + ": string has indeterminate width"
+ERRMSG = f"{BAD_STRING!r}: string has indeterminate width"
 
 
 @pytest.mark.parametrize(
@@ -21,7 +22,7 @@ ERRMSG = repr(BAD_STRING) + ": string has indeterminate width"
         "\033[?1049l",  # altscreen off
     ],
 )
-def test_indeterminate_cell(s):
+def test_indeterminate_cell(s: str) -> None:
     tbl = Txtble(
         headers=["Header", "Header"],
         data=[["A", "B"], [s, "D"]],
@@ -32,7 +33,7 @@ def test_indeterminate_cell(s):
     assert str(excinfo.value) == repr(s) + ": string has indeterminate width"
 
 
-def test_indeterminate_header():
+def test_indeterminate_header() -> None:
     tbl = Txtble(
         headers=["Header", BAD_STRING],
         data=[["A", "B"], ["C", "D"]],
@@ -43,7 +44,7 @@ def test_indeterminate_header():
     assert str(excinfo.value) == ERRMSG
 
 
-def test_indeterminate_header_fill():
+def test_indeterminate_header_fill() -> None:
     tbl = Txtble(
         headers=["Header"],
         header_fill=BAD_STRING,
@@ -55,7 +56,7 @@ def test_indeterminate_header_fill():
     assert str(excinfo.value) == ERRMSG
 
 
-def test_indeterminate_row_fill():
+def test_indeterminate_row_fill() -> None:
     tbl = Txtble(
         headers=["Header", "Header"],
         data=[["A", "B"], ["C"]],
@@ -67,7 +68,7 @@ def test_indeterminate_row_fill():
     assert str(excinfo.value) == ERRMSG
 
 
-def test_indeterminate_none_str():
+def test_indeterminate_none_str() -> None:
     tbl = Txtble(
         headers=["Header", "Header"],
         data=[["A", "B"], ["C", None]],
@@ -79,7 +80,7 @@ def test_indeterminate_none_str():
     assert str(excinfo.value) == ERRMSG
 
 
-def test_indeterminate_padding():
+def test_indeterminate_padding() -> None:
     tbl = Txtble(
         headers=["Header", "Header"],
         data=[["A", "B"], ["C", "D"]],

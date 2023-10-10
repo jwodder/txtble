@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from wcwidth import wcswidth
 from test_data import DATA, HEADERS
@@ -20,11 +21,11 @@ COLORED_STRINGS = [
 
 
 @pytest.mark.parametrize("colored,plain", COLORED_STRINGS)
-def test_color_aware_len(colored, plain):
+def test_color_aware_len(colored: str, plain: str) -> None:
     assert strwidth(colored) == wcswidth(plain)
 
 
-def test_bad_color_aware_len():
+def test_bad_color_aware_len() -> None:
     s = "\033[1mNo terminating sgr0"
     with pytest.raises(UnterminatedColorError) as excinfo:
         strwidth(s)
@@ -33,7 +34,7 @@ def test_bad_color_aware_len():
 
 
 @pytest.mark.parametrize("colored,plain", COLORED_STRINGS)
-def test_colored_text(colored, plain):
+def test_colored_text(colored: str, plain: str) -> None:
     tbl = Txtble(data=[[colored], [plain]])
     w = wcswidth(plain)
     assert str(tbl) == (
@@ -52,7 +53,7 @@ def test_colored_text(colored, plain):
     )
 
 
-def test_multiline_colors():
+def test_multiline_colors() -> None:
     tbl = Txtble(
         [
             [
@@ -79,7 +80,7 @@ def test_multiline_colors():
     )
 
 
-def test_multiline_long_colors():
+def test_multiline_long_colors() -> None:
     tbl = Txtble(
         [
             [
@@ -106,7 +107,7 @@ def test_multiline_long_colors():
     )
 
 
-def test_color_none_str():
+def test_color_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -128,7 +129,7 @@ def test_color_none_str():
     )
 
 
-def test_color_row_fill():
+def test_color_row_fill() -> None:
     tbl = Txtble(
         [
             ["1", "1"],
@@ -153,7 +154,7 @@ def test_color_row_fill():
     )
 
 
-def test_color_header_fill():
+def test_color_header_fill() -> None:
     tbl = Txtble(
         [
             ["1", "1"],
@@ -179,7 +180,7 @@ def test_color_header_fill():
     )
 
 
-def test_color_padding():
+def test_color_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding="\033[31m-\033[m")
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"

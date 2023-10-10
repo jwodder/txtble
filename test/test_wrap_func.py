@@ -1,4 +1,7 @@
+from __future__ import annotations
+from collections.abc import Callable
 import pytest
+from pytest_mock import MockerFixture
 from txtble import IndeterminateWidthError, Txtble
 from txtble.util import strwidth
 
@@ -8,7 +11,12 @@ LONG_STRING = "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
 @pytest.mark.parametrize("break_long", [True, False])
 @pytest.mark.parametrize("hyph_break", [True, False])
 @pytest.mark.parametrize("len_func", [strwidth, len])
-def test_wrap_func(mocker, break_long, hyph_break, len_func):
+def test_wrap_func(
+    mocker: MockerFixture,
+    break_long: bool,
+    hyph_break: bool,
+    len_func: Callable[[str], int],
+) -> None:
     wrap_func = mocker.Mock(return_value=["Mocked"])
     tbl = Txtble(
         [[LONG_STRING], ["Too short"]],
@@ -27,7 +35,7 @@ def test_wrap_func(mocker, break_long, hyph_break, len_func):
     wrap_func.assert_called_once_with(LONG_STRING, 20)
 
 
-def test_wrap_func_multiline(mocker):
+def test_wrap_func_multiline(mocker: MockerFixture) -> None:
     wrap_func = mocker.Mock(return_value=["Mocked"])
     tbl = Txtble(
         [["Lorem ipsum\n" + LONG_STRING]],
@@ -43,7 +51,7 @@ def test_wrap_func_multiline(mocker):
     wrap_func.assert_called_once_with(LONG_STRING, 20)
 
 
-def test_split_wrap_func():
+def test_split_wrap_func() -> None:
     tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda s, _w: s.split())
     assert str(tbl) == (
         "+--------------------+\n"
@@ -61,7 +69,7 @@ def test_split_wrap_func():
 
 @pytest.mark.parametrize("break_long", [True, False])
 @pytest.mark.parametrize("hyph_break", [True, False])
-def test_nonbreaking_wrap_func(break_long, hyph_break):
+def test_nonbreaking_wrap_func(break_long: bool, hyph_break: bool) -> None:
     tbl = Txtble(
         [[LONG_STRING]],
         break_long_words=break_long,
@@ -78,7 +86,7 @@ def test_nonbreaking_wrap_func(break_long, hyph_break):
 
 @pytest.mark.parametrize("break_long", [True, False])
 @pytest.mark.parametrize("hyph_break", [True, False])
-def test_nonbreaking_wrap_func_hyphenated(break_long, hyph_break):
+def test_nonbreaking_wrap_func_hyphenated(break_long: bool, hyph_break: bool) -> None:
     tbl = Txtble(
         [["Lorem-ipsum-dolor-sit-amet, consectetur-adipisicing-elit"]],
         break_long_words=break_long,
@@ -110,21 +118,22 @@ def test_nonbreaking_wrap_func_hyphenated(break_long, hyph_break):
         "\033[?1049l",  # altscreen off
     ],
 )
-def test_indeterminate_width_wrap_func(wrapped):
+def test_indeterminate_width_wrap_func(wrapped: str) -> None:
     tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda _s, _w: [wrapped])
     with pytest.raises(IndeterminateWidthError):
         str(tbl)
 
 
-def test_wrap_func_tabbed_string(mocker):
+def test_wrap_func_tabbed_string(mocker: MockerFixture) -> None:
     wrap_func = mocker.Mock(return_value=["Mocked"])
     tbl = Txtble(
         [["\tLorem\tipsum\tdolor\tsit\tamet\t"]],
         widths=[20],
         wrap_func=wrap_func,
     )
-    assert str(tbl) == (
-        "+--------------------+\n" "|Mocked              |\n" "+--------------------+"
+    assert (
+        str(tbl)
+        == "+--------------------+\n|Mocked              |\n+--------------------+"
     )
     wrap_func.assert_called_once_with(
         "\tLorem\tipsum\tdolor\tsit\tamet\t".expandtabs(),
@@ -132,7 +141,7 @@ def test_wrap_func_tabbed_string(mocker):
     )
 
 
-def test_tabbing_wrap_func():
+def test_tabbing_wrap_func() -> None:
     tbl = Txtble(
         [["Lorem ipsum dolor sit amet"]],
         widths=[20],
@@ -146,7 +155,9 @@ def test_tabbing_wrap_func():
 
 
 @pytest.mark.parametrize("widths", [None, [None], [None, 20]])
-def test_wrap_func_not_called(mocker, widths):
+def test_wrap_func_not_called(
+    mocker: MockerFixture, widths: list[int | None] | None
+) -> None:
     wrap_func = mocker.stub()
     tbl = Txtble([[LONG_STRING]], widths=widths, wrap_func=wrap_func)
     assert str(tbl) == (
@@ -157,7 +168,7 @@ def test_wrap_func_not_called(mocker, widths):
     assert not wrap_func.called
 
 
-def test_split_running_color():
+def test_split_running_color() -> None:
     tbl = Txtble(
         [
             [

@@ -1,10 +1,13 @@
+from __future__ import annotations
 from collections import defaultdict
+from collections.abc import Mapping
+from typing import Any
 import pytest
 from test_data import DATA, HEADERS, TABLE
 from txtble import Txtble
 
 
-def test_dict_rows():
+def test_dict_rows() -> None:
     tbl = Txtble(
         data=[dict(zip(HEADERS, row)) for row in DATA],
         headers=HEADERS,
@@ -12,20 +15,20 @@ def test_dict_rows():
     assert str(tbl) == TABLE
 
 
-def test_dict_rows_append_each():
+def test_dict_rows_append_each() -> None:
     tbl = Txtble(headers=HEADERS)
     for row in DATA:
         tbl.append(dict(zip(HEADERS, row)))
     assert str(tbl) == TABLE
 
 
-def test_dict_rows_extend_all():
+def test_dict_rows_extend_all() -> None:
     tbl = Txtble(headers=HEADERS)
     tbl.extend(dict(zip(HEADERS, row)) for row in DATA)
     assert str(tbl) == TABLE
 
 
-def test_dict_rows_no_headers():
+def test_dict_rows_no_headers() -> None:
     tbl = Txtble(data=[dict(zip(HEADERS, row)) for row in DATA])
     with pytest.raises(
         ValueError,
@@ -34,7 +37,7 @@ def test_dict_rows_no_headers():
         str(tbl)
 
 
-def test_missing_key():
+def test_missing_key() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[{"Red": 42, "Green": 23}],
@@ -43,7 +46,7 @@ def test_missing_key():
         str(tbl)
 
 
-def test_missing_key_dict_fill_none():
+def test_missing_key_dict_fill_none() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[{"Red": 42, "Green": 23}],
@@ -58,7 +61,7 @@ def test_missing_key_dict_fill_none():
     )
 
 
-def test_missing_key_dict_fill_str():
+def test_missing_key_dict_fill_str() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[{"Red": 42, "Green": 23}],
@@ -73,7 +76,7 @@ def test_missing_key_dict_fill_str():
     )
 
 
-def test_missing_key_dict_fill_none_none_str():
+def test_missing_key_dict_fill_none_none_str() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[{"Red": 42, "Green": 23}],
@@ -89,7 +92,7 @@ def test_missing_key_dict_fill_none_none_str():
     )
 
 
-def test_dict_row_mixture():
+def test_dict_row_mixture() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[
@@ -107,15 +110,13 @@ def test_dict_row_mixture():
     )
 
 
-def test_extra_dict_keys():
+def test_extra_dict_keys() -> None:
     tbl = Txtble(headers=["Red", "Green"])
     tbl.append({"Red": 42, "Green": 23, "Blue": 17, "Yellow": 3.14})
-    assert str(tbl) == (
-        "+---+-----+\n" "|Red|Green|\n" "+---+-----+\n" "|42 |23   |\n" "+---+-----+"
-    )
+    assert str(tbl) == "+---+-----+\n|Red|Green|\n+---+-----+\n|42 |23   |\n+---+-----+"
 
 
-def test_change_dict_headers():
+def test_change_dict_headers() -> None:
     tbl = Txtble(
         headers=["Red", "Green"],
         data=[{"Red": 42, "Green": 23, "Blue": 17, "Yellow": 3.14}],
@@ -130,7 +131,7 @@ def test_change_dict_headers():
     )
 
 
-def test_set_dict_headers_late():
+def test_set_dict_headers_late() -> None:
     tbl = Txtble([{"Red": 42, "Green": 23, "Blue": 17, "Yellow": 3.14}])
     tbl.headers = ["Blue", "Yellow"]
     assert str(tbl) == (
@@ -142,7 +143,7 @@ def test_set_dict_headers_late():
     )
 
 
-def test_pairs_are_not_dict():
+def test_pairs_are_not_dict() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[[("Red", 42), ("Green", 23), ("Blue", 17)]],
@@ -156,10 +157,11 @@ def test_pairs_are_not_dict():
     )
 
 
-def test_defaultdict_row():
+def test_defaultdict_row() -> None:
+    ddr: Mapping[str, Any] = defaultdict(lambda: "Missing!", {"Red": 42, "Green": 23})
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
-        data=[defaultdict(lambda: "Missing!", {"Red": 42, "Green": 23})],
+        data=[ddr],
     )
     assert str(tbl) == (
         "+---+-----+--------+\n"
@@ -170,7 +172,7 @@ def test_defaultdict_row():
     )
 
 
-def test_dict_row_mixture_extra_column():
+def test_dict_row_mixture_extra_column() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue"],
         data=[
@@ -190,7 +192,7 @@ def test_dict_row_mixture_extra_column():
     )
 
 
-def test_dict_row_repeated_header_key():
+def test_dict_row_repeated_header_key() -> None:
     tbl = Txtble(
         headers=["Red", "Green", "Blue", "Green"],
         data=[{"Red": 42, "Green": 23, "Blue": 17}],

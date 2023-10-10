@@ -1,10 +1,11 @@
+from __future__ import annotations
 import pytest
 from test_data import DATA, HEADERS, TABLE
 from txtble import Txtble
 
 
 @pytest.mark.parametrize("header_border", [None, True])
-def test_no_border(header_border):
+def test_no_border(header_border: bool | None) -> None:
     tbl = Txtble(
         DATA,
         border=False,
@@ -29,7 +30,7 @@ def test_no_border(header_border):
     )
 
 
-def test_no_border_no_rstrip():
+def test_no_border_no_rstrip() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border=False, rstrip=False)
     assert str(tbl) == (
         "Month    |Birthstone|Birth Flower      \n"
@@ -50,7 +51,7 @@ def test_no_border_no_rstrip():
 
 
 @pytest.mark.parametrize("header_border", [None, False])
-def test_no_headers_no_border(header_border):
+def test_no_headers_no_border(header_border: bool | None) -> None:
     tbl = Txtble(DATA, border=False, header_border=header_border)
     assert str(tbl) == (
         "January  |Garnet    |Carnation\n"
@@ -68,7 +69,7 @@ def test_no_headers_no_border(header_border):
     )
 
 
-def test_header_border_no_headers_no_border():
+def test_header_border_no_headers_no_border() -> None:
     tbl = Txtble(DATA, border=False, header_border=True)
     assert str(tbl) == (
         "---------+----------+------------------\n"
@@ -87,7 +88,7 @@ def test_header_border_no_headers_no_border():
     )
 
 
-def test_row_border():
+def test_row_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, row_border=True)
     assert str(tbl) == (
         "+---------+----------+------------------+\n"
@@ -120,7 +121,7 @@ def test_row_border():
     )
 
 
-def test_row_border_embedded_newlines():
+def test_row_border_embedded_newlines() -> None:
     tbl = Txtble(
         [
             [
@@ -155,7 +156,7 @@ def test_row_border_embedded_newlines():
     )
 
 
-def test_no_column_border():
+def test_no_column_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, column_border=False)
     assert str(tbl) == (
         "+-------------------------------------+\n"
@@ -177,7 +178,7 @@ def test_no_column_border():
     )
 
 
-def test_row_border_no_column_border():
+def test_row_border_no_column_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, column_border=False, row_border=True)
     assert str(tbl) == (
         "+-------------------------------------+\n"
@@ -211,12 +212,12 @@ def test_row_border_no_column_border():
 
 
 @pytest.mark.parametrize("header_border", [None, True])
-def test_headers_header_border(header_border):
+def test_headers_header_border(header_border: bool | None) -> None:
     tbl = Txtble(DATA, headers=HEADERS, header_border=header_border)
     assert str(tbl) == TABLE
 
 
-def test_headers_no_header_border():
+def test_headers_no_header_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, header_border=False)
     assert str(tbl) == (
         "+---------+----------+------------------+\n"
@@ -237,7 +238,7 @@ def test_headers_no_header_border():
     )
 
 
-def test_row_border_no_header_border():
+def test_row_border_no_header_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, row_border=True, header_border=False)
     assert str(tbl) == (
         "+---------+----------+------------------+\n"
@@ -269,7 +270,7 @@ def test_row_border_no_header_border():
     )
 
 
-def test_all_borders_off():
+def test_all_borders_off() -> None:
     tbl = Txtble(
         DATA,
         border=False,
@@ -294,7 +295,7 @@ def test_all_borders_off():
     )
 
 
-def test_invert_all_borders():
+def test_invert_all_borders() -> None:
     tbl = Txtble(
         DATA,
         border=False,
@@ -331,7 +332,7 @@ def test_invert_all_borders():
     )
 
 
-def test_outer_border_only():
+def test_outer_border_only() -> None:
     tbl = Txtble(
         DATA,
         border=True,

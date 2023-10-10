@@ -1,7 +1,9 @@
-v0.13.0 (in development)
+v0.12.1 (in development)
 ------------------------
 - Support Python 3.9 through 3.12
 - Drop support for Python 3.6
+- Add type annotations to tests
+- Fix mypy's type inference for `headers`
 
 v0.12.0 (2020-10-07)
 --------------------

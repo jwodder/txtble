@@ -33,6 +33,13 @@ def data_converter(value: Iterable[Iterable | Mapping]) -> list[list | Mapping]:
     return data
 
 
+def headers_converter(value: Iterable | None) -> list | None:
+    if value is not None:
+        return list(value)
+    else:
+        return None
+
+
 @attr.s(auto_attribs=True)
 class Txtble:
     data: list[list | Mapping] = attr.ib(default=(), converter=data_converter)
@@ -48,9 +55,7 @@ class Txtble:
     dict_fill: Any = DICT_FILL_RAISE
     header_border: bool | BorderStyle | None = None
     header_fill: Any = None
-    headers: Optional[list] = attr.ib(
-        default=None, converter=attr.converters.optional(list)
-    )
+    headers: Optional[list] = attr.ib(default=None, converter=headers_converter)
     left_border: bool | BorderStyle | None = None
     left_padding: int | str | None = None
     len_func: Optional[LenFunc] = strwidth

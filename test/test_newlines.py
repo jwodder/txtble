@@ -1,8 +1,9 @@
+from __future__ import annotations
 from test_data import DATA
 from txtble import Txtble
 
 
-def test_embedded_newlines():
+def test_embedded_newlines() -> None:
     tbl = Txtble(
         [
             [
@@ -35,7 +36,7 @@ def test_embedded_newlines():
     )
 
 
-def test_embedded_trailing_newlines():
+def test_embedded_trailing_newlines() -> None:
     tbl = Txtble(
         [
             [
@@ -70,7 +71,7 @@ def test_embedded_trailing_newlines():
     )
 
 
-def test_embedded_trailing_newlines_no_border():
+def test_embedded_trailing_newlines_no_border() -> None:
     tbl = Txtble(
         [
             [
@@ -104,7 +105,7 @@ def test_embedded_trailing_newlines_no_border():
     )
 
 
-def test_embedded_form_feeds():
+def test_embedded_form_feeds() -> None:
     tbl = Txtble(
         [
             [
@@ -137,7 +138,7 @@ def test_embedded_form_feeds():
     )
 
 
-def test_embedded_vtabs():
+def test_embedded_vtabs() -> None:
     tbl = Txtble(
         [
             [
@@ -170,7 +171,7 @@ def test_embedded_vtabs():
     )
 
 
-def test_embedded_form_feeds_and_vtabs():
+def test_embedded_form_feeds_and_vtabs() -> None:
     tbl = Txtble(
         [
             [
@@ -203,7 +204,7 @@ def test_embedded_form_feeds_and_vtabs():
     )
 
 
-def test_padding_embedded_newlines():
+def test_padding_embedded_newlines() -> None:
     tbl = Txtble(
         [
             [
@@ -237,7 +238,7 @@ def test_padding_embedded_newlines():
     )
 
 
-def test_embedded_newline_headers():
+def test_embedded_newline_headers() -> None:
     tbl = Txtble(
         headers=["Month", "Birth Thingy\n(Gem)", "Birth Thingy\n(Flower)"], data=DATA
     )

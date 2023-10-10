@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from txtble import Txtble
 
@@ -11,7 +12,7 @@ DATA = [
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers(header_fill):
+def test_ragged_rows_no_headers(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -28,7 +29,7 @@ def test_ragged_rows_no_headers(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_row_fill(header_fill):
+def test_ragged_rows_no_headers_row_fill(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -46,7 +47,7 @@ def test_ragged_rows_no_headers_row_fill(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_long_row_fill(header_fill):
+def test_ragged_rows_no_headers_long_row_fill(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -64,7 +65,7 @@ def test_ragged_rows_no_headers_long_row_fill(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_tab_row_fill(header_fill):
+def test_ragged_rows_no_headers_tab_row_fill(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -82,7 +83,7 @@ def test_ragged_rows_no_headers_tab_row_fill(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_multiline_row_fill(header_fill):
+def test_ragged_rows_no_headers_multiline_row_fill(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -103,7 +104,7 @@ def test_ragged_rows_no_headers_multiline_row_fill(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_columns(header_fill):
+def test_ragged_rows_no_headers_columns(header_fill: str | None) -> None:
     tbl = Txtble(
         columns=6,
         data=DATA,
@@ -121,7 +122,7 @@ def test_ragged_rows_no_headers_columns(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_extra_columns(header_fill):
+def test_ragged_rows_no_headers_extra_columns(header_fill: str | None) -> None:
     tbl = Txtble(
         columns=8,
         data=DATA,
@@ -139,7 +140,7 @@ def test_ragged_rows_no_headers_extra_columns(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_ragged_rows_no_headers_extra_columns_row_fill(header_fill):
+def test_ragged_rows_no_headers_extra_columns_row_fill(header_fill: str | None) -> None:
     tbl = Txtble(
         columns=8,
         data=DATA,
@@ -158,7 +159,7 @@ def test_ragged_rows_no_headers_extra_columns_row_fill(header_fill):
 
 
 @pytest.mark.parametrize("row_fill", ["", "foo"])
-def test_long_rows_headers(row_fill):
+def test_long_rows_headers(row_fill: str) -> None:
     tbl = Txtble(
         data=DATA,
         headers=("Group", "Elements"),
@@ -177,7 +178,7 @@ def test_long_rows_headers(row_fill):
     )
 
 
-def test_long_rows_headers_header_fill():
+def test_long_rows_headers_header_fill() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="?",
@@ -196,7 +197,7 @@ def test_long_rows_headers_header_fill():
     )
 
 
-def test_long_rows_headers_empty_header_fill():
+def test_long_rows_headers_empty_header_fill() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="",
@@ -215,7 +216,7 @@ def test_long_rows_headers_empty_header_fill():
     )
 
 
-def test_long_rows_headers_long_header_fill():
+def test_long_rows_headers_long_header_fill() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="Extra!",
@@ -234,7 +235,7 @@ def test_long_rows_headers_long_header_fill():
     )
 
 
-def test_long_rows_headers_tab_header_fill():
+def test_long_rows_headers_tab_header_fill() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="Fill\ter",
@@ -253,7 +254,7 @@ def test_long_rows_headers_tab_header_fill():
     )
 
 
-def test_long_rows_headers_multiline_header_fill():
+def test_long_rows_headers_multiline_header_fill() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="Fill\ner",
@@ -273,7 +274,7 @@ def test_long_rows_headers_multiline_header_fill():
     )
 
 
-def test_long_rows_headers_header_fill_row_fill():
+def test_long_rows_headers_header_fill_row_fill() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="?",
@@ -293,7 +294,7 @@ def test_long_rows_headers_header_fill_row_fill():
     )
 
 
-def test_long_rows_headers_header_fill_row_fill_padding():
+def test_long_rows_headers_header_fill_row_fill_padding() -> None:
     tbl = Txtble(
         data=DATA,
         header_fill="?",
@@ -315,7 +316,7 @@ def test_long_rows_headers_header_fill_row_fill_padding():
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_short_rows_headers(header_fill):
+def test_short_rows_headers(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -335,7 +336,7 @@ def test_short_rows_headers(header_fill):
 
 
 @pytest.mark.parametrize("header_fill", [None, "", "foo"])
-def test_short_rows_headers_row_fill(header_fill):
+def test_short_rows_headers_row_fill(header_fill: str | None) -> None:
     tbl = Txtble(
         data=DATA,
         header_fill=header_fill,
@@ -355,7 +356,7 @@ def test_short_rows_headers_row_fill(header_fill):
     )
 
 
-def test_empty_headers_no_header_fill():
+def test_empty_headers_no_header_fill() -> None:
     tbl = Txtble(DATA, headers=[])
     with pytest.raises(
         ValueError,
@@ -364,7 +365,7 @@ def test_empty_headers_no_header_fill():
         str(tbl)
 
 
-def test_empty_headers_header_fill():
+def test_empty_headers_header_fill() -> None:
     tbl = Txtble(DATA, headers=[], header_fill="Filler")
     assert str(tbl) == (
         "+------+------+------+------+------+------+------+\n"
@@ -379,12 +380,12 @@ def test_empty_headers_header_fill():
     )
 
 
-def test_bad_row_fill():
+def test_bad_row_fill() -> None:
     with pytest.raises(ValueError, match="row_fill cannot be None"):
         Txtble(DATA, row_fill=None)
 
 
-def test_bad_row_fill_attr():
+def test_bad_row_fill_attr() -> None:
     tbl = Txtble(DATA)
     tbl.row_fill = None
     with pytest.raises(ValueError, match="row_fill cannot be None"):

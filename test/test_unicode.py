@@ -1,8 +1,9 @@
+from __future__ import annotations
 from test_data import DATA, HEADERS
 from txtble import Txtble
 
 
-def test_unicode():
+def test_unicode() -> None:
     tbl = Txtble(
         headers=("English", "Latin"),
         data=[
@@ -26,7 +27,7 @@ def test_unicode():
     )
 
 
-def test_unicode_nfd():
+def test_unicode_nfd() -> None:
     tbl = Txtble(
         headers=["NFC", "NFD"],
         data=[
@@ -42,7 +43,7 @@ def test_unicode_nfd():
     )
 
 
-def test_fullwidth():
+def test_fullwidth() -> None:
     tbl = Txtble(
         headers=["Halfwidth", "Fullwidth"],
         data=[
@@ -58,7 +59,7 @@ def test_fullwidth():
     )
 
 
-def test_fullwidth_padding():
+def test_fullwidth_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding="\uFF0D")
     assert str(tbl) == (
         "+-------------+--------------+----------------------+\n"
@@ -80,7 +81,7 @@ def test_fullwidth_padding():
     )
 
 
-def test_leading_combining():
+def test_leading_combining() -> None:
     tbl = Txtble(
         headers=["Category", "Name", "Glyph"],
         data=[
@@ -100,7 +101,7 @@ def test_leading_combining():
     )
 
 
-def test_leading_combining_padding():
+def test_leading_combining_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding="\u0301")
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"
@@ -122,7 +123,7 @@ def test_leading_combining_padding():
     )
 
 
-def test_leading_combining_none_str():
+def test_leading_combining_none_str() -> None:
     tbl = Txtble(
         headers=("repr", "value"),
         data=[
@@ -143,7 +144,7 @@ def test_leading_combining_none_str():
     )
 
 
-def test_leading_combining_header_fill():
+def test_leading_combining_header_fill() -> None:
     tbl = Txtble(
         headers=["Header"],
         header_fill="\u0301",
@@ -159,7 +160,7 @@ def test_leading_combining_header_fill():
     )
 
 
-def test_leading_combining_row_fill():
+def test_leading_combining_row_fill() -> None:
     tbl = Txtble(
         headers=["Header", "Header"],
         row_fill="\u0301",

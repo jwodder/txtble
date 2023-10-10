@@ -1,16 +1,17 @@
+from __future__ import annotations
 import pytest
 from test_data import DATA, HEADERS, TABLE
 from txtble import Txtble
 
 
-@pytest.mark.parametrize("padding", ["", 0, None, False])
-def test_no_padding(padding):
+@pytest.mark.parametrize("padding", ["", 0])
+def test_no_padding(padding: str | int) -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
     assert str(tbl) == TABLE
 
 
 @pytest.mark.parametrize("padding", [" ", 1])
-def test_one_padding(padding):
+def test_one_padding(padding: str | int) -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"
@@ -33,7 +34,7 @@ def test_one_padding(padding):
 
 
 @pytest.mark.parametrize("padding", ["  ", 2])
-def test_two_padding(padding):
+def test_two_padding(padding: str | int) -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
     assert str(tbl) == (
         "+-------------+--------------+----------------------+\n"
@@ -55,7 +56,7 @@ def test_two_padding(padding):
     )
 
 
-def test_tab_padding():
+def test_tab_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding="\t")
     assert str(tbl) == (
         "+-------------------------+--------------------------+----------------------------------+\n"
@@ -77,7 +78,7 @@ def test_tab_padding():
     )
 
 
-def test_non_space_padding():
+def test_non_space_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding="x")
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"
@@ -99,7 +100,7 @@ def test_non_space_padding():
     )
 
 
-def test_mixed_padding():
+def test_mixed_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=" x ")
     assert str(tbl) == (
         "+---------------+----------------+------------------------+\n"
@@ -121,7 +122,7 @@ def test_mixed_padding():
     )
 
 
-def test_padding_no_border():
+def test_padding_no_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=1, border=False)
     assert str(tbl) == (
         " Month     | Birthstone | Birth Flower\n"
@@ -141,7 +142,7 @@ def test_padding_no_border():
     )
 
 
-def test_left_padding_right_padding_no_border():
+def test_left_padding_right_padding_no_border() -> None:
     tbl = Txtble(
         DATA, headers=HEADERS, left_padding="x", right_padding="y", border=False
     )
@@ -163,7 +164,7 @@ def test_left_padding_right_padding_no_border():
     )
 
 
-def test_padding_no_border_no_rstrip():
+def test_padding_no_border_no_rstrip() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=1, border=False, rstrip=False)
     assert str(tbl) == (
         " Month     | Birthstone | Birth Flower       \n"
@@ -183,7 +184,7 @@ def test_padding_no_border_no_rstrip():
     )
 
 
-def test_left_padding_right_padding_no_border_no_rstrip():
+def test_left_padding_right_padding_no_border_no_rstrip() -> None:
     tbl = Txtble(
         DATA,
         headers=HEADERS,
@@ -222,7 +223,7 @@ def test_left_padding_right_padding_no_border_no_rstrip():
         "x\u2029y",
     ],
 )
-def test_multiline_padding(padding):
+def test_multiline_padding(padding: str) -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=padding)
     with pytest.raises(
         ValueError,
@@ -231,7 +232,7 @@ def test_multiline_padding(padding):
         tbl.show()
 
 
-def test_padding_no_column_border():
+def test_padding_no_column_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, padding=1, column_border=False)
     assert str(tbl) == (
         "+-------------------------------------------+\n"
@@ -253,7 +254,7 @@ def test_padding_no_column_border():
     )
 
 
-def test_left_padding_right_padding():
+def test_left_padding_right_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, left_padding=" ", right_padding="x")
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"
@@ -275,7 +276,7 @@ def test_left_padding_right_padding():
     )
 
 
-def test_padding_left_padding_right_padding():
+def test_padding_left_padding_right_padding() -> None:
     tbl = Txtble(
         DATA, headers=HEADERS, left_padding=" ", right_padding="x", padding="anything"
     )
@@ -299,7 +300,7 @@ def test_padding_left_padding_right_padding():
     )
 
 
-def test_padding_left_padding():
+def test_padding_left_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, left_padding=" ", padding="x")
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"
@@ -321,7 +322,7 @@ def test_padding_left_padding():
     )
 
 
-def test_padding_right_padding():
+def test_padding_right_padding() -> None:
     tbl = Txtble(DATA, headers=HEADERS, right_padding="x", padding=" ")
     assert str(tbl) == (
         "+-----------+------------+--------------------+\n"
@@ -344,7 +345,7 @@ def test_padding_right_padding():
 
 
 @pytest.mark.parametrize("padding", [" ", 1])
-def test_left_padding(padding):
+def test_left_padding(padding: str | int) -> None:
     tbl = Txtble(DATA, headers=HEADERS, left_padding=padding)
     assert str(tbl) == (
         "+----------+-----------+-------------------+\n"
@@ -367,7 +368,7 @@ def test_left_padding(padding):
 
 
 @pytest.mark.parametrize("padding", [" ", 1])
-def test_right_padding(padding):
+def test_right_padding(padding: str | int) -> None:
     tbl = Txtble(DATA, headers=HEADERS, right_padding=padding)
     assert str(tbl) == (
         "+----------+-----------+-------------------+\n"

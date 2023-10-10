@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pytest
 from test_data import DATA, HEADERS
 from txtble import (
@@ -6,11 +7,12 @@ from txtble import (
     DOUBLE_BORDERS,
     HEAVY_BORDERS,
     LIGHT_BORDERS,
+    BorderStyle,
     Txtble,
 )
 
 
-def test_vborders_off():
+def test_vborders_off() -> None:
     tbl = Txtble(DATA, headers=HEADERS, left_border=False, right_border=False)
     assert str(tbl) == (
         "---------+----------+------------------\n"
@@ -32,7 +34,7 @@ def test_vborders_off():
     )
 
 
-def test_vborders_off_styled():
+def test_vborders_off_styled() -> None:
     tbl = Txtble(
         DATA,
         headers=HEADERS,
@@ -60,7 +62,7 @@ def test_vborders_off_styled():
     )
 
 
-def test_hborders_on():
+def test_hborders_on() -> None:
     tbl = Txtble(
         DATA,
         headers=HEADERS,
@@ -88,7 +90,7 @@ def test_hborders_on():
     )
 
 
-def test_hborders_on_styled():
+def test_hborders_on_styled() -> None:
     tbl = Txtble(
         DATA,
         headers=HEADERS,
@@ -117,7 +119,7 @@ def test_hborders_on_styled():
     )
 
 
-def test_hborders_off():
+def test_hborders_off() -> None:
     tbl = Txtble(DATA, headers=HEADERS, top_border=False, bottom_border=False)
     assert str(tbl) == (
         "|Month    |Birthstone|Birth Flower      |\n"
@@ -137,7 +139,7 @@ def test_hborders_off():
     )
 
 
-def test_ulborder():
+def test_ulborder() -> None:
     tbl = Txtble(DATA, headers=HEADERS, bottom_border=False, right_border=False)
     assert str(tbl) == (
         "+---------+----------+------------------\n"
@@ -158,7 +160,7 @@ def test_ulborder():
     )
 
 
-def test_no_right_border():
+def test_no_right_border() -> None:
     tbl = Txtble(DATA, headers=HEADERS, right_border=False)
     assert str(tbl) == (
         "+---------+----------+------------------\n"
@@ -180,7 +182,7 @@ def test_no_right_border():
     )
 
 
-def test_no_right_border_no_rstrip():
+def test_no_right_border_no_rstrip() -> None:
     tbl = Txtble(DATA, headers=HEADERS, right_border=False, rstrip=False)
     assert str(tbl) == (
         "+---------+----------+------------------\n"
@@ -202,7 +204,7 @@ def test_no_right_border_no_rstrip():
     )
 
 
-def test_bottom_border_only():
+def test_bottom_border_only() -> None:
     tbl = Txtble(DATA, headers=HEADERS, border=False, bottom_border=True)
     assert str(tbl) == (
         "Month    |Birthstone|Birth Flower\n"
@@ -224,7 +226,7 @@ def test_bottom_border_only():
 
 
 @pytest.mark.parametrize("border", [True, False, DOT_BORDERS])
-def test_every_side_different_style(border):
+def test_every_side_different_style(border: bool | BorderStyle) -> None:
     tbl = Txtble(
         DATA,
         headers=HEADERS,
