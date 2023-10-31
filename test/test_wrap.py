@@ -181,8 +181,8 @@ def test_wrap_long_soft_hyphenated_word(hyph_break: bool) -> None:
         "|consectetur         |\n"
         "|adipisicing elit    |\n"
         "+--------------------+\n"
-        "|anti\xADdis\xADestablish\xADm|\n"
-        "|ent\xADari\xADan\xADism      |\n"
+        "|anti\xADdis\xADestablish\xADment\xAD|\n"
+        "|ari\xADan\xADism            |\n"
         "+--------------------+"
     )
 

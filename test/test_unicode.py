@@ -95,7 +95,7 @@ def test_leading_combining() -> None:
         "|Category|Name                                     |Glyph|\n"
         "+--------+-----------------------------------------+-----+\n"
         "|Mn      |COMBINING ACUTE ACCENT                   | \u0301    |\n"
-        "|Mc      |DEVANAGARI SIGN VISARGA                  | \u0903   |\n"
+        "|Mc      |DEVANAGARI SIGN VISARGA                  | \u0903    |\n"
         "|Me      |COMBINING CYRILLIC HUNDRED THOUSANDS SIGN| \u0488    |\n"
         "+--------+-----------------------------------------+-----+"
     )

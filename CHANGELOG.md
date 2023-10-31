@@ -1,3 +1,7 @@
+v0.13.0 (in development)
+------------------------
+- Increase minimum wcwidth version to 0.2.9
+
 v0.12.1 (2023-10-10)
 --------------------
 - Support Python 3.9 through 3.12
