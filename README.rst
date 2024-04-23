@@ -1,19 +1,21 @@
-.. image:: https://www.repostatus.org/badges/latest/active.svg
+|repostatus| |ci-status| |coverage| |pyversions| |license|
+
+.. |repostatus| image:: https://www.repostatus.org/badges/latest/active.svg
     :target: https://www.repostatus.org/#active
     :alt: Project Status: Active — The project has reached a stable, usable
           state and is being actively developed.
 
-.. image:: https://github.com/jwodder/txtble/actions/workflows/test.yml/badge.svg
+.. |ci-status| image:: https://github.com/jwodder/txtble/actions/workflows/test.yml/badge.svg
     :target: https://github.com/jwodder/txtble/actions/workflows/test.yml
     :alt: CI Status
 
-.. image:: https://codecov.io/gh/jwodder/txtble/branch/master/graph/badge.svg
+.. |coverage| image:: https://codecov.io/gh/jwodder/txtble/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/jwodder/txtble
 
-.. image:: https://img.shields.io/pypi/pyversions/txtble.svg
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/txtble.svg
     :target: https://pypi.org/project/txtble/
 
-.. image:: https://img.shields.io/github/license/jwodder/txtble.svg
+.. |license| image:: https://img.shields.io/github/license/jwodder/txtble.svg
     :target: https://opensource.org/licenses/MIT
     :alt: MIT License
 
