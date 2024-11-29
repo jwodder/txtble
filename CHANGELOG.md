@@ -3,6 +3,7 @@ v0.13.0 (in development)
 - Increase minimum wcwidth version to 0.2.9
 - Migrated from setuptools to hatch
 - Drop support for Python 3.7
+- Support Python 3.13
 
 v0.12.1 (2023-10-10)
 --------------------
