@@ -31,14 +31,14 @@ def test_unicode_nfd() -> None:
     tbl = Txtble(
         headers=["NFC", "NFD"],
         data=[
-            ["Pok\u00E9mon", "Poke\u0301mon"],
+            ["Pok\u00e9mon", "Poke\u0301mon"],
         ],
     )
     assert str(tbl) == (
         "+-------+-------+\n"
         "|NFC    |NFD    |\n"
         "+-------+-------+\n"
-        "|Pok\u00E9mon|Poke\u0301mon|\n"
+        "|Pok\u00e9mon|Poke\u0301mon|\n"
         "+-------+-------+"
     )
 
@@ -60,7 +60,7 @@ def test_fullwidth() -> None:
 
 
 def test_fullwidth_padding() -> None:
-    tbl = Txtble(DATA, headers=HEADERS, padding="\uFF0D")
+    tbl = Txtble(DATA, headers=HEADERS, padding="\uff0d")
     assert str(tbl) == (
         "+-------------+--------------+----------------------+\n"
         "|－Month    －|－Birthstone－|－Birth Flower      －|\n"

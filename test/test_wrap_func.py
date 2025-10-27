@@ -105,14 +105,14 @@ def test_nonbreaking_wrap_func_hyphenated(break_long: bool, hyph_break: bool) ->
     "wrapped",
     [
         "Embedded\nnewline",
-        "\x0E",
-        "\x0F",  # altcharset on/off
+        "\x0e",
+        "\x0f",  # altcharset on/off
         "\033[17;23H",  # move cursor
         "\a",  # bell
         "\b",  # backspace
         "!\b!",
         "_\bx",  # overstruck printing
-        "\x7F",  # delete
+        "\x7f",  # delete
         "\033[H\033[J",  # clear screen
         "\033[?1049h",  # altscreen on
         "\033[?1049l",  # altscreen off

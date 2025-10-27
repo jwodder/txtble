@@ -168,7 +168,7 @@ def test_wrap_long_soft_hyphenated_word(hyph_break: bool) -> None:
     tbl = Txtble(
         [
             [LONG_STRING],
-            ["anti\xADdis\xADestablish\xADment\xADari\xADan\xADism"],
+            ["anti\xaddis\xadestablish\xadment\xadari\xadan\xadism"],
         ],
         break_on_hyphens=hyph_break,
         row_border=True,
@@ -181,8 +181,8 @@ def test_wrap_long_soft_hyphenated_word(hyph_break: bool) -> None:
         "|consectetur         |\n"
         "|adipisicing elit    |\n"
         "+--------------------+\n"
-        "|anti\xADdis\xADestablish\xADm|\n"
-        "|ent\xADari\xADan\xADism      |\n"
+        "|anti\xaddis\xadestablish\xadm|\n"
+        "|ent\xadari\xadan\xadism      |\n"
         "+--------------------+"
     )
 
@@ -619,11 +619,11 @@ def test_wrap_implementation_bsearch_boundary() -> None:
     Test a boundary condition in the implementation of the long-word-splitting
     algorithm
     """
-    tbl = Txtble([["antidisestablishme\u0301n\uFF54arianism"]], widths=[20])
+    tbl = Txtble([["antidisestablishme\u0301n\uff54arianism"]], widths=[20])
     assert str(tbl) == (
         "+--------------------+\n"
         "|antidisestablishme\u0301n |\n"
-        "|\uFF54arianism          |\n"
+        "|\uff54arianism          |\n"
         "+--------------------+"
     )
 
