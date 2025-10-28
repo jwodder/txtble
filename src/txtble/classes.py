@@ -2,7 +2,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from numbers import Number
 import re
-from typing import Any, Optional
+from typing import Any
 import attr
 from .border_style import ASCII_BORDERS, BorderStyle
 from .errors import (
@@ -51,14 +51,14 @@ class Txtble:
     break_long_words: bool = True
     break_on_hyphens: bool = True
     column_border: bool | BorderStyle = True
-    columns: Optional[int] = attr.ib(default=None)
+    columns: int | None = attr.ib(default=None)
     dict_fill: Any = DICT_FILL_RAISE
     header_border: bool | BorderStyle | None = None
     header_fill: Any = None
-    headers: Optional[list] = attr.ib(default=None, converter=headers_converter)
+    headers: list | None = attr.ib(default=None, converter=headers_converter)
     left_border: bool | BorderStyle | None = None
     left_padding: int | str | None = None
-    len_func: Optional[LenFunc] = strwidth
+    len_func: LenFunc | None = strwidth
     none_str: Any = ""
     padding: int | str = 0
     right_border: bool | BorderStyle | None = None
@@ -69,9 +69,9 @@ class Txtble:
     top_border: bool | BorderStyle | None = None
     valign: str | Sequence[str] = ()
     valign_fill: str = "t"
-    width_fill: Optional[int] = None
-    widths: int | Sequence[Optional[int]] | None = ()
-    wrap_func: Optional[Callable[[str, int], Iterable[str]]] = None
+    width_fill: int | None = None
+    widths: int | Sequence[int | None] | None = ()
+    wrap_func: Callable[[str, int], Iterable[str]] | None = None
 
     @row_fill.validator
     def _row_fill_validator(self, _attrib: attr.Attribute, value: Any) -> None:
@@ -83,7 +83,7 @@ class Txtble:
     def _columns_validator(
         self,
         _attrib: attr.Attribute,
-        value: Optional[int],
+        value: int | None,
     ) -> None:
         if value is not None and value < 1:
             raise ValueError("columns must be at least 1")
@@ -218,7 +218,7 @@ class Txtble:
             else:
                 data.append([Cell(self, c) for c in row])
 
-        headers: Optional[list[Cell]]
+        headers: list[Cell] | None
         if self.headers is not None:
             headers = [Cell(self, h) for h in self.headers]
             columns = len(headers)
@@ -238,7 +238,7 @@ class Txtble:
                 columns = max(map(len, data)) if data else 0
         data = [to_len(row, columns, Cell(self, self.row_fill)) for row in data]
 
-        wrap_widths: list[Optional[int]]
+        wrap_widths: list[int | None]
         if isinstance(self.widths, int) or self.widths is None:
             wrap_widths = [self.widths] * columns
         else:
@@ -300,7 +300,7 @@ class Txtble:
                 self.bottom_border, border, self.border_style
             )
 
-        header_border: Optional[BorderStyle]
+        header_border: BorderStyle | None
         if self.header_border or (self.header_border is None and headers is not None):
             header_border = first_style(self.header_border, self.border_style)
         else:
@@ -317,7 +317,7 @@ class Txtble:
         else:
             align = to_len(list(self.align), columns, self.align_fill)
 
-        num_spacing: list[Optional[tuple[int, int]]] = [None] * columns
+        num_spacing: list[tuple[int, int] | None] = [None] * columns
         for i, a in enumerate(align):
             if "n" in a:
                 predot = 0
@@ -406,7 +406,7 @@ class Cell:
         height: int,
         align: str,
         valign: str,
-        num_spacing: Optional[tuple[int, int]],
+        num_spacing: tuple[int, int] | None,
     ) -> list[str]:
         if "n" in align and self.is_numeric:
             assert num_spacing is not None
@@ -444,7 +444,7 @@ class Cell:
         else:
             raise ValueError(f"{align!r}: invalid alignment specifier")
 
-    def wrap(self, width: Optional[int]) -> None:
+    def wrap(self, width: int | None) -> None:
         if width is None:
             return
         elif width <= 0:
@@ -468,7 +468,7 @@ def join_cells(
     rstrip: bool,
     left_padding: str,
     right_padding: str,
-    num_spacing: list[Optional[tuple[int, int]]],
+    num_spacing: list[tuple[int, int] | None],
 ) -> list[str]:
     assert 0 < len(cells) == len(widths) == len(align)
     height = max(len(c.lines) for c in cells)
