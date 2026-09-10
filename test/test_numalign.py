@@ -793,7 +793,7 @@ def test_numalign_short_width() -> None:
         widths=[None, 6],
     )
     with pytest.raises(NumericWidthOverflowError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert str(excinfo.value) == "Numeric alignment overflows column width"
 
 
@@ -812,7 +812,7 @@ def test_numalign_very_short_width() -> None:
         widths=[None, 4],
     )
     with pytest.raises(NumericWidthOverflowError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert str(excinfo.value) == "Numeric alignment overflows column width"
 
 
@@ -830,5 +830,5 @@ def test_numalign_long_numeric_header() -> None:
         widths=[None, 5],
     )
     with pytest.raises(NumericWidthOverflowError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert str(excinfo.value) == "Numeric alignment overflows column width"

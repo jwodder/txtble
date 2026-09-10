@@ -142,7 +142,7 @@ def test_headers_not_matching_columns(columns: int) -> None:
         ValueError,
         match=r"len\(headers\) and columns do not match",
     ):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 @pytest.mark.parametrize("columns", [0, -1])
@@ -156,4 +156,4 @@ def test_bad_columns_attr(columns: int) -> None:
     tbl = Txtble(DATA)
     tbl.columns = columns
     with pytest.raises(ValueError, match="columns must be at least 1"):
-        str(tbl)
+        str(tbl)  # noqa: B018

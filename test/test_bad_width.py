@@ -28,7 +28,7 @@ def test_indeterminate_cell(s: str) -> None:
         data=[["A", "B"], [s, "D"]],
     )
     with pytest.raises(IndeterminateWidthError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert excinfo.value.string == s
     assert str(excinfo.value) == repr(s) + ": string has indeterminate width"
 
@@ -39,7 +39,7 @@ def test_indeterminate_header() -> None:
         data=[["A", "B"], ["C", "D"]],
     )
     with pytest.raises(IndeterminateWidthError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert excinfo.value.string == BAD_STRING
     assert str(excinfo.value) == ERRMSG
 
@@ -51,7 +51,7 @@ def test_indeterminate_header_fill() -> None:
         data=[["A", "B"], ["C", "D"]],
     )
     with pytest.raises(IndeterminateWidthError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert excinfo.value.string == BAD_STRING
     assert str(excinfo.value) == ERRMSG
 
@@ -63,7 +63,7 @@ def test_indeterminate_row_fill() -> None:
         row_fill=BAD_STRING,
     )
     with pytest.raises(IndeterminateWidthError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert excinfo.value.string == BAD_STRING
     assert str(excinfo.value) == ERRMSG
 
@@ -75,7 +75,7 @@ def test_indeterminate_none_str() -> None:
         none_str=BAD_STRING,
     )
     with pytest.raises(IndeterminateWidthError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert excinfo.value.string == BAD_STRING
     assert str(excinfo.value) == ERRMSG
 
@@ -87,6 +87,6 @@ def test_indeterminate_padding() -> None:
         padding=BAD_STRING,
     )
     with pytest.raises(IndeterminateWidthError) as excinfo:
-        str(tbl)
+        str(tbl)  # noqa: B018
     assert excinfo.value.string == BAD_STRING
     assert str(excinfo.value) == ERRMSG

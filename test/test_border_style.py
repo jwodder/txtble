@@ -327,7 +327,7 @@ def test_bad_border_style(border_style: bool | tuple[str] | None) -> None:
         TypeError,
         match="border_style must be a BorderStyle instance",
     ):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_border_vs_header_border_style() -> None:

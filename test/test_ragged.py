@@ -362,7 +362,7 @@ def test_empty_headers_no_header_fill() -> None:
         ValueError,
         match="headers is empty but header_fill is None",
     ):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_empty_headers_header_fill() -> None:
@@ -389,7 +389,7 @@ def test_bad_row_fill_attr() -> None:
     tbl = Txtble(DATA)
     tbl.row_fill = None
     with pytest.raises(ValueError, match="row_fill cannot be None"):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 # vim:set nowrap:

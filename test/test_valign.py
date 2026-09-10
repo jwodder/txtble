@@ -172,7 +172,7 @@ def test_bad_valign(valign: str) -> None:
         valign=["m", "m", valign],
     )
     with pytest.raises(ValueError, match="invalid vertical alignment specifier"):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 @pytest.mark.parametrize("valign", ["q", "T", "top", "<"])
@@ -183,7 +183,7 @@ def test_bad_valign_fill(valign: str) -> None:
         valign_fill=valign,
     )
     with pytest.raises(ValueError, match="invalid vertical alignment specifier"):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_valign_all_m() -> None:

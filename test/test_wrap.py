@@ -454,7 +454,7 @@ def test_wrap_padding() -> None:
 def test_invalid_width(s: str, width: int | str) -> None:
     tbl = Txtble([[s]], widths=[width])  # type: ignore[list-item]
     with pytest.raises((TypeError, ValueError)):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_wrap_header() -> None:
@@ -611,7 +611,7 @@ def test_wrap_bad_len_func() -> None:
 
     tbl = Txtble([[LONG_STRING]], len_func=len_func, widths=[width])
     with pytest.raises(IndeterminateWidthError):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_wrap_implementation_bsearch_boundary() -> None:

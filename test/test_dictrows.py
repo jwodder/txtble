@@ -34,7 +34,7 @@ def test_dict_rows_no_headers() -> None:
         ValueError,
         match="dict row not allowed when headers is None",
     ):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_missing_key() -> None:
@@ -43,7 +43,7 @@ def test_missing_key() -> None:
         data=[{"Red": 42, "Green": 23}],
     )
     with pytest.raises(KeyError):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_missing_key_dict_fill_none() -> None:

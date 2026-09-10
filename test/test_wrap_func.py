@@ -121,7 +121,7 @@ def test_nonbreaking_wrap_func_hyphenated(break_long: bool, hyph_break: bool) ->
 def test_indeterminate_width_wrap_func(wrapped: str) -> None:
     tbl = Txtble([[LONG_STRING]], widths=[20], wrap_func=lambda _s, _w: [wrapped])
     with pytest.raises(IndeterminateWidthError):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_wrap_func_tabbed_string(mocker: MockerFixture) -> None:

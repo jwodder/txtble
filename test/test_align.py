@@ -167,14 +167,14 @@ def test_align_extra_aligns() -> None:
 def test_bad_align(align: str) -> None:
     tbl = Txtble(DATA, headers=HEADERS, align=["r", "c", align])
     with pytest.raises(ValueError, match="invalid alignment specifier"):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 @pytest.mark.parametrize("align", ["q", "L", "left", "<"])
 def test_bad_align_fill(align: str) -> None:
     tbl = Txtble(DATA, headers=HEADERS, align=["c", "c"], align_fill=align)
     with pytest.raises(ValueError, match="invalid alignment specifier"):
-        str(tbl)
+        str(tbl)  # noqa: B018
 
 
 def test_align_all_c() -> None:
