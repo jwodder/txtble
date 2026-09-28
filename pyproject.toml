@@ -38,7 +38,7 @@ classifiers = [
 
 dependencies = [
     "attrs   >= 18.1",
-    "wcwidth >= 0.5, < 0.9",
+    "wcwidth >=0.9, <0.10",
 ]
 
 [project.urls]
